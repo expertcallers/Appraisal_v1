@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Important Notice</title>
+	<link rel="icon" type="icon" href="img/favicon.ico">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+
+</head>
+<body id="notice">
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12" align="center">
+				<h1 class="text-uppercase title">Important Notice</h1>
+			</div>
+
+			<div class="col-md-12 backtitle">
+				<h5 class="text-uppercase">Employee Details</h5>
+			</div>
+			<div class="col-md-12 borbel">
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+						    <label for="name">Name:</label>
+						    <input type="text" class="form-control" name="emp_name" value="{{profile.emp_name}}" disabled id="name">
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+						    <label for="emp_id">Employee ID:</label>
+						    <input type="number" class="form-control" name="emp_id" value="{{profile.emp_id}}" disabled id="emp_id">
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+						    <label for="l_g">Level & Grade:</label>
+						    <input type="text" class="form-control" name="emp_level" value="{{profile.level}} & {{profile.grade}}" disabled id="l_g">
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+						    <label for="desig">Designation:</label>
+						    <input type="text" class="form-control" name="emp_desg" value="{{profile.emp_desi}}" disabled id="desig">
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+						    <label for="doj">Date of Joining: (MM/DD/YYYY)</label>
+						    <input type="text" class="form-control" name="emp_doj" value="{{profile.emp_doj}}" disabled id="doj">
+						</div>
+					</div>
+				</div>
+			</div>
+			<hr>
+			<div class="col-md-12">
+				<div class="imp">
+					<h4 class="text-strong">Important: </h4>
+					<ul>
+						<li>The individual and supervisor(s) should invest sufficient time in this activity by filling up the required information with due care and discussion. The time invested in this will make a significant difference to the individual and the organization.</li>
+						<li>The Appraisee and Appraiser should discuss the aspects of performance and finally arrive at a rating, on a 1 to 5 scale. This is to be discussed with specific inputs/ instances/ feedback and mutually agreed upon.</li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-md-12 backtitle">
+				<h5>EVALUATION RATING SCALE</h5>
+			</div>
+			<div class="col-md-12">
+				<table class="table table-bordered">
+				  <thead>
+				    <tr>
+				      <th scope="col" class="text-center highwidth">Rating Scale</th>
+				      <th scope="col" class="text-center highwidth">Indicator</th>
+				      <th scope="col" class="text-center">Description</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+				    <tr>
+				      <th scope="row">4.5 to 5</th>
+				      <td>Outstanding</td>
+				      <td>Demonstrates highest standards of performance excellence and achievement of individual goals. Significantly exceeds objectives</td>
+				    </tr>
+				    <tr>
+				      <th scope="row">4.0 to 4.49</th>
+				      <td>Excellent</td>
+				      <td>Exceeds most Position requirements & Expectations. Shows exceptional performance in some aspects of the position</td>
+				    </tr>
+				    <tr>
+				      <th scope="row">3.5 to 3.9</th>
+				      <td>Good</td>
+				      <td>Meets most position requirements and expectations. Shows strong promise for future growth and higher attainment</td>
+				    </tr>
+				    <tr>
+				      <th scope="row">3 to 3.49</th>
+				      <td>Satisfactory</td>
+				      <td>Demonstrates partial fulfillment of evaluation criteria in line with objectives</td>
+				    </tr>
+				    <tr>
+				      <th scope="row">Below 3</th>
+				      <td>Needs Improvement</td>
+				      <td>Does not meet position requirements and expectations. Overall performance does not match the quality and quantity of peers</td>
+				    </tr>
+				  </tbody>
+				</table>
+			</div>
+			<div class="col-md-12 backtitle">
+				<h5 class="text-uppercase">Important Dates <span class="fontsm">(Please Notedown the date)</span></h5>
+			</div>
+			<div class="col-md-12">
+				<table class="table table-bordered">
+				  <thead>
+				    <tr>
+				      <th scope="col" class="text-center">Levels</th>
+				      <th scope="col" class="text-center">Last Date</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+				    <tr>
+				      <th scope="row">1st level: Appraiser to Appraisee</th>
+				      <td>15 - Dec - 2021</td>
+				    </tr>
+				    <tr>
+				      <th scope="row">2nd Level: Appraisee to Appraiser</th>
+				      <td>15 - Dec - 2021</td>				    
+				  </tr>
+				    <tr>
+				      <th scope="row">3rd Level: Appraiser to Reviewer</th>
+				      <td>15 - Dec - 2021</td>				    
+
+				    </tr>
+				    <tr>
+				      <th scope="row">4th Level: Reviewer to HR</th>
+				      <td>15 - Dec - 2021</td>				    
+				    </tr>
+				  </tbody>
+				</table>
+			</div>
+			<div class="col-md-12">
+				<form action="" method="">
+					<div class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" id="confirm" name="confirm" required>
+						<label class="custom-control-label text-capitalize" for="confirm">I've read and understood all the things. Also I confirm my Employee details are correct.</label>
+					</div>
+					<div class="form-group mt-3" align="center">
+						<a href="parta"><button type="button" class="btn btn-lg btn-success">Confirm and Start Appraisal</button></a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
