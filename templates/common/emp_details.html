@@ -1,0 +1,66 @@
+{% block emp_details %}
+<div class="col-md-3" id="sticky-sidebar">
+    <div class="flex-column" role="tablist" aria-orientation="vertical">
+        <div class="row">
+            <div class="col-md-12" align="center">
+                <h5 class="detailstit hi">Employee Details</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5">
+                <h5 class="detailstit">Name:</h5>
+            </div>
+            <div class="col-md-7">
+                <h5 class="detailstit">{{profile.emp_name}}</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5">
+                <h5 class="detailstit">Emp ID:</h5>
+            </div>
+            <div class="col-md-7">
+                <h5 class="detailstit">{{profile.emp_id}}</h5>
+            </div>
+        </div>
+<!--        <div class="row">-->
+<!--            <div class="col-md-5">-->
+<!--                <h5 class="detailstit">Level & Grade:</h5>-->
+<!--            </div>-->
+<!--            <div class="col-md-7">-->
+<!--                <h5 class="detailstit">{{profile.level}} & {{profile.grade}}</h5>-->
+<!--            </div>-->
+<!--        </div>-->
+        <div class="row">
+            <div class="col-md-5">
+                <h5 class="detailstit">Designation:</h5>
+            </div>
+            <div class="col-md-7">
+                <h5 class="detailstit">{{profile.emp_desi}}</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5">
+                <h5 class="detailstit">Date of Joining:</h5>
+            </div>
+            <div class="col-md-7">
+                <h5 class="detailstit">{{profile.emp_doj}}</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" align="center">
+                <h5 class="detailstit hi">Your Appraisal Score</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" align="center">
+                <h5 class="detailstit hi">Manager Appraisal Score</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" align="center">
+                <h5 class="detailstit hi">Final Appraisal Score</h5>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,402 @@
+{% extends 'common/base-questions.html' %}
+
+{% load static %}
+{% block main %}
+	<section class="">
+		<nav class="navbar fixed-top navbar-expand-lg">
+		  <a class="navbar-brand" href="#">
+		  	<img src="{% static 'appraisal/img/logo.png' %}" width="280" height="80" class="d-inline-block align-top" alt="">
+		  </a>
+		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+		    <span class="navbar-toggler-icon"></span>
+		  </button>
+		  <div class="collapse navbar-collapse navbar-nav-scroll" id="navbarNav">
+		    <ul class="navbar-nav ml-auto">
+		      <li class="nav-item active">
+		        <a class="nav-link disabled"  href="">Part A</a>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link disabled" href="">Part B</a>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link disabled" href="">Part C</a>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link disabled" href="">Part D</a>
+		      </li>
+		    </ul>
+		  </div>
+		</nav>
+	</section>
+
+	<section class="mt-5" id="main">
+		<div class="container-fluid">
+			<div class="row">
+				{% include 'common/emp_details.html' %}
+				<div class="col-md-3" style="margin-right: 80px;"></div>
+				<div class="col-md-8 secquestions">
+					<div class="row">
+						<div class="col-md-12" align="center">
+							<h3>PART - A <span style="font-size: 18px;">(Performance Key Result Areas Review)</span></h3>
+						</div>
+					</div>
+					<form method="post" action="/appraisal/manparta/{{profile.emp_id}}" enctype="multipart/form-data" onsubmit="return FinalCheck();">
+						    {% csrf_token %}
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+								    <label for="sup_name">Supervisor's Name:</label>
+								    <input type="text" class="form-control" name="sup_name" id="sup_name" value="{{profile.emp_rm3}}" readonly>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+								    <label for="sup_desg">Supervisor’s Designation:</label>
+								    <input type="text" class="form-control" name="sup_desg" id="sup_desg" value="{{rm3_desi}}" readonly>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+								    <label for="rev_name">Reviewer’s Name:</label>
+								    <input type="text" class="form-control" name="rev_name" id="rev_name" value="{{request.user.profile.emp_name}}" readonly>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+								    <label for="rev_desg">Reviewer’s Designation:</label>
+								    <input type="text" class="form-control" name="rev_desg" id="rev_desg" value="{{request.user.profile.emp_desi}}" readonly>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-12">
+								<table class="table table-bordered">
+								  <thead>
+								    <tr>
+								      <th scope="col" class="text-center"></th>
+								      <th scope="col" class="text-center">Key Result Areas(KRA)</th>
+								      <th scope="col" class="text-center">Weightage</th>
+								      <th scope="col" class="text-center">Rating Scale</th>
+								      <th scope="col" class="text-center" colspan="2">Turn Around Time (TAT) & Quality of Output</th>
+								    </tr>
+								  </thead>
+								  <tbody>
+								    <tr>
+								      <th scope="col" class="text-center">Sl No.</th>
+								      <th scope="col" class="text-center">Parameters for Evaluation</th>
+								      <th scope="col" class="text-center">Metrics</th>
+								      <th scope="col" class="text-center">1 to 5</th>
+								      <th scope="col" class="text-center">Appraisee’s Comments</th>
+								      <th scope="col" class="text-center">Appraisers Comments</th>
+								    </tr>
+								    <tr>
+								      <th scope="row">1</th>
+								      <td><input type="text" name="parameter_1" class="form-control" placeholder="Parameter 1" required></td>
+								      <td><input type="number" onfocusout="parameter1(this)" name="parameter_1_score" class="form-control" style="width: 80px;" placeholder="score" required></td>
+								      <td>
+										  <select required name="parameter_1_rating" class="form-control">
+								      		<option value="" selected disabled>-Select-</option>
+											<option value="1">1</option>
+											<option value="2">2</option>
+								      		<option value="3">3</option>
+								      		<option value="4">4</option>
+								      		<option value="5">5</option>
+										  </select>
+									  </td>
+								      <td>
+										<div class="form-group">
+											<textarea rows="3" class="form-control" readonly></textarea>
+										</div>
+								  	  </td>
+								      <td>
+										<div class="form-group">
+											<textarea rows="3" class="form-control" name="parameter_1_comment"></textarea>
+										</div>
+									  </td>
+								    </tr>
+								    <tr>
+								      <th scope="row">2</th>
+								      <td><input type="text" name="parameter_2" class="form-control" placeholder="Parameter 2" onfocusout="parameter2(this)"></td>
+								      <td><input type="number" onfocusout="parameterScore2(this)" disabled name="parameter_2_score" class="form-control" style="width: 80px;" placeholder="score"></td>
+								      <td>
+										  <select name="parameter_2_rating" disabled class="form-control">
+								      		<option value="" selected disabled>-Select-</option>
+											<option value="1">1</option>
+											<option value="2">2</option>
+								      		<option value="3">3</option>
+								      		<option value="4">4</option>
+								      		<option value="5">5</option>
+										  </select>
+									  </td>
+								      <td>
+										<div class="form-group">
+											<textarea rows="3" class="form-control" readonly></textarea>
+										</div>
+								  	  </td>
+								      <td>
+										<div class="form-group">
+											<textarea rows="3" class="form-control" disabled name="parameter_2_comment"></textarea>
+										</div>
+									  </td>
+								    </tr>
+								    <tr>
+								      <th scope="row">3</th>
+								      <td><input type="text" name="parameter_3" onfocusout="parameter3(this)" class="form-control" placeholder="Parameter 3"></td>
+								      <td><input type="number" onfocusout="parameterScore3(this)" name="parameter_3_score" disabled class="form-control" style="width: 80px;" placeholder="score"></td>
+								      <td>
+										  <select name="parameter_3_rating" disabled class="form-control">
+								      		<option value="" selected disabled>-Select-</option>
+											<option value="1">1</option>
+											<option value="2">2</option>
+								      		<option value="3">3</option>
+								      		<option value="4">4</option>
+								      		<option value="5">5</option>
+										  </select>
+									  </td>
+								      <td>
+										<div class="form-group">
+											<textarea rows="3" class="form-control" readonly></textarea>
+										</div>
+								  	  </td>
+								      <td>
+										<div class="form-group">
+											<textarea rows="3" disabled class="form-control" name="parameter_3_comment"></textarea>
+										</div>
+									  </td>
+								    </tr>
+								    <tr>
+								      <th scope="row">4</th>
+								      <td><input type="text" onfocusout="parameter4(this)" name="parameter_4" class="form-control" placeholder="Parameter 4"></td>
+								      <td><input type="number" onfocusout="parameterScore4(this)" disabled name="parameter_4_score" class="form-control" style="width: 80px;" placeholder="score"></td>
+								      <td>
+										  <select name="parameter_4_rating" disabled class="form-control">
+								      		<option value="" selected disabled>-Select-</option>
+											<option value="1">1</option>
+											<option value="2">2</option>
+								      		<option value="3">3</option>
+								      		<option value="4">4</option>
+								      		<option value="5">5</option>
+										  </select>
+									  </td>
+								      <td>
+										<div class="form-group">
+											<textarea rows="3" class="form-control" readonly></textarea>
+										</div>
+								  	  </td>
+								      <td>
+										<div class="form-group">
+											<textarea rows="3" disabled class="form-control" name="parameter_4_comment"></textarea>
+										</div>
+									  </td>
+								    </tr>
+								    <tr>
+								      <th scope="row">5</th>
+								      <td><input type="text" name="parameter_5" onfocusout="parameter5(this)" class="form-control" placeholder="Parameter 5"></td>
+								      <td><input type="number" onfocusout="parameterScore5(this)" disabled name="parameter_5_score" class="form-control" style="width: 80px;" placeholder="score"></td>
+								      <td>
+										  <select name="parameter_5_rating" disabled class="form-control">
+								      		<option value="" selected disabled>-Select-</option>
+											<option value="1">1</option>
+											<option value="2">2</option>
+								      		<option value="3">3</option>
+								      		<option value="4">4</option>
+								      		<option value="5">5</option>
+										  </select>
+									  </td>
+								      <td>
+										<div class="form-group">
+											<textarea rows="3" class="form-control" readonly></textarea>
+										</div>
+								  	  </td>
+								      <td>
+										<div class="form-group">
+											<textarea rows="3" disabled class="form-control" name="parameter_5_comment"></textarea>
+										</div>
+									  </td>
+								    </tr>
+								    <tr>
+								      <th scope="row">6</th>
+								      <td><input type="text" name="parameter_6" onfocusout="parameter6(this)" class="form-control" placeholder="Parameter 6"></td>
+								      <td><input type="number" onfocusout="parameterScore6(this)" name="parameter_6_score" disabled class="form-control" style="width: 80px;" placeholder="score"></td>
+								      <td>
+										  <select name="parameter_6_rating" disabled class="form-control">
+								      		<option value="" selected disabled>-Select-</option>
+											<option value="1">1</option>
+											<option value="2">2</option>
+								      		<option value="3">3</option>
+								      		<option value="4">4</option>
+								      		<option value="5">5</option>
+										  </select>
+									  </td>
+								      <td>
+										<div class="form-group">
+											<textarea rows="3" class="form-control" readonly></textarea>
+										</div>
+								  	  </td>
+								      <td>
+										<div class="form-group">
+											<textarea rows="3" class="form-control" disabled name="parameter_6_comment"></textarea>
+										</div>
+									  </td>
+								    </tr>
+								  </tbody>
+								</table>
+							</div>
+							<div class="col-md-12">
+								<div class="form-group">
+								    <label for="Spe_other">Any other Special contributions (To be filled by the Appraiser):</label>
+								    <textarea rows="4" class="form-control" name="Spe_other" required id="Spe_other"></textarea>
+								</div>
+							</div>
+							<div class="col-md-12" align="center">
+								<div class="form-group">
+								    <button type="submit" class="btn btn-success btn-lg">Next</button>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}
+
+{% block script %}
+<script>
+var $score_1 = 0
+var $score_2 = 0
+var $score_3 = 0
+var $score_4 = 0
+var $score_5 = 0
+var $score_6 = 0
+function parameter2(e){
+	$score = $("input[name='parameter_2_score']")
+	$rating = $("select[name='parameter_2_rating']")
+	$comment = $("textarea[name='parameter_2_comment']")
+	if (e.value != ""){
+		$score.removeAttr('disabled')
+		$rating.removeAttr('disabled')
+		$comment.removeAttr('disabled')
+		$score.attr('required','')
+		$rating.attr('required','')
+	} else {
+		$score.val("")
+		$score.removeAttr('required')
+		$rating.removeAttr('required')
+		$score.attr('disabled','')
+		$rating.attr('disabled','')
+		$comment.attr('disabled','')
+		$score_2 = 0
+	}
+}
+function parameter3(e){
+	$score = $("input[name='parameter_3_score']")
+	$rating = $("select[name='parameter_3_rating']")
+	$comment = $("textarea[name='parameter_3_comment']")
+	if (e.value != ""){
+		$score.removeAttr('disabled')
+		$rating.removeAttr('disabled')
+		$comment.removeAttr('disabled')
+		$score.attr('required','')
+		$rating.attr('required','')
+	} else {
+		$score.val("")
+		$score.removeAttr('required')
+		$rating.removeAttr('required')
+		$score.attr('disabled','')
+		$rating.attr('disabled','')
+		$comment.attr('disabled','')
+		$score_3 = 0
+	}
+}
+function parameter4(e){
+	$score = $("input[name='parameter_4_score']")
+	$rating = $("select[name='parameter_4_rating']")
+	$comment = $("textarea[name='parameter_4_comment']")
+	if (e.value != ""){
+		$score.removeAttr('disabled')
+		$rating.removeAttr('disabled')
+		$comment.removeAttr('disabled')
+		$score.attr('required','')
+		$rating.attr('required','')
+	} else {
+		$score.val("")
+		$score.removeAttr('required')
+		$rating.removeAttr('required')
+		$score.attr('disabled','')
+		$rating.attr('disabled','')
+		$comment.attr('disabled','')
+		$score_4 = 0
+	}
+}
+
+function parameter5(e){
+	$score = $("input[name='parameter_5_score']")
+	$rating = $("select[name='parameter_5_rating']")
+	$comment = $("textarea[name='parameter_5_comment']")
+	if (e.value != ""){
+		$score.removeAttr('disabled')
+		$rating.removeAttr('disabled')
+		$comment.removeAttr('disabled')
+		$score.attr('required','')
+		$rating.attr('required','')
+	} else {
+		$score.val("")
+		$score.removeAttr('required')
+		$rating.removeAttr('required')
+		$score.attr('disabled','')
+		$rating.attr('disabled','')
+		$comment.attr('disabled','')
+		$score_5 = 0
+	}
+}
+function parameter6(e){
+	$score = $("input[name='parameter_6_score']")
+	$rating = $("select[name='parameter_6_rating']")
+	$comment = $("textarea[name='parameter_6_comment']")
+	if (e.value != ""){
+		$score.removeAttr('disabled')
+		$rating.removeAttr('disabled')
+		$comment.removeAttr('disabled')
+		$score.attr('required','')
+		$rating.attr('required','')
+	} else {
+		$score.val("")
+		$score.removeAttr('required')
+		$rating.removeAttr('required')
+		$score.attr('disabled','')
+		$rating.attr('disabled','')
+		$comment.attr('disabled','')
+		$score_6 = 0
+	}
+}
+function parameterScore2(e){
+	$score_2 = e.value
+}
+function parameterScore3(e){
+	$score_3 = e.value
+}
+function parameterScore4(e){
+	$score_4 = e.value
+}
+function parameterScore5(e){
+	$score_5 = e.value
+}
+function parameterScore6(e){
+	$score_6 = e.value
+}
+function parameter1(e){
+	$score_1 = e.value
+}
+function FinalCheck(){
+	$score = parseInt($score_1)+parseInt($score_2)+parseInt($score_3)+parseInt($score_4)+parseInt($score_5)+parseInt($score_6);
+	if ($score == 100) {
+		return true;
+	} else {
+		alert("The Scores don't match up to 100. Please Check and then click NEXT");
+		return false;
+	}
+}
+</script>
+{% endblock %}

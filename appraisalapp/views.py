@@ -1,178 +1,219 @@
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q, Sum
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import *
 from django.contrib.auth import login, logout, update_session_auth_hash, authenticate
 from django.urls import reverse
 
+agent_list = ['CRO']
+manager_list = ['Manager','Team Leader']
+
+def IndexPage(request):
+    logout(request)
+    return render(request, "common/index.html")
+
 def LoginPage(request):
     if request.method == "POST":
         username = request.POST["user"]
         password = request.POST["pass"]
         user = authenticate(username=username, password=password)
-        check = PartA_Appraisee.objects.get(emp_id=username)
+        # check = PartA_Appraisee.objects.get(emp_id=username)
         if user is not None:
             # user_login
             login(request, user)
-            if check:
-                return redirect("view",id=username)
-            else:
+            desi = request.user.profile.emp_desi
+            if desi in agent_list:
                 return redirect("/appraisal/notice")
+            elif desi in manager_list:
+                return redirect("/appraisal/manager-dashboard")
+            # if check:
+            #     return redirect("view",id=username)
+            else:
+                messages.info(request, 'Invalid Designation !')
+                return redirect("/appraisal/")
         else:
             messages.info(request, 'Invalid user !')
             return redirect("/appraisal/login")
     else:
-        logout(request)
-        return render(request, "appraisal/index.html")
+        messages.info(request,'Invalid Request !')
+        return redirect("/appraisal/")
 
+@login_required
+def managerDashboard(request):
+    emp_id = request.user.profile.emp_id
+    profile = Profile.objects.filter(Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id))
+    data = {"profile": profile}
+    return render(request, "manager/manager_dashboard.html",data)
 
+@login_required
 def Notice(request):
     user = request.user
-    profile = Profile.objects.get(user=user)
-    data = {"profile":profile}
-    return render(request, "appraisal/notice.html", data)
+    emp_id = Profile.objects.get(user=user).emp_id
+    if PartA_Appraisee.objects.filter(emp_id=emp_id):
+        profile = Profile.objects.get(user=user)
+        data = {"profile":profile}
+        return render(request, "common/notice.html", data)
+    else:
+        messages.info(request, "Waiting for your manager to complete it! Please Check later.")
+        return redirect("/appraisal/")
 
+@login_required
 def part_a_save(request):
     user = request.user
-    if request.method == "POST":
+    emp_id = Profile.objects.get(user=user).emp_id
+    if PartA_Appraisee.objects.filter(emp_id=emp_id):
+        if request.method == "POST":
+            parameter_1_rating_agent = request.POST["parameter_1_rating_agent"]
+            parameter_1_comment_agent = request.POST.get("parameter_1_comment_agent")
+            parameter_2_rating_agent = request.POST.get("parameter_2_rating_agent")
+            parameter_2_comment_agent = request.POST.get("parameter_2_comment_agent")
+            parameter_3_rating_agent = request.POST.get("parameter_3_rating_agent")
+            parameter_3_comment_agent = request.POST.get("parameter_3_comment_agent")
+            parameter_4_rating_agent = request.POST.get("parameter_4_rating_agent")
+            parameter_4_comment_agent = request.POST.get("parameter_4_comment_agent")
+            parameter_5_rating_agent = request.POST.get("parameter_5_rating_agent")
+            parameter_5_comment_agent = request.POST.get("parameter_5_comment_agent")
+            parameter_6_rating_agent = request.POST.get("parameter_6_rating_agent")
+            parameter_6_comment_agent = request.POST.get("parameter_6_comment_agent")
 
-        # usrid = request.user.id
-        emp_id = user.profile.emp_id
-        emp_rm1 = user.profile.emp_rm1
-        emp_rm2 = user.profile.emp_rm2
-        emp_rm3 = user.profile.emp_rm3
-
-        emp_name = user.profile.emp_name
-        emp_process = user.profile.emp_process
-        emp_desi = user.profile.emp_desi
-
-        # supervisor_name = request.POST["sup_name"]
-        # supervisor_desig = request.POST["sup_desg"]
-        # reviewers_name = request.POST["rev_name"]
-        # reviewers_desig = request.POST["rev_desg"]
-
-        #	Revenue
-        rev_rating=int(request.POST["rev_rat"])
-        rev_rating = rev_rating*20/100
-        rev_comment=request.POST["rev_com"]
-
-        #EBITDA
-        edi_rating=int(request.POST["edi_rat"])
-        edi_rating=edi_rating*20/100
-        edi_comment=request.POST["edi_com"]
-
-        # Attrition
-        att_rating=int(request.POST["att_rat"])
-        att_rating=att_rating*10/100
-        att_comment=request.POST["att_com"]
-
-        # Absenteeism
-        abs_rating=int(request.POST["abs_rat"])
-        abs_rating=abs_rating*10/100
-        abs_comment=request.POST["abs_com"]
-
-        # 	Schedule Adherence
-        sch_rating=int(request.POST["sch_rat"])
-        sch_rating=sch_rating*10/100
-        sch_comment=request.POST["sch_com"]
-
-        # Any other Special contributions
-        spclcomment=request.POST["Spe_other"]
-
-
-        e=PartA_Appraisee()
-        e.revenue_rating=rev_rating
-        e.revenue_apcomment=rev_comment
-        e.ebitda_rating=edi_rating
-        e.ebitda_apcomment=edi_comment
-        e.attrition_rating=att_rating
-        e.attrition_apcomment=att_comment
-        e.absenteeism_rating=abs_rating
-        e.absenteeism_apcomment=abs_comment
-        e.scheduleadherence_rating=sch_rating
-        e.scheduleadherence_apcomment=sch_comment
-        e.specialcomment=spclcomment
-        # e.supervisor_name=supervisor_name
-        # e.supervisor_desig=supervisor_desig
-        # e.reviewers_name=reviewers_name
-        # e.reviewers_desig=reviewers_desig
-        e.appraisee = user
-        e.emp_id = emp_id
-        e.emp_rm1 = emp_rm1
-        e.emp_rm2 = emp_rm2
-        e.emp_rm3 = emp_rm3
-        e.emp_name = emp_name
-        e.emp_process = emp_process
-        e.emp_desi = emp_desi
-
-        e.save()
-        return redirect("/appraisal/partb")
-
+            e=PartA_Appraisee.objects.get(emp_id=emp_id)
+            e.parameter_1_rating_agent = parameter_1_rating_agent
+            e.parameter_1_comment_agent = parameter_1_comment_agent
+            e.parameter_2_rating_agent = parameter_2_rating_agent
+            e.parameter_2_comment_agent = parameter_2_comment_agent
+            e.parameter_3_rating_agent = parameter_3_rating_agent
+            e.parameter_3_comment_agent = parameter_3_comment_agent
+            e.parameter_4_rating_agent = parameter_4_rating_agent
+            e.parameter_4_comment_agent = parameter_4_comment_agent
+            e.parameter_5_rating_agent = parameter_5_rating_agent
+            e.parameter_5_comment_agent = parameter_5_comment_agent
+            e.parameter_6_rating_agent = parameter_6_rating_agent
+            e.parameter_6_comment_agent = parameter_6_comment_agent
+            e.save()
+            return redirect("/appraisal/partb")
+        else:
+            try:
+                profile = Profile.objects.get(user=user)
+                sup = profile.emp_rm3
+                rev = profile.emp_rm1
+                sup_desi = Profile.objects.get(emp_id=profile.emp_rm3_id).emp_desi
+                rev_desi = Profile.objects.get(emp_id=profile.emp_rm1_id).emp_desi
+                parta = PartA_Appraisee.objects.get(agent=profile)
+                data = {"profile": profile,"parta":parta,"sup":sup,"sup_desi":sup_desi,"rev":rev,"rev_desi":rev_desi}
+                return render(request, "agent/part-a-form.html", data)
+            except PartA_Appraisee.DoesNotExist:
+                messages.info(request,"Waiting for your manager to complete it! Please Check later.")
+                return redirect("/appraisal/")
     else:
-        profile = Profile.objects.get(user=user)
-        data = {"profile": profile}
-        return render(request, "appraisal/part-a-form.html", data)
+        messages.info(request, "Waiting for your manager to complete it! Please Check later.")
+        return redirect("/appraisal/")
 
 def manager_part_a_save(request,id):
-
     if request.method == "POST":
         supervisor_name = request.POST["sup_name"]
         supervisor_desig = request.POST["sup_desg"]
         reviewers_name = request.user.profile.emp_name
         reviewers_desig = request.user.profile.emp_desi
 
-        #	Revenue
-        man_rev_rating=int(request.POST["rev_rat"])
-        man_rev_rating = man_rev_rating*20/100
-        man_rev_comment=request.POST["rev_com"]
+        parameter_1 = request.POST["parameter_1"]
+        parameter_1_score = int(request.POST["parameter_1_score"])
+        parameter_1_rating = int(request.POST["parameter_1_rating"])
+        parameter_1_rating = parameter_1_score*parameter_1_rating/100
+        parameter_1_comment = request.POST.get("parameter_1_comment")
 
-        #EBITDA
-        man_edi_rating=int(request.POST["edi_rat"])
-        man_edi_rating=man_edi_rating*20/100
-        man_edi_comment=request.POST["edi_com"]
+        parameter_2 = request.POST.get("parameter_2")
+        if parameter_2:
+            parameter_2_score = int(request.POST.get("parameter_2_score"))
+            parameter_2_rating = int(request.POST.get("parameter_2_rating"))
+            parameter_2_rating = parameter_2_score*parameter_2_rating/100
+            parameter_2_comment = request.POST.get("parameter_2_comment")
 
-        # Attrition
-        man_att_rating=int(request.POST["att_rat"])
-        man_att_rating=man_att_rating*10/100
-        man_att_comment=request.POST["att_com"]
+        parameter_3 = request.POST.get("parameter_3")
+        if parameter_3:
+            parameter_3_score = int(request.POST.get("parameter_3_score"))
+            parameter_3_rating = int(request.POST.get("parameter_3_rating"))
+            parameter_3_rating = parameter_3_score*parameter_3_rating/100
+            parameter_3_comment = request.POST.get("parameter_3_comment")
 
-        # Absenteeism
-        man_abs_rating=int(request.POST["abs_rat"])
-        man_abs_rating=man_abs_rating*10/100
-        man_abs_comment=request.POST["abs_com"]
+        parameter_4 = request.POST.get("parameter_4")
+        if parameter_4:
+            parameter_4_score = int(request.POST.get("parameter_4_score"))
+            parameter_4_rating = int(request.POST.get("parameter_4_rating"))
+            parameter_4_rating = parameter_4_score*parameter_4_rating/100
+            parameter_4_comment = request.POST.get("parameter_4_comment")
 
-        # 	Schedule Adherence
-        man_sch_rating=int(request.POST["sch_rat"])
-        man_sch_rating=man_sch_rating*10/100
-        man_sch_comment=request.POST["sch_com"]
+        parameter_5 = request.POST.get("parameter_5")
+        if parameter_5:
+            parameter_5_score = int(request.POST.get("parameter_5_score"))
+            parameter_5_rating = int(request.POST.get("parameter_5_rating"))
+            parameter_5_rating = parameter_5_score*parameter_5_rating/100
+            parameter_5_comment = request.POST.get("parameter_5_comment")
 
-        # Any other Special contributions
-        man_spclcomment=request.POST["Spe_other"]
+        parameter_6 = request.POST.get("parameter_6")
+        if parameter_6:
+            parameter_6_score = int(request.POST.get("parameter_6_score"))
+            parameter_6_rating = int(request.POST.get("parameter_6_rating"))
+            parameter_6_rating = parameter_6_score*parameter_6_rating/100
+            parameter_6_comment = request.POST.get("parameter_6_comment")
 
+        mgr_comment = request.POST.get("Spe_other")
+        profile = Profile.objects.get(emp_id=id)
 
-        e=PartA_Appraisee.objects.get(emp_id=id)
-        e.mangr_revenue_rating=man_rev_rating
-        e.mangr_revenue_apcomment=man_rev_comment
-        e.mangr_ebitda_rating=man_edi_rating
-        e.mangr_ebitda_apcomment=man_edi_comment
-        e.mangr_attrition_rating=man_att_rating
-        e.mangr_attrition_apcomment=man_att_comment
-        e.mangr_absenteeism_rating=man_abs_rating
-        e.mangr_absenteeism_apcomment=man_abs_comment
-        e.mangr_scheduleadherence_rating=man_sch_rating
-        e.mangr_scheduleadherence_apcomment=man_sch_comment
-        e.mangr_specialcomment=man_spclcomment
-        e.mangr_supervisor_name=supervisor_name
-        e.mangr_supervisor_desig=supervisor_desig
-        e.mangr_reviewers_name=reviewers_name
-        e.mangr_reviewers_desig=reviewers_desig
+        e = PartA_Appraisee()
+        e.agent = profile
+        e.emp_id = profile.emp_id
+        e.emp_name = profile.emp_name
+        e.emp_desi = profile.emp_desi
+        e.emp_rm1_id = profile.emp_rm1_id
+        e.emp_rm2_id = profile.emp_rm2_id
+        e.emp_rm3_id = profile.emp_rm3_id
+        e.emp_process = profile.emp_process
+        e.supervisor_name = supervisor_name
+        e.supervisor_desig = supervisor_desig
+        e.reviewers_name = reviewers_name
+        e.reviewers_desig = reviewers_desig
+        e.parameter_1 = parameter_1
+        e.parameter_1_score = parameter_1_score
+        e.parameter_1_rating = parameter_1_rating
+        e.parameter_1_comment = parameter_1_comment
+        e.parameter_2 = parameter_2
+        if parameter_2:
+            e.parameter_2_score = parameter_2_score
+            e.parameter_2_rating = parameter_2_rating
+            e.parameter_2_comment = parameter_2_comment
+        e.parameter_3 = parameter_3
+        if parameter_3:
+            e.parameter_3_score = parameter_3_score
+            e.parameter_3_rating = parameter_3_rating
+            e.parameter_3_comment = parameter_3_comment
+        e.parameter_4 = parameter_4
+        if parameter_4:
+            e.parameter_4_score = parameter_4_score
+            e.parameter_4_rating = parameter_4_rating
+            e.parameter_4_comment = parameter_4_comment
+        e.parameter_5 = parameter_5
+        if parameter_5:
+            e.parameter_5_score = parameter_5_score
+            e.parameter_5_rating = parameter_5_rating
+            e.parameter_5_comment = parameter_5_comment
+        e.parameter_6 = parameter_6
+        if parameter_6:
+            e.parameter_6_score = parameter_6_score
+            e.parameter_6_rating = parameter_6_rating
+            e.parameter_6_comment = parameter_6_comment
+        e.mangr_special_comment = mgr_comment
         e.save()
         return redirect("manpartb",id=id)
 
     else:
-        part_a = PartA_Appraisee.objects.get(emp_id=id)
         profile = Profile.objects.get(emp_id=id)
-        data = {"part_a":part_a,"profile":profile}
-        return render(request, "appraisal/manager_part-a-form.html", data)
+        rm3_desi = Profile.objects.get(emp_id=id).emp_rm3_id
+        print(rm3_desi,"before")
+        rm3_desi = Profile.objects.get(emp_id=rm3_desi).emp_desi
+        print(rm3_desi,"After")
+        data = {"profile": profile,"rm3_desi":rm3_desi}
+        return render(request, "manager/manager_part-a-form.html", data)
 
 
 def part_b_save(request):
@@ -440,74 +481,83 @@ def part_b_save(request):
     else:
         profile = Profile.objects.get(user=user)
         data = {"profile": profile}
-        return render(request,'appraisal/partb.html', data)
+        return render(request,'common/partb.html', data)
 
 
 
 def manager_part_b_save(request,id):
     user = request.user
     if request.method=="POST":
+        agent = Profile.objects.get(emp_id=id)
+        emp_id = agent.emp_id
+        emp_name = agent.emp_name
+        emp_rm1 = agent.emp_rm1
+        emp_rm2 = agent.emp_rm2
+        emp_rm3 = agent.emp_rm3
+        emp_rm1_id = agent.emp_rm1_id
+        emp_rm2_id = agent.emp_rm2_id
+        emp_rm3_id = agent.emp_rm3_id
         # user = request.user
-        mangr_one_comment = request.POST["one_com"]
-        mangr_two_comment = request.POST["two_com"]
-        mangr_three_comment = request.POST["three_com"]
-        mangr_four_comment = request.POST["four_com"]
-        mangr_five_comment = request.POST["five_com"]
-        mangr_six_comment = request.POST["six_com"]
-        mangr_seven_comment = request.POST["seven_com"]
-        mangr_eight_comment = request.POST["eight_com"]
-        mangr_nine_comment = request.POST["nine_com"]
-        mangr_ten_comment = request.POST["ten_com"]
-        mangr_eleven_comment = request.POST["eleven_com"]
-        mangr_twelve_comment = request.POST["twelve_com"]
-        mangr_thirteen_comment = request.POST["thirteen_com"]
-        mangr_fourteen_comment = request.POST["fourteen_com"]
-        mangr_fifteen_comment = request.POST["fifteen_com"]
-        mangr_sixteen_comment = request.POST["sixteen_com"]
-        mangr_seventeen_comment = request.POST["seventeen_com"]
-        mangr_eighteen_comment = request.POST["seventeen_com"]
-        mangr_one_comment_2 = request.POST["one_com2"]
-        mangr_two_comment_2 = request.POST["two_com2"]
-        mangr_three_comment_2 = request.POST["three_com2"]
-        mangr_four_comment_2 = request.POST["four_com2"]
-        mangr_five_comment_2 = request.POST["five_com2"]
-        mangr_six_comment_2 = request.POST["six_com2"]
-        mangr_seven_comment_2 = request.POST["seven_com2"]
-        mangr_eight_comment_2 = request.POST["eight_com2"]
-        mangr_nine_comment_2 = request.POST["nine_com2"]
-        mangr_ten_comment_2 = request.POST["ten_com2"]
-        mangr_eleven_comment_2 = request.POST["eleven_com2"]
-        mangr_one_comment_3 = request.POST["one_com3"]
-        mangr_two_comment_3 = request.POST["two_com3"]
-        mangr_three_comment_3 = request.POST["three_com3"]
-        mangr_four_comment_3 = request.POST["four_com3"]
-        mangr_five_comment_3 = request.POST["five_com3"]
-        mangr_six_comment_3 = request.POST["six_com3"]
-        mangr_seven_comment_3 = request.POST["seven_com3"]
-        mangr_eight_comment_3 = request.POST["eight_com3"]
-        mangr_one_comment_4 = request.POST["one_com4"]
-        mangr_two_comment_4 = request.POST["two_com4"]
-        mangr_three_comment_4 = request.POST["three_com4"]
-        mangr_four_comment_4 = request.POST["four_com4"]
-        mangr_five_comment_4 = request.POST["five_com4"]
-        mangr_six_comment_4 = request.POST["six_com4"]
-        mangr_seven_comment_4 = request.POST["seven_com4"]
-        mangr_eight_comment_4 = request.POST["eight_com4"]
-        mangr_nine_comment_4 = request.POST["nine_com4"]
-        mangr_ten_comment_4 = request.POST["ten_com4"]
-        mangr_eleven_comment_4 = request.POST["eleven_com4"]
-        mangr_twelve_comment_4 = request.POST["twelve_com4"]
-        mangr_thirteen_comment_4 = request.POST["thirteen_com4"]
-        mangr_fourteen_comment_4 = request.POST["fourteen_com4"]
-        mangr_fifteen_comment_4 = request.POST["fifteen_com4"]
-        mangr_sixteen_comment_4 = request.POST["sixteen_com4"]
-        mangr_seventeen_comment_4 = request.POST["seventeen_com4"]
-        mangr_eighteen_comment_4 = request.POST["eighteen_com4"]
-        mangr_nineteen_comment_4 = request.POST["nineteen_com4"]
-        mangr_twenty_comment_4 = request.POST["twenty_com4"]
-        mangr_twentyone_comment_4 = request.POST["twentyone_com4"]
-        mangr_twentytwo_comment_4 = request.POST["twentytwo_com4"]
-        mangr_twentythree_comment_4 = request.POST["twentythree_com4"]
+        mangr_one_comment = request.POST.get("one_com")
+        mangr_two_comment = request.POST.get("two_com")
+        mangr_three_comment = request.POST.get("three_com")
+        mangr_four_comment = request.POST.get("four_com")
+        mangr_five_comment = request.POST.get("five_com")
+        mangr_six_comment = request.POST.get("six_com")
+        mangr_seven_comment = request.POST.get("seven_com")
+        mangr_eight_comment = request.POST.get("eight_com")
+        mangr_nine_comment = request.POST.get("nine_com")
+        mangr_ten_comment = request.POST.get("ten_com")
+        mangr_eleven_comment = request.POST.get("eleven_com")
+        mangr_twelve_comment = request.POST.get("twelve_com")
+        mangr_thirteen_comment = request.POST.get("thirteen_com")
+        mangr_fourteen_comment = request.POST.get("fourteen_com")
+        mangr_fifteen_comment = request.POST.get("fifteen_com")
+        mangr_sixteen_comment = request.POST.get("sixteen_com")
+        mangr_seventeen_comment = request.POST.get("seventeen_com")
+        mangr_eighteen_comment = request.POST.get("seventeen_com")
+        mangr_one_comment_2 = request.POST.get("one_com2")
+        mangr_two_comment_2 = request.POST.get("two_com2")
+        mangr_three_comment_2 = request.POST.get("three_com2")
+        mangr_four_comment_2 = request.POST.get("four_com2")
+        mangr_five_comment_2 = request.POST.get("five_com2")
+        mangr_six_comment_2 = request.POST.get("six_com2")
+        mangr_seven_comment_2 = request.POST.get("seven_com2")
+        mangr_eight_comment_2 = request.POST.get("eight_com2")
+        mangr_nine_comment_2 = request.POST.get("nine_com2")
+        mangr_ten_comment_2 = request.POST.get("ten_com2")
+        mangr_eleven_comment_2 = request.POST.get("eleven_com2")
+        mangr_one_comment_3 = request.POST.get("one_com3")
+        mangr_two_comment_3 = request.POST.get("two_com3")
+        mangr_three_comment_3 = request.POST.get("three_com3")
+        mangr_four_comment_3 = request.POST.get("four_com3")
+        mangr_five_comment_3 = request.POST.get("five_com3")
+        mangr_six_comment_3 = request.POST.get("six_com3")
+        mangr_seven_comment_3 = request.POST.get("seven_com3")
+        mangr_eight_comment_3 = request.POST.get("eight_com3")
+        mangr_one_comment_4 = request.POST.get("one_com4")
+        mangr_two_comment_4 = request.POST.get("two_com4")
+        mangr_three_comment_4 = request.POST.get("three_com4")
+        mangr_four_comment_4 = request.POST.get("four_com4")
+        mangr_five_comment_4 = request.POST.get("five_com4")
+        mangr_six_comment_4 = request.POST.get("six_com4")
+        mangr_seven_comment_4 = request.POST.get("seven_com4")
+        mangr_eight_comment_4 = request.POST.get("eight_com4")
+        mangr_nine_comment_4 = request.POST.get("nine_com4")
+        mangr_ten_comment_4 = request.POST.get("ten_com4")
+        mangr_eleven_comment_4 = request.POST.get("eleven_com4")
+        mangr_twelve_comment_4 = request.POST.get("twelve_com4")
+        mangr_thirteen_comment_4 = request.POST.get("thirteen_com4")
+        mangr_fourteen_comment_4 = request.POST.get("fourteen_com4")
+        mangr_fifteen_comment_4 = request.POST.get("fifteen_com4")
+        mangr_sixteen_comment_4 = request.POST.get("sixteen_com4")
+        mangr_seventeen_comment_4 = request.POST.get("seventeen_com4")
+        mangr_eighteen_comment_4 = request.POST.get("eighteen_com4")
+        mangr_nineteen_comment_4 = request.POST.get("nineteen_com4")
+        mangr_twenty_comment_4 = request.POST.get("twenty_com4")
+        mangr_twentyone_comment_4 = request.POST.get("twentyone_com4")
+        mangr_twentytwo_comment_4 = request.POST.get("twentytwo_com4")
+        mangr_twentythree_comment_4 = request.POST.get("twentythree_com4")
 
         mangr_one_rating = request.POST["one_rat"]
         mangr_two_rating = request.POST["two_rat"]
@@ -527,6 +577,13 @@ def manager_part_b_save(request,id):
         mangr_sixteen_rating = request.POST["sixteen_rat"]
         mangr_seventeen_rating = request.POST["seventeen_rat"]
         mangr_eighteen_rating = request.POST["eighteen_rat"]
+        mgr_table_1_total = [int(mangr_one_rating),int(mangr_two_rating),int(mangr_three_rating),
+                                int(mangr_four_rating),int(mangr_five_rating),int(mangr_six_rating),
+                                int(mangr_seven_rating),int(mangr_eight_rating),int(mangr_nine_rating),
+                                int(mangr_ten_rating),int(mangr_eleven_rating),int(mangr_twelve_rating),
+                                int(mangr_thirteen_rating),int(mangr_fourteen_rating),int(mangr_fifteen_rating),
+                                int(mangr_sixteen_rating),int(mangr_seventeen_rating),int(mangr_eighteen_rating)]
+        mgr_table_1_total = round(sum(mgr_table_1_total)/18,2)
         mangr_one_rating_2 = request.POST["one_rat2"]
         mangr_two_rating_2 = request.POST["two_rat2"]
         mangr_three_rating_2 = request.POST["three_rat2"]
@@ -538,6 +595,11 @@ def manager_part_b_save(request,id):
         mangr_nine_rating_2 = request.POST["nine_rat2"]
         mangr_ten_rating_2 = request.POST["ten_rat2"]
         mangr_eleven_rating_2 = request.POST["eleven_rat2"]
+        mgr_table_2_total = [int(mangr_one_rating_2),int(mangr_two_rating_2),int(mangr_three_rating_2),
+                                int(mangr_four_rating_2),int(mangr_five_rating_2),int(mangr_six_rating_2),
+                                int(mangr_seven_rating_2),int(mangr_eight_rating_2),int(mangr_nine_rating_2),
+                                int(mangr_ten_rating),int(mangr_eleven_rating)]
+        mgr_table_2_total = round(sum(mgr_table_2_total)/11,2)
         mangr_one_rating_3 = request.POST["one_rat3"]
         mangr_two_rating_3 = request.POST["two_rat3"]
         mangr_three_rating_3 = request.POST["three_rat3"]
@@ -546,6 +608,10 @@ def manager_part_b_save(request,id):
         mangr_six_rating_3 = request.POST["six_rat3"]
         mangr_seven_rating_3 = request.POST["seven_rat3"]
         mangr_eight_rating_3 = request.POST["eight_rat3"]
+        mgr_table_3_total = [int(mangr_one_rating_3),int(mangr_two_rating_3),int(mangr_three_rating_3),
+                                int(mangr_four_rating_3),int(mangr_five_rating_3),int(mangr_six_rating),
+                                int(mangr_seven_rating_3),int(mangr_eight_rating_3)]
+        mgr_table_3_total = round(sum(mgr_table_3_total)/8,2)
         mangr_one_rating_4 = request.POST["one_rat4"]
         mangr_two_rating_4 = request.POST["two_rat4"]
         mangr_three_rating_4 = request.POST["three_rat4"]
@@ -569,8 +635,30 @@ def manager_part_b_save(request,id):
         mangr_twentyone_rating_4 = request.POST["twentyone_rat4"]
         mangr_twentytwo_rating_4 = request.POST["twentytwo_rat4"]
         mangr_twentythree_rating_4 = request.POST["twentythree_rat4"]
+        mgr_table_4_total = [int(mangr_one_rating_4),int(mangr_two_rating_4),int(mangr_three_rating_4),
+                                int(mangr_four_rating_4),int(mangr_five_rating_4),int(mangr_six_rating_4),
+                                int(mangr_seven_rating_4),int(mangr_eight_rating_4),int(mangr_nine_rating_4),
+                                int(mangr_ten_rating_4),int(mangr_eleven_rating_4),int(mangr_twelve_rating_4),
+                                int(mangr_thirteen_rating_4),int(mangr_fourteen_rating_4),int(mangr_fifteen_rating_4),
+                                int(mangr_sixteen_rating_4),int(mangr_seventeen_rating_4),int(mangr_eighteen_rating_4),
+                                int(mangr_nineteen_rating_4), int(mangr_twenty_rating_4), int(mangr_twentyone_rating_4),
+                                int(mangr_twentytwo_rating_4), int(mangr_twentythree_rating_4)]
+        mgr_table_4_total = round(sum(mgr_table_4_total)/23,2)
 
-        e=PartB_Appraisee.objects.get(emp_id=id)
+        e = PartB_Appraisee()
+        e.mgr_table_1_total = mgr_table_1_total
+        e.mgr_table_2_total = mgr_table_2_total
+        e.mgr_table_3_total = mgr_table_3_total
+        e.mgr_table_4_total = mgr_table_4_total
+        e.agent = Profile.objects.get(emp_id=emp_id)
+        e.emp_id = emp_id
+        e.emp_name = emp_name
+        e.emp_rm1 = emp_rm1
+        e.emp_rm2 = emp_rm2
+        e.emp_rm3 = emp_rm3
+        e.emp_rm1_id = emp_rm1_id
+        e.emp_rm2_id = emp_rm2_id
+        e.emp_rm3_id = emp_rm3_id
         e.mangr_one_comment=mangr_one_comment
         e.mangr_two_comment=mangr_two_comment
         e.mangr_three_comment=mangr_three_comment
@@ -699,10 +787,16 @@ def manager_part_b_save(request,id):
         return redirect("manpartc",id=id)
 
     else:
-        part_b = PartB_Appraisee.objects.get(emp_id=id)
-        profile = Profile.objects.get(emp_id=id)
-        data = {"profile": profile,"part_b":part_b}
-        return render(request,'appraisal/manager_partb.html', data)
+        try:
+            PartB_Appraisee.objects.get(emp_id=id)
+            messages.info(request,"Part B for this Agent is Already done! Redirecting you to Part C.")
+            return redirect("manpartc", id=id)
+        except PartB_Appraisee.DoesNotExist:
+            profile = Profile.objects.get(emp_id=id)
+            rm3_desi = Profile.objects.get(emp_id=id).emp_rm3_id
+            rm3_desi = Profile.objects.get(emp_id=rm3_desi).emp_desi
+            data = {"profile": profile,"rm3_desi":rm3_desi}
+            return render(request,'manager/manager_partb.html', data)
 
 
 
@@ -750,7 +844,7 @@ def part_c_save(request):
     else:
         profile = Profile.objects.get(user=user)
         data = {"profile": profile}
-        return render(request, "appraisal/part_c.html",data)
+        return render(request, "common/part_c.html",data)
 
 def manager_part_c_save(request,id):
     user = request.user
@@ -787,7 +881,7 @@ def manager_part_c_save(request,id):
         part_c = PartC_Appraisee.objects.get(emp_id=id)
         profile = Profile.objects.get(emp_id=id)
         data = {"part_c":part_c,"profile":profile}
-        return render(request, "appraisal/manager_part_c.html", data)
+        return render(request, "common/manager_part_c.html", data)
 
 
 
@@ -887,11 +981,11 @@ def part_d_save(request):
 
         e.save()
 
-        return render(request, "appraisal/part_d.html")
+        return render(request, "common/part_d.html")
 
     else:
         pass
-        return render(request, "appraisal/part_d.html")
+        return render(request, "common/part_d.html")
 
 
 def manager_part_d_save(request,id):
@@ -902,17 +996,8 @@ def manager_part_d_save(request,id):
         part_d = PartC_Appraisee.objects.get(emp_id=id)
         profile = Profile.objects.get(emp_id=id)
         data = {"part_d": part_d, "profile": profile}
-        return render(request, "appraisal/manager_part_c.html", data)
+        return render(request, "common/manager_part_c.html", data)
 
-
-def manager_Table(request):
-    if request.method == "POST":
-        pass
-        return redirect("/appraisal/login")
-    else:
-        profile = PartA_Appraisee.objects.all()
-        data = {"profile": profile}
-        return render(request, "appraisal/manager_table.html",data)
 
 def viewAppraisal(request,id):
     part_a = PartA_Appraisee.objects.get(emp_id=id)
@@ -920,4 +1005,4 @@ def viewAppraisal(request,id):
     part_c = PartC_Appraisee.objects.get(emp_id=id)
     profile = Profile.objects.get(emp_id=id)
     data = {"part_a": part_a,"part_b": part_b,"part_c": part_c, "profile": profile}
-    return render(request, "appraisal/viewall.html", data)
+    return render(request, "common/viewall.html", data)
