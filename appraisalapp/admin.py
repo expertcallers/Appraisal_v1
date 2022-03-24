@@ -9,4 +9,5 @@ class ProfileSearch(admin.ModelAdmin):
 admin.site.register(Profile,ProfileSearch)
 admin.site.register(PartA_Appraisee)
 admin.site.register(PartB_Appraisee)
+admin.site.register(PartC_Appraisee)
 

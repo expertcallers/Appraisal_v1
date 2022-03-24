@@ -47,7 +47,7 @@
 							<strong>a. Summary of Strengths and Development needs arising out of employee’s performance    discussed and agreed upon:</strong>
 						</div>
 					</div>
-					<form method="post" action="/appraisal/partd">
+					<form method="POST" action="/appraisal/manpartd/{{profile.emp_id}}" enctype="multipart/form-data">
 						{% csrf_token %}
 						<div class="row">
 							<div class="col-md-12">
@@ -140,45 +140,45 @@
 								      <th scope="row" class="text-center align-middle noribor nori pcolor" rowspan="4">Competencies & Values</th>
 								      <th scope="row" class="text-center align-middle noribor">High</th>
 								      <td class="text-center align-middle">
-								      	<input type="checkbox" name="train_identify_refitment" style="width: 60px; height: 60px;" value="Train/ Identify & refitment">
+								      	<input type="checkbox" class="act_radio" name="check" style="width: 60px; height: 60px;" value="Train/ Identify & refitment">
 								      	<p class="mt-2">Train/ Identify & refitment</p>
 								      </td>
 								      <td class="text-center align-middle">
-								      	<input type="checkbox" name="coach_train_redeploy" style="width: 60px; height: 60px;" value="Coach / Train / redeploy to Actualize potential">
+								      	<input type="checkbox" class="act_radio" name="check" style="width: 60px; height: 60px;" value="Coach / Train / redeploy to Actualize potential">
 								      	<p class="mt-2">Coach / Train / redeploy to Actualize potential</p>
 								      </td>
 								      <td class="text-center align-middle">
-								      	<input type="checkbox" name="future_leaders" style="width: 60px; height: 60px;" value="Future Leaders. Move to higher role. Accelerate Opportunity">
+								      	<input type="checkbox" class="act_radio" name="check" style="width: 60px; height: 60px;" value="Future Leaders. Move to higher role. Accelerate Opportunity">
 								      	<p class="mt-2">Future Leaders. Move to higher role. Accelerate Opportunity</p>
 								      </td>
 								    </tr>
 								    <tr>
 								      <th scope="row" class="text-center align-middle noribor">Medium</th>
 								      <td class="text-center align-middle">
-								      	<input type="checkbox" name="need_development" style="width: 60px; height: 60px;" value="Need Development Identify skills gap/ Train">
+								      	<input type="checkbox" class="act_radio" name="check" style="width: 60px; height: 60px;" value="Need Development Identify skills gap/ Train">
 								      	<p class="mt-2">Need Development Identify skills gap/ Train</p>
 								      </td>
 								      <td class="text-center align-middle">
-								      	<input type="checkbox" name="solid_citizens_1" style="width: 60px; height: 60px;" value="Solid citizens. Train to sustain performance">
+								      	<input type="checkbox" class="act_radio" name="check" style="width: 60px; height: 60px;" value="Solid citizens. Train to sustain performance">
 								      	<p class="mt-2">Solid citizens. Train to sustain performance</p>
 								      </td>
 								      <td class="text-center align-middle">
-								      	<input type="checkbox" name="solid_citizens_2" style="width: 60px; height: 60px;" value="Solid citizens. Train to sustain performance">
+								      	<input type="checkbox" class="act_radio" name="check" style="width: 60px; height: 60px;" value="Solid citizens. Train to sustain performance">
 								      	<p class="mt-2">Solid citizens. Train to sustain performance</p>
 								      </td>
 								    </tr>
 								    <tr>
 								      <th scope="row" class="text-center align-middle noribor">Low</th>
 								      <td class="text-center align-middle">
-								      	<input type="checkbox" name="no_scope_improvement" style="width: 60px; height: 60px;" value="No scope for improvement">
+								      	<input type="checkbox" class="act_radio" name="check" style="width: 60px; height: 60px;" value="No scope for improvement">
 								      	<p class="mt-2">No scope for improvement</p>
 								      </td>
 								      <td class="text-center align-middle">
-								      	<input type="checkbox" name="need_development_coach" style="width: 60px; height: 60px;" value="Need Development Coach on Values and improve performance">
+								      	<input type="checkbox" class="act_radio" name="check" style="width: 60px; height: 60px;" value="Need Development Coach on Values and improve performance">
 								      	<p class="mt-2">Need Development Coach on Values and improve performance</p>
 								      </td>
 								      <td class="text-center align-middle">
-								      	<input type="checkbox" name="coach_on_value" style="width: 60px; height: 60px;" value="Coach on Values. Train to sustain performance">
+								      	<input type="checkbox" class="act_radio" name="check" style="width: 60px; height: 60px;" value="Coach on Values. Train to sustain performance">
 								      	<p class="mt-2">Coach on Values. Train to sustain performance</p>
 								      </td>
 								    </tr>
@@ -214,7 +214,7 @@
 									</tbody>
 								</table>
 								<div align="center">
-									<input class="btn btn-success btn-sm" onclick="addField()" value="Add More">	
+									<input type="button" class="btn btn-success" onclick="addField()" value="Add More">
 								</div>
 							</div>
 							<div class="col-md-12">
@@ -337,6 +337,16 @@
 		    $box.prop("checked", false);
 		  }
 		});
+		$(".act_radio").on('click', function() {
+		  var $box = $(this);
+		  if ($box.is(":checked")) {
+		    var group = "input:checkbox[name='" + $box.attr("name") + "']";
+		    $(group).prop("checked", false);
+		    $box.prop("checked", true);
+		  } else {
+		    $box.prop("checked", false);
+		  }
+		});
 		$(function () {
         $(".additionalf").click(function () {
             if ($(this).is(":checked")) {
@@ -347,6 +357,6 @@
             }
         });
     });
-		
+
 	</script>
 {% endblock %}

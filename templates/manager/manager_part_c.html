@@ -32,7 +32,7 @@
 	<section class="mt-5" id="main">
 		<div class="container-fluid">
 			<div class="row">
-				{% include 'appraisal/emp_details.html' %}
+				{% include 'common/emp_details.html' %}
 				<div class="col-md-3" style="margin-right: 80px;"></div>
 				<div class="col-md-8 secquestions">
 					<div class="row">
@@ -40,7 +40,7 @@
 							<h3>PART - C <span style="font-size: 18px;"> <strong>(ECPL Values - Review & Rating)</strong></span></h3>
 						</div>
 					</div>
-					<form method="post" action="/appraisal/manpartc/{{part_c.emp_id}}" enctype="multipart/form-data">
+					<form method="post" action="/appraisal/manpartc/{{profile.emp_id}}" enctype="multipart/form-data">
 						{% csrf_token %}
 						<div class="row">
 							<div class="col-md-12">

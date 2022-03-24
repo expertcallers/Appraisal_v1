@@ -207,83 +207,84 @@ def manager_part_a_save(request,id):
         return redirect("manpartb",id=id)
 
     else:
-        profile = Profile.objects.get(emp_id=id)
-        rm3_desi = Profile.objects.get(emp_id=id).emp_rm3_id
-        print(rm3_desi,"before")
-        rm3_desi = Profile.objects.get(emp_id=rm3_desi).emp_desi
-        print(rm3_desi,"After")
-        data = {"profile": profile,"rm3_desi":rm3_desi}
-        return render(request, "manager/manager_part-a-form.html", data)
+        try:
+            PartA_Appraisee.objects.get(emp_id=id)
+            messages.info(request,"Part A for this Agent is Already done! Redirecting you to Part B.")
+            return redirect("manpartb", id=id)
+        except PartA_Appraisee.DoesNotExist:
+            profile = Profile.objects.get(emp_id=id)
+            rm3_desi = Profile.objects.get(emp_id=id).emp_rm3_id
+            print(rm3_desi,"before")
+            rm3_desi = Profile.objects.get(emp_id=rm3_desi).emp_desi
+            print(rm3_desi,"After")
+            data = {"profile": profile,"rm3_desi":rm3_desi}
+            return render(request, "manager/manager_part-a-form.html", data)
 
 
 def part_b_save(request):
     user = request.user
     if request.method=="POST":
         # user = request.user
-        emp_id = user.profile.emp_id
-        emp_rm1 = user.profile.emp_rm1
-        emp_rm2 = user.profile.emp_rm2
-        emp_rm3 = user.profile.emp_rm3
-        one_comment = request.POST["one_com"]
-        two_comment = request.POST["two_com"]
-        three_comment = request.POST["three_com"]
-        four_comment = request.POST["four_com"]
-        five_comment = request.POST["five_com"]
-        six_comment = request.POST["six_com"]
-        seven_comment = request.POST["seven_com"]
-        eight_comment = request.POST["eight_com"]
-        nine_comment = request.POST["nine_com"]
-        ten_comment = request.POST["ten_com"]
-        eleven_comment = request.POST["eleven_com"]
-        twelve_comment = request.POST["twelve_com"]
-        thirteen_comment = request.POST["thirteen_com"]
-        fourteen_comment = request.POST["fourteen_com"]
-        fifteen_comment = request.POST["fifteen_com"]
-        sixteen_comment = request.POST["sixteen_com"]
-        seventeen_comment = request.POST["seventeen_com"]
-        eighteen_comment = request.POST["eighteen_com"]
-        one_comment_2 = request.POST["one_com2"]
-        two_comment_2 = request.POST["two_com2"]
-        three_comment_2 = request.POST["three_com2"]
-        four_comment_2 = request.POST["four_com2"]
-        five_comment_2 = request.POST["five_com2"]
-        six_comment_2 = request.POST["six_com2"]
-        seven_comment_2 = request.POST["seven_com2"]
-        eight_comment_2 = request.POST["eight_com2"]
-        nine_comment_2 = request.POST["nine_com2"]
-        ten_comment_2 = request.POST["ten_com2"]
-        eleven_comment_2 = request.POST["eleven_com2"]
-        one_comment_3 = request.POST["one_com3"]
-        two_comment_3 = request.POST["two_com3"]
-        three_comment_3 = request.POST["three_com3"]
-        four_comment_3 = request.POST["four_com3"]
-        five_comment_3 = request.POST["five_com3"]
-        six_comment_3 = request.POST["six_com3"]
-        seven_comment_3 = request.POST["seven_com3"]
-        eight_comment_3 = request.POST["eight_com3"]
-        one_comment_4 = request.POST["one_com4"]
-        two_comment_4 = request.POST["two_com4"]
-        three_comment_4 = request.POST["three_com4"]
-        four_comment_4 = request.POST["four_com4"]
-        five_comment_4 = request.POST["five_com4"]
-        six_comment_4 = request.POST["six_com4"]
-        seven_comment_4 = request.POST["seven_com4"]
-        eight_comment_4 = request.POST["eight_com4"]
-        nine_comment_4 = request.POST["nine_com4"]
-        ten_comment_4 = request.POST["ten_com4"]
-        eleven_comment_4 = request.POST["eleven_com4"]
-        twelve_comment_4 = request.POST["twelve_com4"]
-        thirteen_comment_4 = request.POST["thirteen_com4"]
-        fourteen_comment_4 = request.POST["fourteen_com4"]
-        fifteen_comment_4 = request.POST["fifteen_com4"]
-        sixteen_comment_4 = request.POST["sixteen_com4"]
-        seventeen_comment_4 = request.POST["seventeen_com4"]
-        eighteen_comment_4 = request.POST["eighteen_com4"]
-        nineteen_comment_4 = request.POST["nineteen_com4"]
-        twenty_comment_4 = request.POST["twenty_com4"]
-        twentyone_comment_4 = request.POST["twentyone_com4"]
-        twentytwo_comment_4 = request.POST["twentytwo_com4"]
-        twentythree_comment_4 = request.POST["twentythree_com4"]
+        one_comment = request.POST.get("one_com")
+        two_comment = request.POST.get("two_com")
+        three_comment = request.POST.get("three_com")
+        four_comment = request.POST.get("four_com")
+        five_comment = request.POST.get("five_com")
+        six_comment = request.POST.get("six_com")
+        seven_comment = request.POST.get("seven_com")
+        eight_comment = request.POST.get("eight_com")
+        nine_comment = request.POST.get("nine_com")
+        ten_comment = request.POST.get("ten_com")
+        eleven_comment = request.POST.get("eleven_com")
+        twelve_comment = request.POST.get("twelve_com")
+        thirteen_comment = request.POST.get("thirteen_com")
+        fourteen_comment = request.POST.get("fourteen_com")
+        fifteen_comment = request.POST.get("fifteen_com")
+        sixteen_comment = request.POST.get("sixteen_com")
+        seventeen_comment = request.POST.get("seventeen_com")
+        eighteen_comment = request.POST.get("eighteen_com")
+        one_comment_2 = request.POST.get("one_com2")
+        two_comment_2 = request.POST.get("two_com2")
+        three_comment_2 = request.POST.get("three_com2")
+        four_comment_2 = request.POST.get("four_com2")
+        five_comment_2 = request.POST.get("five_com2")
+        six_comment_2 = request.POST.get("six_com2")
+        seven_comment_2 = request.POST.get("seven_com2")
+        eight_comment_2 = request.POST.get("eight_com2")
+        nine_comment_2 = request.POST.get("nine_com2")
+        ten_comment_2 = request.POST.get("ten_com2")
+        eleven_comment_2 = request.POST.get("eleven_com2")
+        one_comment_3 = request.POST.get("one_com3")
+        two_comment_3 = request.POST.get("two_com3")
+        three_comment_3 = request.POST.get("three_com3")
+        four_comment_3 = request.POST.get("four_com3")
+        five_comment_3 = request.POST.get("five_com3")
+        six_comment_3 = request.POST.get("six_com3")
+        seven_comment_3 = request.POST.get("seven_com3")
+        eight_comment_3 = request.POST.get("eight_com3")
+        one_comment_4 = request.POST.get("one_com4")
+        two_comment_4 = request.POST.get("two_com4")
+        three_comment_4 = request.POST.get("three_com4")
+        four_comment_4 = request.POST.get("four_com4")
+        five_comment_4 = request.POST.get("five_com4")
+        six_comment_4 = request.POST.get("six_com4")
+        seven_comment_4 = request.POST.get("seven_com4")
+        eight_comment_4 = request.POST.get("eight_com4")
+        nine_comment_4 = request.POST.get("nine_com4")
+        ten_comment_4 = request.POST.get("ten_com4")
+        eleven_comment_4 = request.POST.get("eleven_com4")
+        twelve_comment_4 = request.POST.get("twelve_com4")
+        thirteen_comment_4 = request.POST.get("thirteen_com4")
+        fourteen_comment_4 = request.POST.get("fourteen_com4")
+        fifteen_comment_4 = request.POST.get("fifteen_com4")
+        sixteen_comment_4 = request.POST.get("sixteen_com4")
+        seventeen_comment_4 = request.POST.get("seventeen_com4")
+        eighteen_comment_4 = request.POST.get("eighteen_com4")
+        nineteen_comment_4 = request.POST.get("nineteen_com4")
+        twenty_comment_4 = request.POST.get("twenty_com4")
+        twentyone_comment_4 = request.POST.get("twentyone_com4")
+        twentytwo_comment_4 = request.POST.get("twentytwo_com4")
+        twentythree_comment_4 = request.POST.get("twentythree_com4")
 
         one_rating = request.POST["one_rat"]
         two_rating = request.POST["two_rat"]
@@ -303,6 +304,14 @@ def part_b_save(request):
         sixteen_rating = request.POST["sixteen_rat"]
         seventeen_rating = request.POST["seventeen_rat"]
         eighteen_rating = request.POST["eighteen_rat"]
+        agent_table_1_total = [int(one_rating), int(two_rating), int(three_rating),
+                             int(four_rating), int(five_rating), int(six_rating),
+                             int(seven_rating), int(eight_rating), int(nine_rating),
+                             int(ten_rating), int(eleven_rating), int(twelve_rating),
+                             int(thirteen_rating), int(fourteen_rating), int(fifteen_rating),
+                             int(sixteen_rating), int(seventeen_rating), int(eighteen_rating)]
+        agent_table_1_total = round(sum(agent_table_1_total) / 18, 2)
+        print(agent_table_1_total,"agent_table_1_total")
         one_rating_2 = request.POST["one_rat2"]
         two_rating_2 = request.POST["two_rat2"]
         three_rating_2 = request.POST["three_rat2"]
@@ -314,6 +323,12 @@ def part_b_save(request):
         nine_rating_2 = request.POST["nine_rat2"]
         ten_rating_2 = request.POST["ten_rat2"]
         eleven_rating_2 = request.POST["eleven_rat2"]
+        agent_table_2_total = [int(one_rating_2),int(two_rating_2),int(three_rating_2),
+                                int(four_rating_2),int(five_rating_2),int(six_rating_2),
+                                int(seven_rating_2),int(eight_rating_2),int(nine_rating_2),
+                                int(ten_rating),int(eleven_rating)]
+        agent_table_2_total = round(sum(agent_table_2_total)/11,2)
+        print(agent_table_2_total,"agent_table_2_total")
         one_rating_3 = request.POST["one_rat3"]
         two_rating_3 = request.POST["two_rat3"]
         three_rating_3 = request.POST["three_rat3"]
@@ -322,6 +337,11 @@ def part_b_save(request):
         six_rating_3 = request.POST["six_rat3"]
         seven_rating_3 = request.POST["seven_rat3"]
         eight_rating_3 = request.POST["eight_rat3"]
+        agent_table_3_total = [int(one_rating_3),int(two_rating_3),int(three_rating_3),
+                                int(four_rating_3),int(five_rating_3),int(six_rating),
+                                int(seven_rating_3),int(eight_rating_3)]
+        agent_table_3_total = round(sum(agent_table_3_total)/8,2)
+        print(agent_table_3_total,"agent_table_3_total")
         one_rating_4 = request.POST["one_rat4"]
         two_rating_4 = request.POST["two_rat4"]
         three_rating_4 = request.POST["three_rat4"]
@@ -345,8 +365,21 @@ def part_b_save(request):
         twentyone_rating_4 = request.POST["twentyone_rat4"]
         twentytwo_rating_4 = request.POST["twentytwo_rat4"]
         twentythree_rating_4 = request.POST["twentythree_rat4"]
-
-        e=PartB_Appraisee()
+        agent_table_4_total = [int(one_rating_4),int(two_rating_4),int(three_rating_4),
+                                int(four_rating_4),int(five_rating_4),int(six_rating_4),
+                                int(seven_rating_4),int(eight_rating_4),int(nine_rating_4),
+                                int(ten_rating_4),int(eleven_rating_4),int(twelve_rating_4),
+                                int(thirteen_rating_4),int(fourteen_rating_4),int(fifteen_rating_4),
+                                int(sixteen_rating_4),int(seventeen_rating_4),int(eighteen_rating_4),
+                                int(nineteen_rating_4), int(twenty_rating_4), int(twentyone_rating_4),
+                                int(twentytwo_rating_4), int(twentythree_rating_4)]
+        agent_table_4_total = round(sum(agent_table_4_total)/23,2)
+        print(agent_table_4_total,"agent_table_4_total")
+        e=PartB_Appraisee.objects.get(emp_id=user.profile.emp_id)
+        e.agent_table_1_total=agent_table_1_total
+        e.agent_table_2_total=agent_table_2_total
+        e.agent_table_3_total=agent_table_3_total
+        e.agent_table_4_total=agent_table_4_total
         e.one_comment=one_comment
         e.two_comment=two_comment
         e.three_comment=three_comment
@@ -469,11 +502,6 @@ def part_b_save(request):
         e.twentyone_rating_4=twentyone_rating_4
         e.twentytwo_rating_4=twentytwo_rating_4
         e.twentythree_rating_4=twentythree_rating_4
-        e.appraisee = user
-        e.emp_id = emp_id
-        e.emp_rm1 = emp_rm1
-        e.emp_rm2 = emp_rm2
-        e.emp_rm3 = emp_rm3
 
         e.save()
         return redirect("/appraisal/partc")
@@ -481,7 +509,7 @@ def part_b_save(request):
     else:
         profile = Profile.objects.get(user=user)
         data = {"profile": profile}
-        return render(request,'common/partb.html', data)
+        return render(request,'agent/partb.html', data)
 
 
 
@@ -803,24 +831,21 @@ def manager_part_b_save(request,id):
 def part_c_save(request):
     user = request.user
     if request.method == "POST":
-        # us = request.user
-        emp_id = user.profile.emp_id
-        emp_rm1 = user.profile.emp_rm1
-        emp_rm2 = user.profile.emp_rm2
-        emp_rm3 = user.profile.emp_rm3
         respect_rating = request.POST["res_rat"]
         integrity_rating = request.POST["int_rat"]
         diversity_rating = request.POST["div_rat"]
         excellence_rating = request.POST["exc_rat"]
         teamwork_rating = request.POST["tea_rat"]
-        respect_comment = request.POST["res_com"]
-        integrity_comment = request.POST["int_com"]
-        diversity_comment = request.POST["div_com"]
-        excellence_comment = request.POST["exc_com"]
-        teamwork_comment = request.POST["tea_com"]
+        agent_score = [int(respect_rating),int(integrity_rating),int(diversity_rating),int(excellence_rating),int(teamwork_rating)]
+        agent_score = round(sum(agent_score)/5,2)
+        respect_comment = request.POST.get("res_com")
+        integrity_comment = request.POST.get("int_com")
+        diversity_comment = request.POST.get("div_com")
+        excellence_comment = request.POST.get("exc_com")
+        teamwork_comment = request.POST.get("tea_com")
 
-        e=PartC_Appraisee()
-
+        e = PartC_Appraisee.objects.get(emp_id=user.profile.emp_id)
+        e.agent_score = agent_score
         e.respect_rating = respect_rating
         e.integrity_rating = integrity_rating
         e.diversity_rating = diversity_rating
@@ -831,12 +856,6 @@ def part_c_save(request):
         e.diversity_comment = diversity_comment
         e.excellence_comment = excellence_comment
         e.teamwork_comment = teamwork_comment
-        e.appraisee = user
-        e.emp_id = emp_id
-        e.emp_rm1 = emp_rm1
-        e.emp_rm2 = emp_rm2
-        e.emp_rm3 = emp_rm3
-        # e.appraisee = us
 
         e.save()
         return redirect("/appraisal/partd")
@@ -844,26 +863,36 @@ def part_c_save(request):
     else:
         profile = Profile.objects.get(user=user)
         data = {"profile": profile}
-        return render(request, "common/part_c.html",data)
+        return render(request, "agent/part_c.html",data)
 
 def manager_part_c_save(request,id):
-    user = request.user
+    profile = Profile.objects.get(emp_id=id)
     if request.method == "POST":
         # us = request.user
-
         respect_rating = request.POST["res_rat"]
         integrity_rating = request.POST["int_rat"]
         diversity_rating = request.POST["div_rat"]
         excellence_rating = request.POST["exc_rat"]
         teamwork_rating = request.POST["tea_rat"]
-        respect_comment = request.POST["res_com"]
-        integrity_comment = request.POST["int_com"]
-        diversity_comment = request.POST["div_com"]
-        excellence_comment = request.POST["exc_com"]
-        teamwork_comment = request.POST["tea_com"]
+        mgr_score = [int(respect_rating),int(integrity_rating),int(diversity_rating),int(excellence_rating),int(teamwork_rating)]
+        mgr_score = round(sum(mgr_score)/5,2)
+        respect_comment = request.POST.get("res_com")
+        integrity_comment = request.POST.get("int_com")
+        diversity_comment = request.POST.get("div_com")
+        excellence_comment = request.POST.get("exc_com")
+        teamwork_comment = request.POST.get("tea_com")
 
-        e = PartC_Appraisee.objects.get(emp_id=id)
-
+        e = PartC_Appraisee()
+        e.mgr_score = mgr_score
+        e.agent = profile
+        e.emp_id = id
+        e.emp_name = profile.emp_name
+        e.emp_rm1 = profile.emp_rm1
+        e.emp_rm2 = profile.emp_rm2
+        e.emp_rm3 = profile.emp_rm3
+        e.emp_rm1_id = profile.emp_rm1_id
+        e.emp_rm2_id = profile.emp_rm2_id
+        e.emp_rm3_id = profile.emp_rm3_id
         e.mangr_respect_rating = respect_rating
         e.mangr_integrity_rating = integrity_rating
         e.mangr_diversity_rating = diversity_rating
@@ -878,10 +907,8 @@ def manager_part_c_save(request,id):
         e.save()
         return redirect("manpartd",id=id)
     else:
-        part_c = PartC_Appraisee.objects.get(emp_id=id)
-        profile = Profile.objects.get(emp_id=id)
-        data = {"part_c":part_c,"profile":profile}
-        return render(request, "common/manager_part_c.html", data)
+        data = {"profile":profile}
+        return render(request, "manager/manager_part_c.html", data)
 
 
 
@@ -984,8 +1011,9 @@ def part_d_save(request):
         return render(request, "common/part_d.html")
 
     else:
-        pass
-        return render(request, "common/part_d.html")
+        profile = Profile.objects.get(emp_id=request.user.profile.emp_id)
+        data = {"profile":profile}
+        return render(request, "agent/part_d.html",data)
 
 
 def manager_part_d_save(request,id):
@@ -996,7 +1024,7 @@ def manager_part_d_save(request,id):
         part_d = PartC_Appraisee.objects.get(emp_id=id)
         profile = Profile.objects.get(emp_id=id)
         data = {"part_d": part_d, "profile": profile}
-        return render(request, "common/manager_part_c.html", data)
+        return render(request, "manager/manager_part_d.html", data)
 
 
 def viewAppraisal(request,id):
