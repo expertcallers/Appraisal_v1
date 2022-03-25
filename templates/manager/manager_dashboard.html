@@ -34,9 +34,9 @@
                       <tbody>
                       {% for i in profile %}
                             <tr>
-                                <td>{{i.emp_name}}</td>
-                                <td>{{i.emp_id}}</td>
-                                <td>{{i.emp_process}}</td>
+                                <td>{{i.agent.emp_name}}</td>
+                                <td>{{i.agent.emp_id}}</td>
+                                <td>{{i.agent.emp_process}}</td>
                                 <td>
                                     {% if i.agent_score != None %}
                                         <a href="/appraisal/manparta/{{i.emp_id}}" class="btn btn-sm btn-primary">Take Assessment</a>

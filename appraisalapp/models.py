@@ -80,6 +80,8 @@ class PartA_Appraisee(models.Model):
 
     mgr_score = models.FloatField(null=True,blank=True)
     agent_score = models.FloatField(null=True,blank=True)
+    def __str__(self):
+        return self.emp_name+" - "+self.emp_id
 
 class PartB_Appraisee(models.Model):
     agent = models.OneToOneField(Profile, on_delete=models.CASCADE,null=True,blank=True)
@@ -342,6 +344,8 @@ class PartB_Appraisee(models.Model):
 
     mgr_score = models.FloatField(null=True,blank=True)
     agent_score = models.FloatField(null=True,blank=True)
+    def __str__(self):
+        return self.emp_name+" - "+self.emp_id
 
 
 class PartC_Appraisee(models.Model):
@@ -376,11 +380,17 @@ class PartC_Appraisee(models.Model):
     mangr_teamwork_comment = models.TextField(null=True,blank=True)
     mgr_score = models.FloatField(null=True,blank=True)
     agent_score = models.FloatField(null=True,blank=True)
+    def __str__(self):
+        return self.emp_name+" - "+self.emp_id
 
 
 class PartD_Appraisee(models.Model):
-    appraisee = models.CharField(max_length=200)
+    agent = models.OneToOneField(Profile, on_delete=models.CASCADE,null=True,blank=True)
     emp_id = models.CharField(max_length=12)
+    emp_name = models.CharField(max_length=200,null=True,blank=True)
+    emp_rm1_id = models.CharField(max_length=30,null=True,blank=True)
+    emp_rm2_id = models.CharField(max_length=30,null=True,blank=True)
+    emp_rm3_id = models.CharField(max_length=30,null=True,blank=True)
     emp_rm1 = models.CharField(max_length=200)
     emp_rm2 = models.CharField(max_length=200)
     emp_rm3 = models.CharField(max_length=200)
@@ -427,3 +437,5 @@ class PartD_Appraisee(models.Model):
     agree=models.TextField(blank=True, null=True)
     if_disagree = models.TextField(blank=True, null=True)
     comments_feedback=models.TextField(blank=True, null=True)
+    def __str__(self):
+        return self.emp_name+" - "+self.emp_id

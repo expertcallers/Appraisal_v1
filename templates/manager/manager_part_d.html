@@ -280,7 +280,7 @@
 								<div>
 									<input type="checkbox" name="rating" value="Agree" class="mycheck"><span class="ml-2 mr-4">Agree</span>
 									<input type="checkbox" name="rating" value="Partly Agree" class="mycheck"><span class="ml-2 mr-4">Partly Agree</span>
-									<input type="checkbox" name="rating" value="Disagree" class="mycheck additionalf"><span class="ml-2 mr-4" onclick="EnableDisableTextBox(this)">Disagree</span>
+									<input type="checkbox" name="rating" value="Disagree" class="mycheck additionalf"><span class="ml-2 mr-4" onfocusin="EnableDisableTextBox(this)">Disagree</span>
 								</div>
 								<div>
 									<input type="text" name="dis_com" required class="form-control additionalfa" disabled placeholder="If Disagree, Please Provide Comments Why?">
@@ -327,16 +327,6 @@
 			}
 
 		}
-		$(".mycheck").on('click', function() {
-		  var $box = $(this);
-		  if ($box.is(":checked")) {
-		    var group = "input:checkbox[name='" + $box.attr("name") + "']";
-		    $(group).prop("checked", false);
-		    $box.prop("checked", true);
-		  } else {
-		    $box.prop("checked", false);
-		  }
-		});
 		$(".act_radio").on('click', function() {
 		  var $box = $(this);
 		  if ($box.is(":checked")) {
@@ -347,16 +337,38 @@
 		    $box.prop("checked", false);
 		  }
 		});
-		$(function () {
-        $(".additionalf").click(function () {
-            if ($(this).is(":checked")) {
-                $(".additionalfa").removeAttr("disabled");
-                $(".additionalfa").focus();
-            } else {
-                $(".additionalfa").attr("disabled", "disabled");
-            }
-        });
-    });
+
+
+
+		$(".mycheck").on('click', function() {
+		  var $box = $(this);
+		  if ($box.is(":checked")) {
+		    var group = "input:checkbox[name='" + $box.attr("name") + "']";
+		    $(group).prop("checked", false);
+		    $box.prop("checked", true);
+		  } else {
+		    $box.prop("checked", false);
+		  }
+		  if ($box.value == "Disagree") {
+			$(".additionalfa").removeAttr("disabled");
+			$(".additionalfa").attr("required", "");
+			$(".additionalfa").focus();
+		  } else {
+			$(".additionalfa").attr("disabled", "disabled");
+			$(".additionalfa").removeAttr("required");
+		  }
+		});
+		$(".additionalf").click(function () {
+			if ($(this).is(":checked")) {
+				$(".additionalfa").removeAttr("disabled");
+				$(".additionalfa").attr("required", "");
+				$(".additionalfa").focus();
+			} else {
+				$(".additionalfa").attr("disabled", "disabled");
+				$(".additionalfa").removeAttr("required");
+			}
+		});
+
 
 	</script>
 {% endblock %}
