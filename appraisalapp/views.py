@@ -42,7 +42,7 @@ def LoginPage(request):
 @login_required
 def managerDashboard(request):
     emp_id = request.user.profile.emp_id
-    profile = Profile.objects.filter(Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id))
+    profile = PartA_Appraisee.objects.filter(Q(emp_rm1_id=emp_id))
     data = {"profile": profile}
     return render(request, "manager/manager_dashboard.html",data)
 
@@ -63,21 +63,46 @@ def part_a_save(request):
     user = request.user
     emp_id = Profile.objects.get(user=user).emp_id
     if PartA_Appraisee.objects.filter(emp_id=emp_id):
+        parta = PartA_Appraisee.objects.get(emp_id=emp_id)
         if request.method == "POST":
-            parameter_1_rating_agent = request.POST["parameter_1_rating_agent"]
             parameter_1_comment_agent = request.POST.get("parameter_1_comment_agent")
-            parameter_2_rating_agent = request.POST.get("parameter_2_rating_agent")
             parameter_2_comment_agent = request.POST.get("parameter_2_comment_agent")
-            parameter_3_rating_agent = request.POST.get("parameter_3_rating_agent")
             parameter_3_comment_agent = request.POST.get("parameter_3_comment_agent")
-            parameter_4_rating_agent = request.POST.get("parameter_4_rating_agent")
             parameter_4_comment_agent = request.POST.get("parameter_4_comment_agent")
-            parameter_5_rating_agent = request.POST.get("parameter_5_rating_agent")
             parameter_5_comment_agent = request.POST.get("parameter_5_comment_agent")
-            parameter_6_rating_agent = request.POST.get("parameter_6_rating_agent")
             parameter_6_comment_agent = request.POST.get("parameter_6_comment_agent")
+            parameter_1_score = int(parta.parameter_1_score)
+            parameter_1_rating_agent = parameter_1_score * int(request.POST["parameter_1_rating_agent"]) / 100
+            if parta.parameter_2_score:
+                parameter_2_score = int(parta.parameter_2_score)
+                parameter_2_rating_agent = parameter_2_score * int(request.POST.get("parameter_2_rating_agent")) / 100
+            else:
+                parameter_2_rating_agent = 0
+            if parta.parameter_3_score:
+                parameter_3_score = int(parta.parameter_3_score)
+                parameter_3_rating_agent = parameter_3_score * int(request.POST.get("parameter_3_rating_agent")) / 100
+            else:
+                parameter_3_rating_agent = 0
+            if parta.parameter_4_score:
+                parameter_4_score = int(parta.parameter_4_score)
+                parameter_4_rating_agent = parameter_4_score * int(request.POST.get("parameter_4_rating_agent")) / 100
+            else:
+                parameter_4_rating_agent = 0
+            if parta.parameter_5_score:
+                parameter_5_score = int(parta.parameter_5_score)
+                parameter_5_rating_agent = parameter_5_score * int(request.POST.get("parameter_5_rating_agent")) / 100
+            else:
+                parameter_5_rating_agent = 0
+            if parta.parameter_6_score:
+                parameter_6_score = int(parta.parameter_6_score)
+                parameter_6_rating_agent = parameter_6_score * int(request.POST.get("parameter_6_rating_agent")) / 100
+            else:
+                parameter_6_rating_agent = 0
+
+            agent_score = parameter_1_rating_agent+parameter_2_rating_agent+parameter_3_rating_agent+parameter_4_rating_agent+parameter_5_rating_agent+parameter_6_rating_agent
 
             e=PartA_Appraisee.objects.get(emp_id=emp_id)
+            e.agent_score = agent_score
             e.parameter_1_rating_agent = parameter_1_rating_agent
             e.parameter_1_comment_agent = parameter_1_comment_agent
             e.parameter_2_rating_agent = parameter_2_rating_agent
@@ -110,95 +135,87 @@ def part_a_save(request):
         return redirect("/appraisal/")
 
 def manager_part_a_save(request,id):
+    parta = PartA_Appraisee.objects.get(emp_id=id)
     if request.method == "POST":
         supervisor_name = request.POST["sup_name"]
         supervisor_desig = request.POST["sup_desg"]
         reviewers_name = request.user.profile.emp_name
         reviewers_desig = request.user.profile.emp_desi
 
-        parameter_1 = request.POST["parameter_1"]
-        parameter_1_score = int(request.POST["parameter_1_score"])
+        parameter_1_score = int(parta.parameter_1_score)
         parameter_1_rating = int(request.POST["parameter_1_rating"])
-        parameter_1_rating = parameter_1_score*parameter_1_rating/100
+        parameter_1_rating = round(parameter_1_score*parameter_1_rating/100,2)
         parameter_1_comment = request.POST.get("parameter_1_comment")
 
-        parameter_2 = request.POST.get("parameter_2")
-        if parameter_2:
-            parameter_2_score = int(request.POST.get("parameter_2_score"))
+        if parta.parameter_2:
+            parameter_2_score = int(parta.parameter_2_score)
             parameter_2_rating = int(request.POST.get("parameter_2_rating"))
-            parameter_2_rating = parameter_2_score*parameter_2_rating/100
+            parameter_2_rating = round(parameter_2_score*parameter_2_rating/100,2)
             parameter_2_comment = request.POST.get("parameter_2_comment")
+        else:
+            parameter_2_rating = 0
 
-        parameter_3 = request.POST.get("parameter_3")
-        if parameter_3:
-            parameter_3_score = int(request.POST.get("parameter_3_score"))
+        if parta.parameter_3:
+            parameter_3_score = int(parta.parameter_3_score)
             parameter_3_rating = int(request.POST.get("parameter_3_rating"))
-            parameter_3_rating = parameter_3_score*parameter_3_rating/100
+            parameter_3_rating = round(parameter_3_score*parameter_3_rating/100,2)
             parameter_3_comment = request.POST.get("parameter_3_comment")
+        else:
+            parameter_3_rating = 0
 
-        parameter_4 = request.POST.get("parameter_4")
-        if parameter_4:
-            parameter_4_score = int(request.POST.get("parameter_4_score"))
+        if parta.parameter_4:
+            parameter_4_score = int(parta.parameter_4_score)
             parameter_4_rating = int(request.POST.get("parameter_4_rating"))
-            parameter_4_rating = parameter_4_score*parameter_4_rating/100
+            parameter_4_rating = round(parameter_4_score*parameter_4_rating/100,2)
             parameter_4_comment = request.POST.get("parameter_4_comment")
+        else:
+            parameter_4_rating = 0
 
-        parameter_5 = request.POST.get("parameter_5")
-        if parameter_5:
-            parameter_5_score = int(request.POST.get("parameter_5_score"))
+        if parta.parameter_5:
+            parameter_5_score = int(parta.parameter_5_score)
             parameter_5_rating = int(request.POST.get("parameter_5_rating"))
-            parameter_5_rating = parameter_5_score*parameter_5_rating/100
+            parameter_5_rating = round(parameter_5_score*parameter_5_rating/100,2)
             parameter_5_comment = request.POST.get("parameter_5_comment")
+        else:
+            parameter_5_rating = 0
 
-        parameter_6 = request.POST.get("parameter_6")
-        if parameter_6:
-            parameter_6_score = int(request.POST.get("parameter_6_score"))
+        if parta.parameter_6:
+            parameter_6_score = int(parta.parameter_6_score)
             parameter_6_rating = int(request.POST.get("parameter_6_rating"))
-            parameter_6_rating = parameter_6_score*parameter_6_rating/100
+            parameter_6_rating = round(parameter_6_score*parameter_6_rating/100,2)
             parameter_6_comment = request.POST.get("parameter_6_comment")
+        else:
+            parameter_6_rating = 0
 
         mgr_comment = request.POST.get("Spe_other")
-        profile = Profile.objects.get(emp_id=id)
+        mgr_score = parameter_1_rating+parameter_2_rating+parameter_3_rating+parameter_4_rating+parameter_5_rating+parameter_6_rating
 
         e = PartA_Appraisee()
-        e.agent = profile
-        e.emp_id = profile.emp_id
-        e.emp_name = profile.emp_name
-        e.emp_desi = profile.emp_desi
-        e.emp_rm1_id = profile.emp_rm1_id
-        e.emp_rm2_id = profile.emp_rm2_id
-        e.emp_rm3_id = profile.emp_rm3_id
-        e.emp_process = profile.emp_process
+        e.mgr_score = mgr_score
         e.supervisor_name = supervisor_name
         e.supervisor_desig = supervisor_desig
         e.reviewers_name = reviewers_name
         e.reviewers_desig = reviewers_desig
-        e.parameter_1 = parameter_1
         e.parameter_1_score = parameter_1_score
         e.parameter_1_rating = parameter_1_rating
         e.parameter_1_comment = parameter_1_comment
-        e.parameter_2 = parameter_2
-        if parameter_2:
+        if parta.parameter_2:
             e.parameter_2_score = parameter_2_score
             e.parameter_2_rating = parameter_2_rating
             e.parameter_2_comment = parameter_2_comment
-        e.parameter_3 = parameter_3
-        if parameter_3:
+        if parta.parameter_3:
             e.parameter_3_score = parameter_3_score
             e.parameter_3_rating = parameter_3_rating
             e.parameter_3_comment = parameter_3_comment
-        e.parameter_4 = parameter_4
-        if parameter_4:
+        if parta.parameter_4:
             e.parameter_4_score = parameter_4_score
             e.parameter_4_rating = parameter_4_rating
             e.parameter_4_comment = parameter_4_comment
-        e.parameter_5 = parameter_5
-        if parameter_5:
+        if parta.parameter_5:
             e.parameter_5_score = parameter_5_score
             e.parameter_5_rating = parameter_5_rating
             e.parameter_5_comment = parameter_5_comment
-        e.parameter_6 = parameter_6
-        if parameter_6:
+        if parta.parameter_6:
             e.parameter_6_score = parameter_6_score
             e.parameter_6_rating = parameter_6_rating
             e.parameter_6_comment = parameter_6_comment
@@ -208,16 +225,14 @@ def manager_part_a_save(request,id):
 
     else:
         try:
-            PartA_Appraisee.objects.get(emp_id=id)
+            PartA_Appraisee.objects.get(Q(emp_id=id),~Q(parameter_1_rating=None))
             messages.info(request,"Part A for this Agent is Already done! Redirecting you to Part B.")
             return redirect("manpartb", id=id)
         except PartA_Appraisee.DoesNotExist:
             profile = Profile.objects.get(emp_id=id)
             rm3_desi = Profile.objects.get(emp_id=id).emp_rm3_id
-            print(rm3_desi,"before")
             rm3_desi = Profile.objects.get(emp_id=rm3_desi).emp_desi
-            print(rm3_desi,"After")
-            data = {"profile": profile,"rm3_desi":rm3_desi}
+            data = {"profile": profile,"parta":parta,"rm3_desi":rm3_desi}
             return render(request, "manager/manager_part-a-form.html", data)
 
 
@@ -311,7 +326,6 @@ def part_b_save(request):
                              int(thirteen_rating), int(fourteen_rating), int(fifteen_rating),
                              int(sixteen_rating), int(seventeen_rating), int(eighteen_rating)]
         agent_table_1_total = round(sum(agent_table_1_total) / 18, 2)
-        print(agent_table_1_total,"agent_table_1_total")
         one_rating_2 = request.POST["one_rat2"]
         two_rating_2 = request.POST["two_rat2"]
         three_rating_2 = request.POST["three_rat2"]
@@ -328,7 +342,6 @@ def part_b_save(request):
                                 int(seven_rating_2),int(eight_rating_2),int(nine_rating_2),
                                 int(ten_rating),int(eleven_rating)]
         agent_table_2_total = round(sum(agent_table_2_total)/11,2)
-        print(agent_table_2_total,"agent_table_2_total")
         one_rating_3 = request.POST["one_rat3"]
         two_rating_3 = request.POST["two_rat3"]
         three_rating_3 = request.POST["three_rat3"]
@@ -341,7 +354,6 @@ def part_b_save(request):
                                 int(four_rating_3),int(five_rating_3),int(six_rating),
                                 int(seven_rating_3),int(eight_rating_3)]
         agent_table_3_total = round(sum(agent_table_3_total)/8,2)
-        print(agent_table_3_total,"agent_table_3_total")
         one_rating_4 = request.POST["one_rat4"]
         two_rating_4 = request.POST["two_rat4"]
         three_rating_4 = request.POST["three_rat4"]
@@ -374,12 +386,11 @@ def part_b_save(request):
                                 int(nineteen_rating_4), int(twenty_rating_4), int(twentyone_rating_4),
                                 int(twentytwo_rating_4), int(twentythree_rating_4)]
         agent_table_4_total = round(sum(agent_table_4_total)/23,2)
-        print(agent_table_4_total,"agent_table_4_total")
+
+        agent_score = round((agent_table_1_total+agent_table_2_total+agent_table_3_total+agent_table_4_total)/4,2)
+
         e=PartB_Appraisee.objects.get(emp_id=user.profile.emp_id)
-        e.agent_table_1_total=agent_table_1_total
-        e.agent_table_2_total=agent_table_2_total
-        e.agent_table_3_total=agent_table_3_total
-        e.agent_table_4_total=agent_table_4_total
+        e.agent_score=agent_score
         e.one_comment=one_comment
         e.two_comment=two_comment
         e.three_comment=three_comment
@@ -673,11 +684,10 @@ def manager_part_b_save(request,id):
                                 int(mangr_twentytwo_rating_4), int(mangr_twentythree_rating_4)]
         mgr_table_4_total = round(sum(mgr_table_4_total)/23,2)
 
+        mgr_score = round((mgr_table_1_total+mgr_table_2_total+mgr_table_3_total+mgr_table_4_total)/4,2)
+
         e = PartB_Appraisee()
-        e.mgr_table_1_total = mgr_table_1_total
-        e.mgr_table_2_total = mgr_table_2_total
-        e.mgr_table_3_total = mgr_table_3_total
-        e.mgr_table_4_total = mgr_table_4_total
+        e.mgr_score = mgr_score
         e.agent = Profile.objects.get(emp_id=emp_id)
         e.emp_id = emp_id
         e.emp_name = emp_name
@@ -1034,3 +1044,48 @@ def viewAppraisal(request,id):
     profile = Profile.objects.get(emp_id=id)
     data = {"part_a": part_a,"part_b": part_b,"part_c": part_c, "profile": profile}
     return render(request, "common/viewall.html", data)
+
+def addParameters(request):
+    emp_id = request.user.profile.emp_id
+    profiles = Profile.objects.filter(emp_rm3_id=emp_id)
+    if request.method == "POST":
+        designation = request.POST["designation"]
+        parameter_1 = request.POST["parameter_1"]
+        parameter_1_score = request.POST["parameter_1_score"]
+        parameter_2 = request.POST.get("parameter_2")
+        parameter_2_score = request.POST.get("parameter_2_score")
+        parameter_3 = request.POST.get("parameter_3")
+        parameter_3_score = request.POST.get("parameter_3_score")
+        parameter_4 = request.POST.get("parameter_4")
+        parameter_4_score = request.POST.get("parameter_4_score")
+        parameter_5 = request.POST.get("parameter_5")
+        parameter_5_score = request.POST.get("parameter_5_score")
+        parameter_6 = request.POST.get("parameter_6")
+        parameter_6_score = request.POST.get("parameter_6_score")
+        for i in profiles:
+            if i.emp_desi == designation:
+                e = PartA_Appraisee.objects.create(agent=i,emp_id=i.emp_id,emp_name=i.emp_name,emp_desi=i.emp_desi,
+                                                   emp_rm1_id=i.emp_rm1_id,emp_rm2_id=i.emp_rm2_id,
+                                                   emp_rm3_id=i.emp_rm3_id,emp_process=i.emp_process,
+                                                   parameter_1=parameter_1,parameter_1_score=parameter_1_score,
+                                                   parameter_2=parameter_2, parameter_2_score=parameter_2_score,
+                                                   parameter_3=parameter_3, parameter_3_score=parameter_3_score,
+                                                   parameter_4=parameter_4, parameter_4_score=parameter_4_score,
+                                                   parameter_5=parameter_5, parameter_5_score=parameter_5_score,
+                                                   parameter_6=parameter_6, parameter_6_score=parameter_6_score)
+                e.save()
+        messages.info(request, "The Parameters Added Successfully!")
+        return redirect("/appraisal/add-parameters")
+    else:
+        designation = []
+        for i in profiles:
+            try:
+                PartA_Appraisee.objects.get( emp_rm3_id=emp_id,emp_desi=i.emp_desi)
+                pass
+            except PartA_Appraisee.DoesNotExist:
+                designation.append(i.emp_desi)
+        print(designation,"designation")
+        designation = [x for n, x in enumerate(designation) if x not in designation[:n]]
+        print(designation,"designation")
+        data = {'designation':designation}
+        return render(request, "manager/add_parameters.html", data)

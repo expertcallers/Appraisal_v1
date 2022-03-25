@@ -14,7 +14,8 @@ class Profile(models.Model):
     emp_rm3 = models.CharField(max_length=200)
     emp_rm3_id = models.CharField(max_length=30,null=True,blank=True)
     emp_process = models.CharField(max_length=200)
-    emp_doj = models.DateField()
+    process_id = models.IntegerField(null=True,blank=True)
+    emp_doj = models.DateField(null=True,blank=True)
     def __str__(self):
         return self.emp_name+" - "+self.emp_id
 
@@ -76,6 +77,9 @@ class PartA_Appraisee(models.Model):
     parameter_6_comment_agent = models.TextField(null=True,blank=True)
 
     mangr_special_comment = models.TextField(null=True)
+
+    mgr_score = models.FloatField(null=True,blank=True)
+    agent_score = models.FloatField(null=True,blank=True)
 
 class PartB_Appraisee(models.Model):
     agent = models.OneToOneField(Profile, on_delete=models.CASCADE,null=True,blank=True)
@@ -336,15 +340,8 @@ class PartB_Appraisee(models.Model):
     mangr_twentytwo_comment_4 = models.TextField(null=True,blank=True)
     mangr_twentythree_comment_4 = models.TextField(null=True,blank=True)
 
-    mgr_table_1_total = models.FloatField(null=True,blank=True)
-    mgr_table_2_total = models.FloatField(null=True,blank=True)
-    mgr_table_3_total = models.FloatField(null=True,blank=True)
-    mgr_table_4_total = models.FloatField(null=True,blank=True)
-
-    agent_table_1_total = models.FloatField(null=True,blank=True)
-    agent_table_2_total = models.FloatField(null=True,blank=True)
-    agent_table_3_total = models.FloatField(null=True,blank=True)
-    agent_table_4_total = models.FloatField(null=True,blank=True)
+    mgr_score = models.FloatField(null=True,blank=True)
+    agent_score = models.FloatField(null=True,blank=True)
 
 
 class PartC_Appraisee(models.Model):

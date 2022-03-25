@@ -38,11 +38,14 @@
                                 <td>{{i.emp_id}}</td>
                                 <td>{{i.emp_process}}</td>
                                 <td>
-                                    {% if i.mangr_revenue_rating %}
-                                    {% else %}
+                                    {% if i.agent_score != None %}
                                         <a href="/appraisal/manparta/{{i.emp_id}}" class="btn btn-sm btn-primary">Take Assessment</a>
+                                    {% else %}
+                                        Waiting for agent to complete.
                                     {% endif %}
-                                    <a href="/appraisal/view/{{i.emp_id}}" class="btn btn-sm btn-primary" target="_blank">view</a>
+                                    {% if i.mgr_score != None %}
+                                        <a href="/appraisal/view/{{i.emp_id}}" class="btn btn-sm btn-primary" target="_blank">view</a>
+                                    {% endif %}
                                 </td>
                             </tr>
                       {% endfor %}

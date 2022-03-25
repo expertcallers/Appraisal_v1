@@ -1,0 +1,200 @@
+{% extends 'manager/base_common.html' %}
+
+{% load static %}
+{% block main %}
+        <!-- page content -->
+        <div class="right_col" role="main">
+
+            <div class="page-title">
+              <div class="title_left">
+                <h3>Add Parameters</h3>
+              </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <form method="POST" action="" enctype="multipart/form-data" onsubmit="return FinalCheck();">
+                        {% csrf_token %}
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4 form-group">
+                                        <label for="designation">Select Designation</label>
+                                        <select id="designation" name="designation" class="form-control" required>
+                                            <option value="" selected disabled>Please Select</option>
+                                            {% for i in designation %}
+                                            <option value="{{i}}">{{i}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-8">
+                                        <input type="text" name="parameter_1" class="form-control" placeholder="Parameter 1" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="number" min="1" max="100" onfocusout="parameter1(this)" name="parameter_1_score" class="form-control" placeholder="score" required>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-8">
+                                        <input type="text" name="parameter_2" onfocusout="parameter2(this)" class="form-control" placeholder="Parameter 2">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="number" min="1" max="100" onfocusout="parameterScore2(this)" name="parameter_2_score" class="form-control" placeholder="score" disabled>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-8">
+                                        <input type="text" name="parameter_3" onfocusout="parameter3(this)" class="form-control" placeholder="Parameter 3">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="number" min="1" max="100" onfocusout="parameterScore3(this)" name="parameter_3_score" class="form-control" placeholder="score" disabled>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-8">
+                                        <input type="text" name="parameter_4" onfocusout="parameter4(this)" class="form-control" placeholder="Parameter 4">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="number" min="1" max="100" onfocusout="parameterScore4(this)" name="parameter_4_score" class="form-control" placeholder="score" disabled>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-8">
+                                        <input type="text" name="parameter_5" onfocusout="parameter5(this)" class="form-control" placeholder="Parameter 5">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="number" min="1" max="100" onfocusout="parameterScore5(this)" name="parameter_5_score" class="form-control" placeholder="score" disabled>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-8">
+                                        <input type="text" name="parameter_6" onfocusout="parameter6(this)" class="form-control" placeholder="Parameter 6">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="number" min="1" max="100" onfocusout="parameterScore6(this)" name="parameter_6_score" class="form-control" placeholder="score" disabled>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-4">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="submit" class="form-control btn btn-success">
+                                    </div>
+                                    <div class="col-md-4">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <!-- /page content -->
+
+
+
+
+{% endblock %}
+{% block script %}
+<script>
+var $score_1 = 0
+var $score_2 = 0
+var $score_3 = 0
+var $score_4 = 0
+var $score_5 = 0
+var $score_6 = 0
+    function parameter1(e){
+        $score_1 = e.value;
+    }
+    function parameter2(e){
+        $score = $("input[name='parameter_2_score']")
+        if (e.value != ""){
+            $score.removeAttr('disabled')
+            $score.attr('required','')
+        } else {
+            $score.val("")
+            $score.removeAttr('required')
+            $score.attr('disabled','')
+            $score_2 = 0
+        }
+    }
+    function parameter3(e){
+        $score = $("input[name='parameter_3_score']")
+        if (e.value != ""){
+            $score.removeAttr('disabled')
+            $score.attr('required','')
+        } else {
+            $score.val("")
+            $score.removeAttr('required')
+            $score.attr('disabled','')
+            $score_3 = 0
+        }
+    }
+    function parameter4(e){
+        $score = $("input[name='parameter_4_score']")
+        if (e.value != ""){
+            $score.removeAttr('disabled')
+            $score.attr('required','')
+        } else {
+            $score.val("")
+            $score.removeAttr('required')
+            $score.attr('disabled','')
+            $score_4 = 0
+        }
+    }
+
+    function parameter5(e){
+        $score = $("input[name='parameter_5_score']")
+        if (e.value != ""){
+            $score.removeAttr('disabled')
+            $score.attr('required','')
+        } else {
+            $score.val("")
+            $score.removeAttr('required')
+            $score.attr('disabled','')
+            $score_5 = 0
+        }
+    }
+    function parameter6(e){
+        $score = $("input[name='parameter_6_score']")
+        if (e.value != ""){
+            $score.removeAttr('disabled')
+            $score.attr('required','')
+        } else {
+            $score.val("")
+            $score.removeAttr('required')
+            $score.attr('disabled','')
+            $score_6 = 0
+        }
+    }
+function parameterScore2(e){
+	$score_2 = e.value
+}
+function parameterScore3(e){
+	$score_3 = e.value
+}
+function parameterScore4(e){
+	$score_4 = e.value
+}
+function parameterScore5(e){
+	$score_5 = e.value
+}
+function parameterScore6(e){
+	$score_6 = e.value
+}
+
+    function FinalCheck(){
+        $score = parseInt($score_1)+parseInt($score_2)+parseInt($score_3)+parseInt($score_4)+parseInt($score_5)+parseInt($score_6);
+        if ($score == 100) {
+            return true;
+        } else {
+            alert("The Scores don't match up to 100. Please Check and then click NEXT");
+            return false;
+        }
+    }
+</script>
+{% endblock %}
+

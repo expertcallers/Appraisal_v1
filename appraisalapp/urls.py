@@ -15,4 +15,5 @@ urlpatterns = [
     path('notice', Notice),
     path('view/<str:id>',viewAppraisal,name="view"),
     path('manager-dashboard', managerDashboard),
+    path('add-parameters', addParameters),
 ]
