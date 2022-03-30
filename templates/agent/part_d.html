@@ -35,190 +35,11 @@
 				{% include 'common/emp_details.html' %}
 				<div class="col-md-3 next_sticky"></div>
 				<div class="col-md-8 secquestions">
-					<div class="row">
-						<div class="col-md-12" align="center">
-							<h3>PART - D </h3>
-							<h4>INDIVIDUAL DEVELOPMENT PLAN - IDP</h4>
-							<h4>(Developed by the supervisor in agreement with the employee)</h4>
-						</div>
-					</div>
-					<div class="row mt-3 mb-3">
-						<div class="col-md-12">
-							<strong>a. Summary of Strengths and Development needs arising out of employee’s performance    discussed and agreed upon:</strong>
-						</div>
-					</div>
 					<form method="post" action="/appraisal/partd">
 						{% csrf_token %}
 						<div class="row">
 							<div class="col-md-12">
-								<table class="table table-bordered">
-								  <thead>
-								    <tr>
-								      <th scope="col" class="text-center align-middle" colspan="2">Strengths</th>
-								      <th scope="col" class="text-center align-middle" colspan="2">Improvement Areas<br><span style="font-size: 12px;">(Skill & Knowledge to be acquired)</span></th>
-								    </tr>
-								  </thead>
-								  <tbody>
-								    <tr>
-								      <td class="text-center align-middle" colspan="2">
-								      	<textarea class="form-control" rows="10" name="strengths"></textarea>
-								      </td>
-								      <td class="text-center align-middle" colspan="2">
-								      	<textarea class="form-control" rows="10" name="improvement"></textarea>
-								      </td>
-								    </tr>
-								    <tr>
-								      <th class="text-center align-middle">Development Need<br><span style="font-size: 12px;">(Skill & Knowledge to be acquired)</span></th>
-								      <th class="text-center align-middle">Action Plan</th>
-								      <th class="text-center align-middle">Responsibility Time Frame</th>
-								      <th class="text-center align-middle">Desired Level</th>
-								    </tr>
-								    <tr>
-								      <td class="text-center align-middle">
-								      	<input type="text" name="development1" class="form-control">
-								      </td>
-								      <td class="text-center align-middle">
-								      	<input type="text" name="action1" class="form-control">
-								      </td>
-								      <td class="text-center align-middle">
-								      	<input type="text" name="responsibility1" class="form-control">
-								      </td>
-								      <td class="text-center align-middle">
-								      	<input type="text" name="desired1" class="form-control">
-								      </td>
-								    </tr>
-								    <tr>
-								      <td class="text-center align-middle">
-								      	<input type="text" name="development2" class="form-control">
-								      </td>
-								      <td class="text-center align-middle">
-								      	<input type="text" name="action2" class="form-control">
-								      </td>
-								      <td class="text-center align-middle">
-								      	<input type="text" name="responsibility2" class="form-control">
-								      </td>
-								      <td class="text-center align-middle">
-								      	<input type="text" name="desired2" class="form-control">
-								      </td>
-								    </tr>
-								    <tr>
-								      <td class="text-center align-middle">
-								      	<input type="text" name="development3" class="form-control">
-								      </td>
-								      <td class="text-center align-middle">
-								      	<input type="text" name="action3" class="form-control">
-								      </td>
-								      <td class="text-center align-middle">
-								      	<input type="text" name="responsibility3" class="form-control">
-								      </td>
-								      <td class="text-center align-middle">
-								      	<input type="text" name="desired3" class="form-control">
-								      </td>
-								    </tr>
-								    <tr>
-								      <td class="text-center align-middle">
-								      	<input type="text" name="development4" class="form-control">
-								      </td>
-								      <td class="text-center align-middle">
-								      	<input type="text" name="action4" class="form-control">
-								      </td>
-								      <td class="text-center align-middle">
-								      	<input type="text" name="responsibility4" class="form-control">
-								      </td>
-								      <td class="text-center align-middle">
-								      	<input type="text" name="desired4" class="form-control">
-								      </td>
-								    </tr>
-								  </tbody>
-								</table>
-							</div>
-							<div class="col-md-12 mt-2">
-								<strong>Please tick the block that is most appropriate for the employee based on performance, competency, & value system in the 9 Blocker</strong>
-								<table class="table table-bordered">
-								  <tbody>
-								    <tr>
-								      <th scope="row" class="text-center align-middle noribor nori pcolor" rowspan="4">Competencies & Values</th>
-								      <th scope="row" class="text-center align-middle noribor">High</th>
-								      <td class="text-center align-middle">
-								      	<input type="checkbox" name="train_identify_refitment" style="width: 60px; height: 60px;" value="Train/ Identify & refitment">
-								      	<p class="mt-2">Train/ Identify & refitment</p>
-								      </td>
-								      <td class="text-center align-middle">
-								      	<input type="checkbox" name="coach_train_redeploy" style="width: 60px; height: 60px;" value="Coach / Train / redeploy to Actualize potential">
-								      	<p class="mt-2">Coach / Train / redeploy to Actualize potential</p>
-								      </td>
-								      <td class="text-center align-middle">
-								      	<input type="checkbox" name="future_leaders" style="width: 60px; height: 60px;" value="Future Leaders. Move to higher role. Accelerate Opportunity">
-								      	<p class="mt-2">Future Leaders. Move to higher role. Accelerate Opportunity</p>
-								      </td>
-								    </tr>
-								    <tr>
-								      <th scope="row" class="text-center align-middle noribor">Medium</th>
-								      <td class="text-center align-middle">
-								      	<input type="checkbox" name="need_development" style="width: 60px; height: 60px;" value="Need Development Identify skills gap/ Train">
-								      	<p class="mt-2">Need Development Identify skills gap/ Train</p>
-								      </td>
-								      <td class="text-center align-middle">
-								      	<input type="checkbox" name="solid_citizens_1" style="width: 60px; height: 60px;" value="Solid citizens. Train to sustain performance">
-								      	<p class="mt-2">Solid citizens. Train to sustain performance</p>
-								      </td>
-								      <td class="text-center align-middle">
-								      	<input type="checkbox" name="solid_citizens_2" style="width: 60px; height: 60px;" value="Solid citizens. Train to sustain performance">
-								      	<p class="mt-2">Solid citizens. Train to sustain performance</p>
-								      </td>
-								    </tr>
-								    <tr>
-								      <th scope="row" class="text-center align-middle noribor">Low</th>
-								      <td class="text-center align-middle">
-								      	<input type="checkbox" name="no_scope_improvement" style="width: 60px; height: 60px;" value="No scope for improvement">
-								      	<p class="mt-2">No scope for improvement</p>
-								      </td>
-								      <td class="text-center align-middle">
-								      	<input type="checkbox" name="need_development_coach" style="width: 60px; height: 60px;" value="Need Development Coach on Values and improve performance">
-								      	<p class="mt-2">Need Development Coach on Values and improve performance</p>
-								      </td>
-								      <td class="text-center align-middle">
-								      	<input type="checkbox" name="coach_on_value" style="width: 60px; height: 60px;" value="Coach on Values. Train to sustain performance">
-								      	<p class="mt-2">Coach on Values. Train to sustain performance</p>
-								      </td>
-								    </tr>
-								    <tr>
-								      <th scope="row" class="text-center align-middle noribor nori" ></th>
-								      <th class="text-center align-middle nobobor">Low</th>
-								      <th class="text-center align-middle nobobor">Medium</th>
-								      <th class="text-center align-middle nobobor">High</th>
-								    </tr>
-								    <tr>
-								    	<td class="text-center align-middle nobobor notp"></td>
-								    	<th class="text-center align-middle nobobor notp pcolor" colspan="4">Performance</th>
-								    </tr>
-								  </tbody>
-								</table>
-							</div>
-							<div class="col-md-12">
-								<strong>Training/ Learning Identification need by the L&D:</strong>
-							</div>
-							<div class="col-md-12 mb-3">
-								<table class="table table-bordered">
-									<thead>
-										<th>Sl No.</th>
-										<th>Training Type/Title</th>
-										<th>Time frame</th>
-									</thead>
-									<tbody id="myTable">
-										<tr>
-											<td>1</td>
-											<td><input type="text" name="traing_type_1" class="form-control"></td>
-											<td><input type="text" name="traing_time_1" class="form-control"></td>
-										</tr>
-									</tbody>
-								</table>
-								<div align="center">
-									<input class="btn btn-success btn-sm" onclick="addField()" value="Add More">	
-								</div>
-							</div>
-							<div class="col-md-12">
-								<h4 align="center">2. Development Succession Program</h4>
+								<h4 align="center">Development Succession Program</h4>
 								<h5>Ask yourself the following questions:</h5>
 								<ol>
 									<li>What direction is ECPL Customer going and what will the organization need from you in 2 years’ time?</li>
@@ -228,7 +49,7 @@
 								</ol>
 							</div>
 							<div class="col-md-12">
-								<strong>a. Roles that Appraisee aspires to move into (To be filled by Appraisee):</strong>
+								<strong>Roles that Appraisee aspires to move into (To be filled by Appraisee):</strong>
 							</div>
 							<div class="col-md-12">
 								<table class="table table-bordered">
@@ -246,29 +67,6 @@
 											<td><textarea class="form-control" name="appraisee_roles" rows="4" placeholder="If multiple seperate with comma"></textarea></td>
 											<td><textarea class="form-control" name="appraisee_skills_required" rows="4" placeholder="If multiple seperate with comma"></textarea></td>
 											<td><textarea class="form-control" name="appraisee_time_frame" rows="4" placeholder="If multiple seperate with comma"></textarea></td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-							<div class="col-md-12">
-								<strong>b. Roles that the Appraisee can move into (To be filled by Appraiser):</strong>
-							</div>
-							<div class="col-md-12">
-								<table class="table table-bordered">
-									<thead>
-										<tr>
-											<th class="text-center align-middle">Sl.</th>
-											<th class="text-center align-middle">Roles</th>
-											<th class="text-center align-middle">Skills Required</th>
-											<th class="text-center align-middle">Time frame<br>(between 1 & 3 years)</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>1</td>
-											<td><textarea class="form-control" name="" readonly rows="4" placeholder="If multiple seperate with comma"></textarea></td>
-											<td><textarea class="form-control" name="" readonly rows="4" placeholder="If multiple seperate with comma"></textarea></td>
-											<td><textarea class="form-control" name="" readonly rows="4" placeholder="If multiple seperate with comma"></textarea></td>
 										</tr>
 									</tbody>
 								</table>
@@ -294,7 +92,7 @@
 								<div class="form-group">
 									<label for="feedback">Comments and Feedbacks </label>
 								    <textarea rows="4" class="form-control" name="feedback" id="feedback"></textarea>
-								</div>	
+								</div>
 							</div>
 							<div class="col-md-12 mt-5 " align="center">
 								<div class="form-group">
@@ -336,17 +134,25 @@
 		  } else {
 		    $box.prop("checked", false);
 		  }
+		  if ($box.value == "Disagree") {
+			$(".additionalfa").removeAttr("disabled");
+			$(".additionalfa").attr("required", "");
+			$(".additionalfa").focus();
+		  } else {
+			$(".additionalfa").attr("disabled", "disabled");
+			$(".additionalfa").removeAttr("required");
+		  }
 		});
 		$(function () {
-        $(".additionalf").click(function () {
-            if ($(this).is(":checked")) {
-                $(".additionalfa").removeAttr("disabled");
-                $(".additionalfa").focus();
-            } else {
-                $(".additionalfa").attr("disabled", "disabled");
-            }
-        });
-    });
+			$(".additionalf").click(function () {
+				if ($(this).is(":checked")) {
+					$(".additionalfa").removeAttr("disabled");
+					$(".additionalfa").focus();
+				} else {
+					$(".additionalfa").attr("disabled", "disabled");
+				}
+			});
+    	});
 		
 	</script>
 {% endblock %}

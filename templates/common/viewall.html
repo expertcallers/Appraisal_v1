@@ -1,6 +1,6 @@
-{% load static %}
 <!DOCTYPE html>
 <html>
+{% load static %}
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,8 +9,10 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css">
-	<link rel="stylesheet" type="text/css" href="{% static 'appraisal/css/main.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'dash/css/main.css' %}">
 	<style type="text/css">
+		html {
+		}
 		body {
 			padding: 0 80px 80px 80px;
 		}
@@ -40,6 +42,18 @@
 		      <li class="nav-item">
 		        <a class="nav-link" href="#partd">Part D</a>
 		      </li>
+			  {% if profile.emp_id == request.user.profile.emp_id %}
+		      <li class="nav-item">
+		        <a class="nav-link" href="#agent_agreement">None</a>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link" href="/appraisal">Logout</a>
+		      </li>
+			  {% else %}
+		      <li class="nav-item">
+		        <a class="nav-link" href="/appraisal/dashboard">Back to Dashboard</a>
+		      </li>
+			  {% endif %}
 		    </ul>
 		  </div>
 		</nav>
@@ -67,19 +81,19 @@
 							<div class="col-md-6">
 								<div class="form-group">
 									<label for="sup_desg">Supervisor’s Designation:</label>
-									<input type="text" class="form-control" name="sup_desg" disabled value="{{part_a.supervisor_desig}}">
+									<input type="text" class="form-control" id="sup_desg" disabled value="{{part_a.supervisor_desig}}">
 								</div>
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
 									<label for="rev_name">Reviewer’s Name:</label>
-									<input type="text" class="form-control" name="rev_name" disabled value="{{part_a.reviewers_name}}">
+									<input type="text" class="form-control" id="rev_name" disabled value="{{part_a.reviewers_name}}">
 								</div>
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
 									<label for="rev_desg">Reviewer’s Designation:</label>
-									<input type="text" class="form-control" name="rev_desg" disabled value="{{part_a.reviewers_desig}}">
+									<input type="text" class="form-control" id="rev_desg" disabled value="{{part_a.reviewers_desig}}">
 								</div>
 							</div>
 						</div>
@@ -104,124 +118,138 @@
 									  <th scope="col" class="text-center">Appraisee’s Comments</th>
 									  <th scope="col" class="text-center">Appraisers Comments</th>
 									</tr>
+
 									<tr>
 									  <th scope="row">1</th>
-									  <td>Revenue</td>
-									  <td>20%</td>
-									  <td>
-										<p>Agent rating:<br> {{part_a.revenue_rating}}</p>
-										<p>Reviewer's rating:<br>{{part_a.mangr_revenue_rating}}</p>
+									  <td>{{part_a.parameter_1}}</td>
+									  <td>{{part_a.parameter_1_score}}%</td>
+									  <td align="center">
+										<p>Agent rating:<br> {{part_a.parameter_1_rating_agent}}</p>
+										<p>Reviewer's rating:<br>{{part_a.parameter_1_rating}}</p>
 									  </td>
 									  <td>
 										<div class="form-group">
-											<textarea rows="3" class="form-control" disabled>{{part_a.revenue_apcomment}}</textarea>
+											<textarea rows="3" class="form-control" disabled>{{part_a.parameter_1_comment_agent}}</textarea>
 										</div>
 									  </td>
 									  <td>
 										<div class="form-group">
-											<textarea rows="3" class="form-control" disabled>{{part_a.mangr_revenue_apcomment}}</textarea>
+											<textarea rows="3" class="form-control" disabled>{{part_a.parameter_1_comment}}</textarea>
 										</div>
 									  </td>
 									</tr>
+									{% if part_a.parameter_2 %}
 									<tr>
 									  <th scope="row">2</th>
-									  <td>EBITDA</td>
-									  <td>20%</td>
-									  <td>
-										<p>Agent rating:<br>{{part_a.ebitda_rating}}</p>
-										<p>Reviewer's rating:<br>{{part_a.mangr_ebitda_rating}} </p>
+									  <td>{{part_a.parameter_2}}</td>
+									  <td>{{part_a.parameter_2_score}}%</td>
+									  <td align="center">
+										<p>Agent rating:<br> {{part_a.parameter_2_rating_agent}}</p>
+										<p>Reviewer's rating:<br>{{part_a.parameter_2_rating}}</p>
 									  </td>
 									  <td>
 										<div class="form-group">
-											<textarea rows="3" class="form-control" disabled>{{part_a.ebitda_apcomment}}</textarea>
+											<textarea rows="3" class="form-control" disabled>{{part_a.parameter_2_comment_agent}}</textarea>
 										</div>
 									  </td>
 									  <td>
 										<div class="form-group">
-											<textarea rows="3" class="form-control" disabled>{{part_a.mangr_ebitda_apcomment}}</textarea>
+											<textarea rows="3" class="form-control" disabled>{{part_a.parameter_2_comment}}</textarea>
 										</div>
 									  </td>
 									</tr>
+									{% endif %}
+									{% if part_a.parameter_3 %}
 									<tr>
 									  <th scope="row">3</th>
-									  <td>Attrition</td>
-									  <td>10%</td>
-									  <td>
-										<p>Agent rating:<br>{{part_a.attrition_rating}} </p>
-										<p>Reviewer's rating:<br>{{part_a.mangr_attrition_rating}} </p>
+									  <td>{{part_a.parameter_3}}</td>
+									  <td>{{part_a.parameter_3_score}}%</td>
+									  <td align="center">
+										<p>Agent rating:<br> {{part_a.parameter_3_rating_agent}}</p>
+										<p>Reviewer's rating:<br>{{part_a.parameter_3_rating}}</p>
 									  </td>
 									  <td>
 										<div class="form-group">
-											<textarea rows="3" class="form-control" disabled>{{part_a.attrition_apcomment}}</textarea>
+											<textarea rows="3" class="form-control" disabled>{{part_a.parameter_3_comment_agent}}</textarea>
 										</div>
 									  </td>
 									  <td>
 										<div class="form-group">
-											<textarea rows="3" class="form-control" disabled>{{part_a.mangr_attrition_apcomment}}</textarea>
+											<textarea rows="3" class="form-control" disabled>{{part_a.parameter_3_comment}}</textarea>
 										</div>
 									  </td>
 									</tr>
+									{% endif %}
+									{% if part_a.parameter_4 %}
 									<tr>
 									  <th scope="row">4</th>
-									  <td>Absenteeism</td>
-									  <td>10%</td>
-									  <td>
-										<p>Agent rating:<br>{{part_a.absenteeism_rating}} </p>
-										<p>Reviewer's rating:<br>{{part_a.mangr_absenteeism_rating}} </p>
+									  <td>{{part_a.parameter_4}}</td>
+									  <td>{{part_a.parameter_4_score}}%</td>
+									  <td align="center">
+										<p>Agent rating:<br> {{part_a.parameter_4_rating_agent}}</p>
+										<p>Reviewer's rating:<br>{{part_a.parameter_4_rating}}</p>
 									  </td>
 									  <td>
 										<div class="form-group">
-											<textarea rows="3" class="form-control" disabled>{{part_a.absenteeism_apcomment}}</textarea>
+											<textarea rows="3" class="form-control" disabled>{{part_a.parameter_4_comment_agent}}</textarea>
 										</div>
 									  </td>
 									  <td>
 										<div class="form-group">
-											<textarea rows="3" class="form-control" disabled>{{part_a.mangr_absenteeism_apcomment}}</textarea>
+											<textarea rows="3" class="form-control" disabled>{{part_a.parameter_4_comment}}</textarea>
 										</div>
 									  </td>
 									</tr>
+									{% endif %}
+									{% if part_a.parameter_5 %}
 									<tr>
 									  <th scope="row">5</th>
-									  <td>Schedule Adherence</td>
-									  <td>10%</td>
-									  <td>
-										<p>Agent rating:<br>{{part_a.scheduleadherence_rating}} </p>
-										<p>Reviewer's rating:<br>{{part_a.mangr_scheduleadherence_rating}} </p>
+									  <td>{{part_a.parameter_5}}</td>
+									  <td>{{part_a.parameter_5_score}}%</td>
+									  <td align="center">
+										<p>Agent rating:<br> {{part_a.parameter_5_rating_agent}}</p>
+										<p>Reviewer's rating:<br>{{part_a.parameter_5_rating}}</p>
 									  </td>
 									  <td>
 										<div class="form-group">
-											<textarea rows="3" class="form-control" disabled>{{part_a.scheduleadherence_apcomment}}</textarea>
+											<textarea rows="3" class="form-control" disabled>{{part_a.parameter_5_comment_agent}}</textarea>
 										</div>
 									  </td>
 									  <td>
 										<div class="form-group">
-											<textarea rows="3" class="form-control" disabled>{{part_a.mangr_scheduleadherence_apcomment}}</textarea>
+											<textarea rows="3" class="form-control" disabled>{{part_a.parameter_5_comment}}</textarea>
 										</div>
 									  </td>
 									</tr>
-									<!-- <tr>
+									{% endif %}
+									{% if part_a.parameter_6 %}
+									<tr>
 									  <th scope="row">6</th>
-									  <td>xyx</td>
-									  <td>30%</td>
-									  <td></td>
+									  <td>{{part_a.parameter_6}}</td>
+									  <td>{{part_a.parameter_6_score}}%</td>
+									  <td align="center">
+										<p>Agent rating:<br> {{part_a.parameter_6_rating_agent}}</p>
+										<p>Reviewer's rating:<br>{{part_a.parameter_6_rating}}</p>
+									  </td>
 									  <td>
 										<div class="form-group">
-											<textarea rows="3" class="form-control" name="xyx_com"></textarea>
+											<textarea rows="3" class="form-control" disabled>{{part_a.parameter_6_comment_agent}}</textarea>
 										</div>
 									  </td>
 									  <td>
 										<div class="form-group">
-											<textarea rows="3" class="form-control" readonly></textarea>
+											<textarea rows="3" class="form-control" disabled>{{part_a.parameter_6_comment}}</textarea>
 										</div>
 									  </td>
-									</tr> -->
+									</tr>
+									{% endif %}
 								  </tbody>
 								</table>
 							</div>
 							<div class="col-md-12">
 								<div class="form-group">
 									<label for="Spe_other">Any other Special contributions (To be filled by the Appraiser):</label>
-									<textarea rows="4" class="form-control" name="Spe_other" disabled id="Spe_other">{{part_a.mangr_specialcomment}}</textarea>
+									<textarea rows="4" class="form-control" name="Spe_other" disabled id="Spe_other">{{part_a.mangr_special_comment}}</textarea>
 								</div>
 							</div>
 						</div>
@@ -1341,10 +1369,10 @@
 					</div>
 					<div class="secquestions mb-4" id="partc">
 						<div class="row">
-						<div class="col-md-12" align="center">
-							<h3>PART - C <span style="font-size: 18px;"> <strong>(ECPL Values - Review & Rating)</strong></span></h3>
+							<div class="col-md-12" align="center">
+								<h3>PART - C <span style="font-size: 18px;"> <strong>(ECPL Values - Review & Rating)</strong></span></h3>
+							</div>
 						</div>
-					</div>
 						<div class="row">
 							<div class="col-md-12">
 								<table class="table table-bordered">
@@ -1510,6 +1538,425 @@
 							</div> -->
 						</div>
 					</div>
+
+
+					<div class="secquestions mb-4" id="partd">
+						<div class="row">
+							<div class="col-md-12" align="center">
+								<h3>PART - D </h3>
+								<h4>INDIVIDUAL DEVELOPMENT PLAN - IDP</h4>
+								<h4>(Developed by the supervisor in agreement with the employee)</h4>
+							</div>
+						</div>
+						<div class="row mt-3 mb-3">
+							<div class="col-md-12">
+								<strong>a. Summary of Strengths and Development needs arising out of employee’s performance    discussed and agreed upon:</strong>
+							</div>
+						</div>
+							<div class="col-md-12">
+								<table class="table table-bordered">
+								  <thead>
+									<tr>
+									  <th scope="col" class="text-center align-middle" colspan="2">Strengths</th>
+									  <th scope="col" class="text-center align-middle" colspan="2">Improvement Areas<br><span style="font-size: 12px;">(Skill & Knowledge to be acquired)</span></th>
+									</tr>
+								  </thead>
+								  <tbody>
+									<tr>
+									  <td class="text-center align-middle" colspan="2">
+										<textarea class="form-control" rows="10" name="strengths" disabled>{{partd.strengths}}</textarea>
+									  </td>
+									  <td class="text-center align-middle" colspan="2">
+										<textarea class="form-control" rows="10" name="improvement" disabled>{{partd.improvement_areas}}</textarea>
+									  </td>
+									</tr>
+									<tr>
+									  <th class="text-center align-middle">Development Need<br><span style="font-size: 12px;">(Skill & Knowledge to be acquired)</span></th>
+									  <th class="text-center align-middle">Action Plan</th>
+									  <th class="text-center align-middle">Responsibility Time Frame</th>
+									  <th class="text-center align-middle">Desired Level</th>
+									</tr>
+									<tr>
+									  <td class="text-center align-middle">
+										<input type="text" name="development1" value="{{partd.development_need_1}}" class="form-control" disabled>
+									  </td>
+									  <td class="text-center align-middle">
+										<input type="text" name="action1" value="{{partd.action_plan_1}}" class="form-control" disabled>
+									  </td>
+									  <td class="text-center align-middle">
+										<input type="text" name="responsibility1" value="{{partd.responsibility_time_1}}" class="form-control" disabled>
+									  </td>
+									  <td class="text-center align-middle">
+										<input type="text" name="desired1" value="{{partd.desired_level_1}}" class="form-control" disabled>
+									  </td>
+									</tr>
+									{% if partd.development_need_2 %}
+									<tr>
+									  <td class="text-center align-middle">
+										<input type="text" name="development2" value="{{partd.development_need_2}}" class="form-control" disabled>
+									  </td>
+									  <td class="text-center align-middle">
+										<input type="text" name="action2" value="{{partd.action_plan_2}}" class="form-control" disabled>
+									  </td>
+									  <td class="text-center align-middle">
+										<input type="text" name="responsibility2" value="{{partd.responsibility_time_2}}" class="form-control" disabled>
+									  </td>
+									  <td class="text-center align-middle">
+										<input type="text" name="desired2" value="{{partd.desired_level_2}}" class="form-control" disabled>
+									  </td>
+									</tr>
+									{% endif %}
+									{% if partd.development_need_3 %}
+									<tr>
+									  <td class="text-center align-middle">
+										<input type="text" name="development3" value="{{partd.development_need_3}}" class="form-control" disabled>
+									  </td>
+									  <td class="text-center align-middle">
+										<input type="text" name="action3" value="{{partd.action_plan_3}}" class="form-control" disabled>
+									  </td>
+									  <td class="text-center align-middle">
+										<input type="text" name="responsibility3" value="{{partd.responsibility_time_3}}" class="form-control" disabled>
+									  </td>
+									  <td class="text-center align-middle">
+										<input type="text" name="desired3" value="{{partd.desired_level_3}}" class="form-control" disabled>
+									  </td>
+									</tr>
+									{% endif %}
+									{% if partd.development_need_4 %}
+									<tr>
+									  <td class="text-center align-middle">
+										<input type="text" name="development4" value="{{partd.development_need_4}}" class="form-control" disabled>
+									  </td>
+									  <td class="text-center align-middle">
+										<input type="text" name="action4" value="{{partd.action_plan_4}}" class="form-control" disabled>
+									  </td>
+									  <td class="text-center align-middle">
+										<input type="text" name="responsibility4" value="{{partd.responsibility_time_4}}" class="form-control" disabled>
+									  </td>
+									  <td class="text-center align-middle">
+										<input type="text" name="desired4" value="{{partd.desired_level_4}}" class="form-control" disabled>
+									  </td>
+									</tr>
+									{% endif %}
+								  </tbody>
+								</table>
+							</div>
+							<div class="col-md-12 mt-2">
+								<strong>Please tick the block that is most appropriate for the employee based on performance, competency, & value system in the 9 Blocker</strong>
+								<table class="table table-bordered">
+								  <tbody>
+									<tr>
+									  <th scope="row" class="text-center align-middle noribor nori pcolor" rowspan="4">Competencies & Values</th>
+									  <th scope="row" class="text-center align-middle noribor">High</th>
+									  <td class="text-center align-middle">
+										<input type="checkbox" onclick="return false" {% if partd.checkbox == 'Train/ Identify & refitment' %} checked {% endif %} style="width: 60px; height: 60px;">
+										<p class="mt-2">Train/ Identify & refitment</p>
+									  </td>
+									  <td class="text-center align-middle">
+										<input type="checkbox" onclick="return false" {% if partd.checkbox == 'Coach / Train / redeploy to Actualize potential' %} checked {% endif %} style="width: 60px; height: 60px;">
+										<p class="mt-2">Coach / Train / redeploy to Actualize potential</p>
+									  </td>
+									  <td class="text-center align-middle">
+										<input type="checkbox" onclick="return false" {% if partd.checkbox == 'Future Leaders. Move to higher role. Accelerate Opportunity' %} checked {% endif %} style="width: 60px; height: 60px;">
+										<p class="mt-2">Future Leaders. Move to higher role. Accelerate Opportunity</p>
+									  </td>
+									</tr>
+									<tr>
+									  <th scope="row" class="text-center align-middle noribor">Medium</th>
+									  <td class="text-center align-middle">
+										<input type="checkbox" onclick="return false" {% if partd.checkbox == 'Need Development Identify skills gap/ Train' %} checked {% endif %} style="width: 60px; height: 60px;">
+										<p class="mt-2">Need Development Identify skills gap/ Train</p>
+									  </td>
+									  <td class="text-center align-middle">
+										<input type="checkbox" onclick="return false" {% if partd.checkbox == 'Solid citizens. Train to sustain performance' %} checked {% endif %} style="width: 60px; height: 60px;">
+										<p class="mt-2">Solid citizens. Train to sustain performance</p>
+									  </td>
+									  <td class="text-center align-middle">
+										<input type="checkbox" onclick="return false" {% if partd.checkbox == 'Solid citizens. Train to sustain performance' %} checked {% endif %} style="width: 60px; height: 60px;">
+										<p class="mt-2">Solid citizens. Train to sustain performance</p>
+									  </td>
+									</tr>
+									<tr>
+									  <th scope="row" class="text-center align-middle noribor">Low</th>
+									  <td class="text-center align-middle">
+										<input type="checkbox" onclick="return false" {% if partd.checkbox == 'No scope for improvement' %} checked {% endif %} style="width: 60px; height: 60px;">
+										<p class="mt-2">No scope for improvement</p>
+									  </td>
+									  <td class="text-center align-middle">
+										<input type="checkbox" onclick="return false" {% if partd.checkbox == 'Need Development Coach on Values and improve performance' %} checked {% endif %} style="width: 60px; height: 60px;">
+										<p class="mt-2">Need Development Coach on Values and improve performance</p>
+									  </td>
+									  <td class="text-center align-middle">
+										<input type="checkbox" onclick="return false" {% if partd.checkbox == 'Coach on Values. Train to sustain performance' %} checked {% endif %} style="width: 60px; height: 60px;">
+										<p class="mt-2">Coach on Values. Train to sustain performance</p>
+									  </td>
+									</tr>
+									<tr>
+									  <th scope="row" class="text-center align-middle noribor nori" ></th>
+									  <th class="text-center align-middle nobobor">Low</th>
+									  <th class="text-center align-middle nobobor">Medium</th>
+									  <th class="text-center align-middle nobobor">High</th>
+									</tr>
+									<tr>
+										<td class="text-center align-middle nobobor notp"></td>
+										<th class="text-center align-middle nobobor notp pcolor" colspan="4">Performance</th>
+									</tr>
+								  </tbody>
+								</table>
+							</div>
+							<div class="col-md-12">
+								<strong>Training/ Learning Identification need by the L&D:</strong>
+							</div>
+							<div class="col-md-12 mb-3">
+								<table class="table table-bordered">
+									<thead>
+										<th>Sl No.</th>
+										<th>Training Type/Title</th>
+										<th>Time frame</th>
+									</thead>
+									<tbody id="myTable">
+										<tr>
+											<td>1</td>
+											<td><input type="text" value="{{partd.traing_type_1}}" class="form-control" disabled></td>
+											<td><input type="text" value="{{partd.traing_time_1}}" class="form-control" disabled></td>
+										</tr>
+										{% if partd.traing_type_2 %}
+										<tr>
+											<td>2</td>
+											<td><input type="text" value="{{partd.traing_type_2}}" class="form-control" disabled></td>
+											<td><input type="text" value="{{partd.traing_time_2}}" class="form-control" disabled></td>
+										</tr>
+										{% endif %}
+										{% if partd.traing_type_3 %}
+										<tr>
+											<td>3</td>
+											<td><input type="text" value="{{partd.traing_type_3}}" class="form-control" disabled></td>
+											<td><input type="text" value="{{partd.traing_time_3}}" class="form-control" disabled></td>
+										</tr>
+										{% endif %}
+										{% if partd.traing_type_4 %}
+										<tr>
+											<td>4</td>
+											<td><input type="text" value="{{partd.traing_type_4}}" class="form-control" disabled></td>
+											<td><input type="text" value="{{partd.traing_time_4}}" class="form-control" disabled></td>
+										</tr>
+										{% endif %}
+										{% if partd.traing_type_5 %}
+										<tr>
+											<td>5</td>
+											<td><input type="text" value="{{partd.traing_type_5}}" class="form-control" disabled></td>
+											<td><input type="text" value="{{partd.traing_time_5}}" class="form-control" disabled></td>
+										</tr>
+										{% endif %}
+									</tbody>
+								</table>
+							</div>
+							<div class="col-md-12">
+								<h4 align="center">2. Development Succession Program</h4>
+								<h5>Ask yourself the following questions:</h5>
+								<ol>
+									<li>What direction is ECPL Customer going and what will the organization need from you in 2 years’ time?</li>
+									<li>What are your goals over the next 2 years? (This question is crucial to providing a motivational focus for everything that you do.)</li>
+									<li>What are your greatest strengths and how can you build on them more effectively?</li>
+									<li>Do you have any serious weaknesses that make it difficult to do your job or will prevent you from reaching your goals?</li>
+								</ol>
+							</div>
+							<div class="col-md-12">
+								<strong>Roles that the Appraisee can move into (To be filled by Appraiser):</strong>
+							</div>
+							<div class="col-md-12">
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th>Sl.</th>
+											<th>Roles</th>
+											<th>Skills Required</th>
+											<th>Time frame</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>1</td>
+											<td><textarea class="form-control" disabled rows="4">{{partd.mgr_appraisee_roles}}</textarea></td>
+											<td><textarea class="form-control" disabled rows="4">{{partd.mgr_appraisee_skills_required}}</textarea></td>
+											<td><textarea class="form-control" disabled rows="4">{{partd.mgr_appraisee_time_frame}}</textarea></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="col-md-12 mt-3">
+								<div class="form-group">
+									<label for="feedback">Comments and Feedbacks </label>
+									<textarea rows="4" class="form-control" name="feedback" id="feedback" disabled>{{partd.mgr_comments_feedback}}</textarea>
+								</div>
+							</div>
+<!--							<div class="col-md-12 mt-5 " align="center">-->
+<!--								<div class="form-group">-->
+<!--									<button type="submit" class="btn btn-success btn-lg">Final Submit</button>-->
+<!--								</div>-->
+<!--							</div>-->
+						</div>
+
+
+					{% if profile.emp_id == request.user.profile.emp_id %}
+					<div class="secquestions mb-4" id="agent_agreement">
+						<div class="row">
+							<div class="col-md-12">
+								{% if partd.comments_feedback == None %}
+								<form method="post" action="/appraisal/partd">
+									{% csrf_token %}
+								{% endif %}
+									<div class="row">
+										<div class="col-md-12">
+											<h4 align="center">Development Succession Program</h4>
+											<h5>Ask yourself the following questions:</h5>
+											<ol>
+												<li>What direction is ECPL Customer going and what will the organization need from you in 2 years’ time?</li>
+												<li>What are your goals over the next 2 years? (This question is crucial to providing a motivational focus for everything that you do.)</li>
+												<li>What are your greatest strengths and how can you build on them more effectively?</li>
+												<li>Do you have any serious weaknesses that make it difficult to do your job or will prevent you from reaching your goals?</li>
+											</ol>
+										</div>
+										<div class="col-md-12">
+											<strong>Roles that Appraisee aspires to move into (To be filled by Appraisee):</strong>
+										</div>
+										<div class="col-md-12">
+											<table class="table table-bordered">
+												<thead>
+													<tr>
+														<th>Sl.</th>
+														<th>Roles</th>
+														<th>Skills Required</th>
+														<th>Time frame</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>1</td>
+														<td><textarea class="form-control" {% if partd.comments_feedback != None %}disabled{% endif %} name="appraisee_roles" rows="4" placeholder="If multiple seperate with comma">{% if partd.appraisee_roles != None %}{{partd.appraisee_roles}}{% else %}{% endif %}</textarea></td>
+														<td><textarea class="form-control" {% if partd.comments_feedback != None %}disabled{% endif %} name="appraisee_skills_required" rows="4" placeholder="If multiple seperate with comma">{% if partd.appraisee_skills_required != None %}{{partd.appraisee_skills_required}}{% else %}{% endif %}</textarea></td>
+														<td><textarea class="form-control" {% if partd.comments_feedback != None %}disabled{% endif %} name="appraisee_time_frame" rows="4" placeholder="If multiple seperate with comma">{% if partd.appraisee_time_frame != None %}{{partd.appraisee_time_frame}}{% else %}{% endif %}</textarea></td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										<div class="col-md-12" align="center">
+											<strong>To be filled by Appraisee</strong>
+											<p>Please read the statement below and tick the appropriate box indicating your opinion</p>
+											<p>“The ratings and comments in this appraisal are a fair and reasonable assessment of my work performance and development needs”.</p>
+											<div>
+												<input type="checkbox" name="rating" {% if partd.comments_feedback != None %}disabled{% endif %} {% if partd.agree == "Agree" %}checked{% endif %} value="Agree" class="mycheck"><span class="ml-2 mr-4">Agree</span>
+												<input type="checkbox" name="rating" {% if partd.comments_feedback != None %}disabled{% endif %} {% if partd.agree == "Partly Agree" %}checked{% endif %} value="Partly Agree" class="mycheck"><span class="ml-2 mr-4">Partly Agree</span>
+												<input type="checkbox" name="rating" {% if partd.comments_feedback != None %}disabled{% endif %} {% if partd.agree == "Disagree" %}checked{% endif %} value="Disagree" class="mycheck additionalf"><span class="ml-2 mr-4" onclick="EnableDisableTextBox(this)">Disagree</span>
+											</div>
+											<div>
+												<input type="text" name="dis_com" value="{% if partd.comments_feedback != None %}{{partd.if_disagree}}{% else %}{% endif %}" required class="form-control additionalfa" disabled placeholder="If Disagree, Please Provide Comments Why?">
+											</div>
+										</div>
+										<!-- div class="col-md-12 mt-3 mb-3">
+													Please Mention your Employee ID to Digitally Sign
+													<input type="number" name="" class="form-control">
+										</div> -->
+										<div class="col-md-12 mt-3">
+											<div class="form-group">
+												<label for="feedbackag">Comments and Feedbacks </label>
+												<textarea rows="4" class="form-control" name="feedback" {% if partd.comments_feedback != None %}disabled{% endif %} id="feedbackag">{% if partd.comments_feedback != None %}{{partd.comments_feedback}}{% else %}{% endif %}</textarea>
+											</div>
+										</div>
+										<div class="col-md-12 mt-5 " align="center">
+											<div class="form-group">
+												{% if partd.comments_feedback == None %}
+												<button type="submit" class="btn btn-success btn-lg">Submit</button>
+												{% else %}
+												<a href="/appraisal" class="btn btn-danger">Logout</a>
+												{% endif %}
+											</div>
+										</div>
+									</div>
+								{% if partd.comments_feedback == None %}
+								</form>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+					{% else %}
+					<div class="secquestions mb-4" id="agent_agreement">
+						<div class="row">
+							<div class="col-md-12">
+									<div class="row">
+										<div class="col-md-12">
+											<h4 align="center">Development Succession Program</h4>
+											<h5>Ask yourself the following questions:</h5>
+											<ol>
+												<li>What direction is ECPL Customer going and what will the organization need from you in 2 years’ time?</li>
+												<li>What are your goals over the next 2 years? (This question is crucial to providing a motivational focus for everything that you do.)</li>
+												<li>What are your greatest strengths and how can you build on them more effectively?</li>
+												<li>Do you have any serious weaknesses that make it difficult to do your job or will prevent you from reaching your goals?</li>
+											</ol>
+										</div>
+										<div class="col-md-12">
+											<strong>Roles that Appraisee aspires to move into (To be filled by Appraisee):</strong>
+										</div>
+										<div class="col-md-12">
+											<table class="table table-bordered">
+												<thead>
+													<tr>
+														<th>Sl.</th>
+														<th>Roles</th>
+														<th>Skills Required</th>
+														<th>Time frame</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>1</td>
+														<td><textarea class="form-control" disabled name="appraisee_roles" rows="4" placeholder="If multiple seperate with comma">{% if partd.appraisee_roles != None %}{{partd.appraisee_roles}}{% else %}Waiting for user input{% endif %}</textarea></td>
+														<td><textarea class="form-control" disabled name="appraisee_skills_required" rows="4" placeholder="If multiple seperate with comma">{% if partd.appraisee_skills_required != None %}{{partd.appraisee_skills_required}}Waiting for user input{% else %}{% endif %}</textarea></td>
+														<td><textarea class="form-control" disabled name="appraisee_time_frame" rows="4" placeholder="If multiple seperate with comma">{% if partd.appraisee_time_frame != None %}{{partd.appraisee_time_frame}}{% else %}Waiting for user input{% endif %}</textarea></td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										<div class="col-md-12" align="center">
+											<strong>To be filled by Appraisee</strong>
+											<p>Please read the statement below and tick the appropriate box indicating your opinion</p>
+											<p>“The ratings and comments in this appraisal are a fair and reasonable assessment of my work performance and development needs”.</p>
+											<div>
+												<input type="checkbox" name="rating" disabled {% if partd.agree == "Agree" %}checked{% endif %} value="Agree" class="mycheck"><span class="ml-2 mr-4">Agree</span>
+												<input type="checkbox" name="rating" disabled {% if partd.agree == "Partly Agree" %}checked{% endif %} value="Partly Agree" class="mycheck"><span class="ml-2 mr-4">Partly Agree</span>
+												<input type="checkbox" name="rating" disabled {% if partd.agree == "Disagree" %}checked{% endif %} value="Disagree" class="mycheck additionalf"><span class="ml-2 mr-4">Disagree</span>
+											</div>
+											<div>
+												<input type="text" name="dis_com" value="{% if partd.comments_feedback != None %}{{partd.if_disagree}}{% else %}{% endif %}" required class="form-control additionalfa" disabled placeholder="If Disagree, Please Provide Comments Why?">
+											</div>
+										</div>
+										<!-- div class="col-md-12 mt-3 mb-3">
+													Please Mention your Employee ID to Digitally Sign
+													<input type="number" name="" class="form-control">
+										</div> -->
+										<div class="col-md-12 mt-3">
+											<div class="form-group">
+												<label for="feedbackag">Comments and Feedbacks </label>
+												<textarea rows="4" class="form-control" name="feedback" disabled id="feedbackag">{% if partd.comments_feedback != None %}{{partd.comments_feedback}}{% else %}Waiting for user input{% endif %}</textarea>
+											</div>
+										</div>
+										<div class="col-md-12 mt-5 " align="center">
+											<div class="form-group">
+												{% if partd.comments_feedback == None %}
+												<button type="submit" class="btn btn-success btn-lg">Submit</button>
+												{% else %}
+												<a href="/appraisal" class="btn btn-danger btn-lg">Logout</a>
+												{% endif %}
+											</div>
+										</div>
+									</div>
+								{% if partd.comments_feedback == None %}
+								</form>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+					{% endif %}
 				</div>
 			</div>
 		</div>
@@ -1518,5 +1965,48 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js"></script>
+	<script>
+		window.addEventListener("hashchange", function () {
+			window.scrollTo(window.scrollX, window.scrollY - 120)
+		});
+
+		$(".mycheck").on('click', function() {
+		  var $box = $(this);
+		  if ($box.is(":checked")) {
+		    var group = "input:checkbox[name='" + $box.attr("name") + "']";
+		    $(group).prop("checked", false);
+		    $box.prop("checked", true);
+		  } else {
+		    $box.prop("checked", false);
+		  }
+		  if ($box.value == "Disagree") {
+			$(".additionalfa").removeAttr("disabled");
+			$(".additionalfa").attr("required", "");
+			$(".additionalfa").focus();
+		  } else {
+			$(".additionalfa").attr("disabled", "disabled");
+			$(".additionalfa").removeAttr("required");
+		  }
+		});
+		$(function () {
+			$(".additionalf").click(function () {
+				if ($(this).is(":checked")) {
+					$(".additionalfa").removeAttr("disabled");
+					$(".additionalfa").attr("required", "");
+					$(".additionalfa").focus();
+				} else {
+					$(".additionalfa").attr("disabled", "disabled");
+				}
+			});
+    	});
+	</script>
+
+{% if messages %}
+	<script>
+			{% for m in messages %}
+				alert("{{m}}");
+			{% endfor %}
+	</script>
+{% endif %}
 </body>
 </html>

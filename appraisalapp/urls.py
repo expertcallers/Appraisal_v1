@@ -2,10 +2,12 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    path('', IndexPage),
+    path('', LogoutFunc),
     path('login', LoginPage),
+    path('indexing', IndexPage),
     path('parta', part_a_save),
-    path('manparta/<str:id>', manager_part_a_save),
+    path('manparta', managerPartAView),
+    path('manparta-save', managerPartASave),
     path('partb', part_b_save),
     path('manpartb/<str:id>', manager_part_b_save, name="manpartb"),
     path('partc', part_c_save),
@@ -16,4 +18,6 @@ urlpatterns = [
     path('view/<str:id>',viewAppraisal,name="view"),
     path('manager-dashboard', managerDashboard),
     path('add-parameters', addParameters),
+    path('dashboard', dashboardRedirect),
+    path('self-appraisal', selfAppraisal),
 ]

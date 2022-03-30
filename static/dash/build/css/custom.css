@@ -917,13 +917,13 @@
   display: block; }
 
 .profile_pic {
-  width: 75%;
+  width: 100%;
   float: left; }
 
 .img-circle.profile_img {
-  width: 100%;
+  width: 90%;
   background: #fff;
-  margin-left: 15%;
+  margin-left: 5%;
   z-index: 1000;
   position: inherit;
   margin-top: 20px;
@@ -932,14 +932,30 @@
 
 .profile_info {
   width: 100%;
-  text-align: center; }
+  text-align: center;
+}
 
 
 .profile_info h2 {
   font-size: 16px;
   color: #ECF0F1;
-  margin: 0;
-  font-weight: 300; }
+  padding: 0 0 0 15px;
+  font-weight: 300;
+  text-align: left;
+}
+
+.profile_info h2 i{
+  font-size: 18px;
+  margin: 0 5px 0 0;
+  text-align: center;
+  width: 24px;
+  color: #1ABB9C;
+}
+.profile_info h2 span{
+  font-weight: 600;
+  font-size: 18px;
+  color: #1ABB9C;
+}
 
 .profile.img_2 {
   text-align: center; }
@@ -5013,8 +5029,18 @@ ul.notifications {
   display: all;
 }
 
-
-
+.topcards .card-header {
+  height: 80px;
+  text-align: center;
+}
+.topcards .card-header h2 {
+  font-weight: bold;
+}
+.topcards .card-body {
+  height: 110px;
+  padding: 0.75rem;
+  text-align: center;
+}
 
 
 
@@ -5023,7 +5049,7 @@ ul.notifications {
   position: relative;
 }
 
-.imagecard { 
+.imagecard {
   z-index: 2;
   display: block;
   positioN: relative;
@@ -5044,9 +5070,15 @@ ul.notifications {
    box-shadow: 1px 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
   min-height: 215px;
 }
-#widgetCardIcon {
+.widgetCardIcon {
   background: #1ABB9C!important;
   font-size: 50px;
   line-height: 115px;
 }
 
+div.dataTables_wrapper div.dataTables_filter input {
+    width: 100% !important;
+}
+div.dataTables_wrapper div.dataTables_filter {
+    margin-right: 10px;
+}

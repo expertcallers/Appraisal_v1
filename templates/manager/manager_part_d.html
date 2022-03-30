@@ -47,7 +47,7 @@
 							<strong>a. Summary of Strengths and Development needs arising out of employee’s performance    discussed and agreed upon:</strong>
 						</div>
 					</div>
-					<form method="POST" action="/appraisal/manpartd/{{profile.emp_id}}" enctype="multipart/form-data">
+					<form method="POST" action="" enctype="multipart/form-data">
 						{% csrf_token %}
 						<div class="row">
 							<div class="col-md-12">
@@ -61,10 +61,10 @@
 								  <tbody>
 								    <tr>
 								      <td class="text-center align-middle" colspan="2">
-								      	<textarea class="form-control" rows="10" name="strengths"></textarea>
+								      	<textarea class="form-control" rows="10" name="strengths" required></textarea>
 								      </td>
 								      <td class="text-center align-middle" colspan="2">
-								      	<textarea class="form-control" rows="10" name="improvement"></textarea>
+								      	<textarea class="form-control" rows="10" name="improvement" required></textarea>
 								      </td>
 								    </tr>
 								    <tr>
@@ -75,16 +75,16 @@
 								    </tr>
 								    <tr>
 								      <td class="text-center align-middle">
-								      	<input type="text" name="development1" class="form-control">
+								      	<input type="text" name="development1" class="form-control" required>
 								      </td>
 								      <td class="text-center align-middle">
-								      	<input type="text" name="action1" class="form-control">
+								      	<input type="text" name="action1" class="form-control" required>
 								      </td>
 								      <td class="text-center align-middle">
-								      	<input type="text" name="responsibility1" class="form-control">
+								      	<input type="text" name="responsibility1" class="form-control" required>
 								      </td>
 								      <td class="text-center align-middle">
-								      	<input type="text" name="desired1" class="form-control">
+								      	<input type="text" name="desired1" class="form-control" required>
 								      </td>
 								    </tr>
 								    <tr>
@@ -140,45 +140,45 @@
 								      <th scope="row" class="text-center align-middle noribor nori pcolor" rowspan="4">Competencies & Values</th>
 								      <th scope="row" class="text-center align-middle noribor">High</th>
 								      <td class="text-center align-middle">
-								      	<input type="checkbox" class="act_radio" name="check" style="width: 60px; height: 60px;" value="Train/ Identify & refitment">
+								      	<input type="checkbox" class="act_radio" id="checkbox1" name="check" required style="width: 60px; height: 60px;" value="Train/ Identify & refitment">
 								      	<p class="mt-2">Train/ Identify & refitment</p>
 								      </td>
 								      <td class="text-center align-middle">
-								      	<input type="checkbox" class="act_radio" name="check" style="width: 60px; height: 60px;" value="Coach / Train / redeploy to Actualize potential">
+								      	<input type="checkbox" class="act_radio" id="checkbox2" name="check" required style="width: 60px; height: 60px;" value="Coach / Train / redeploy to Actualize potential">
 								      	<p class="mt-2">Coach / Train / redeploy to Actualize potential</p>
 								      </td>
 								      <td class="text-center align-middle">
-								      	<input type="checkbox" class="act_radio" name="check" style="width: 60px; height: 60px;" value="Future Leaders. Move to higher role. Accelerate Opportunity">
+								      	<input type="checkbox" class="act_radio" id="checkbox3" name="check" required style="width: 60px; height: 60px;" value="Future Leaders. Move to higher role. Accelerate Opportunity">
 								      	<p class="mt-2">Future Leaders. Move to higher role. Accelerate Opportunity</p>
 								      </td>
 								    </tr>
 								    <tr>
 								      <th scope="row" class="text-center align-middle noribor">Medium</th>
 								      <td class="text-center align-middle">
-								      	<input type="checkbox" class="act_radio" name="check" style="width: 60px; height: 60px;" value="Need Development Identify skills gap/ Train">
+								      	<input type="checkbox" class="act_radio" id="checkbox4" name="check" required style="width: 60px; height: 60px;" value="Need Development Identify skills gap/ Train">
 								      	<p class="mt-2">Need Development Identify skills gap/ Train</p>
 								      </td>
 								      <td class="text-center align-middle">
-								      	<input type="checkbox" class="act_radio" name="check" style="width: 60px; height: 60px;" value="Solid citizens. Train to sustain performance">
+								      	<input type="checkbox" class="act_radio" id="checkbox5" name="check" required style="width: 60px; height: 60px;" value="Solid citizens. Train to sustain performance">
 								      	<p class="mt-2">Solid citizens. Train to sustain performance</p>
 								      </td>
 								      <td class="text-center align-middle">
-								      	<input type="checkbox" class="act_radio" name="check" style="width: 60px; height: 60px;" value="Solid citizens. Train to sustain performance">
+								      	<input type="checkbox" class="act_radio" id="checkbox6" name="check" required style="width: 60px; height: 60px;" value="Solid citizens. Train to sustain performance">
 								      	<p class="mt-2">Solid citizens. Train to sustain performance</p>
 								      </td>
 								    </tr>
 								    <tr>
 								      <th scope="row" class="text-center align-middle noribor">Low</th>
 								      <td class="text-center align-middle">
-								      	<input type="checkbox" class="act_radio" name="check" style="width: 60px; height: 60px;" value="No scope for improvement">
+								      	<input type="checkbox" class="act_radio" id="checkbox7" name="check" required style="width: 60px; height: 60px;" value="No scope for improvement">
 								      	<p class="mt-2">No scope for improvement</p>
 								      </td>
 								      <td class="text-center align-middle">
-								      	<input type="checkbox" class="act_radio" name="check" style="width: 60px; height: 60px;" value="Need Development Coach on Values and improve performance">
+								      	<input type="checkbox" class="act_radio" id="checkbox8" name="check" required style="width: 60px; height: 60px;" value="Need Development Coach on Values and improve performance">
 								      	<p class="mt-2">Need Development Coach on Values and improve performance</p>
 								      </td>
 								      <td class="text-center align-middle">
-								      	<input type="checkbox" class="act_radio" name="check" style="width: 60px; height: 60px;" value="Coach on Values. Train to sustain performance">
+								      	<input type="checkbox" class="act_radio" id="checkbox9" name="check" required style="width: 60px; height: 60px;" value="Coach on Values. Train to sustain performance">
 								      	<p class="mt-2">Coach on Values. Train to sustain performance</p>
 								      </td>
 								    </tr>
@@ -208,8 +208,8 @@
 									<tbody id="myTable">
 										<tr>
 											<td>1</td>
-											<td><input type="text" name="traing_type_1" class="form-control"></td>
-											<td><input type="text" name="traing_time_1" class="form-control"></td>
+											<td><input type="text" name="traing_type_1" class="form-control" required></td>
+											<td><input type="text" name="traing_time_1" class="form-control" required></td>
 										</tr>
 									</tbody>
 								</table>
@@ -228,7 +228,7 @@
 								</ol>
 							</div>
 							<div class="col-md-12">
-								<strong>a. Roles that Appraisee aspires to move into (To be filled by Appraisee):</strong>
+								<strong>Roles that the Appraisee can move into (To be filled by Appraiser):</strong>
 							</div>
 							<div class="col-md-12">
 								<table class="table table-bordered">
@@ -243,57 +243,17 @@
 									<tbody>
 										<tr>
 											<td>1</td>
-											<td><textarea class="form-control" name="appraisee_roles" rows="4" placeholder="If multiple seperate with comma"></textarea></td>
-											<td><textarea class="form-control" name="appraisee_skills_required" rows="4" placeholder="If multiple seperate with comma"></textarea></td>
-											<td><textarea class="form-control" name="appraisee_time_frame" rows="4" placeholder="If multiple seperate with comma"></textarea></td>
+											<td><textarea class="form-control" required name="appraisee_roles" rows="4" placeholder="If multiple seperate with comma"></textarea></td>
+											<td><textarea class="form-control" required name="appraisee_skills_required" rows="4" placeholder="If multiple seperate with comma"></textarea></td>
+											<td><textarea class="form-control" required name="appraisee_time_frame" rows="4" placeholder="If multiple seperate with comma"></textarea></td>
 										</tr>
 									</tbody>
 								</table>
 							</div>
-							<div class="col-md-12">
-								<strong>b. Roles that the Appraisee can move into (To be filled by Appraiser):</strong>
-							</div>
-							<div class="col-md-12">
-								<table class="table table-bordered">
-									<thead>
-										<tr>
-											<th class="text-center align-middle">Sl.</th>
-											<th class="text-center align-middle">Roles</th>
-											<th class="text-center align-middle">Skills Required</th>
-											<th class="text-center align-middle">Time frame<br>(between 1 & 3 years)</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>1</td>
-											<td><textarea class="form-control" name="" readonly rows="4" placeholder="If multiple seperate with comma"></textarea></td>
-											<td><textarea class="form-control" name="" readonly rows="4" placeholder="If multiple seperate with comma"></textarea></td>
-											<td><textarea class="form-control" name="" readonly rows="4" placeholder="If multiple seperate with comma"></textarea></td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-							<div class="col-md-12" align="center">
-								<strong>To be filled by Appraisee</strong>
-								<p>Please read the statement below and tick the appropriate box indicating your opinion</p>
-								<p>“The ratings and comments in this appraisal are a fair and reasonable assessment of my work performance and development needs”.</p>
-								<div>
-									<input type="checkbox" name="rating" value="Agree" class="mycheck"><span class="ml-2 mr-4">Agree</span>
-									<input type="checkbox" name="rating" value="Partly Agree" class="mycheck"><span class="ml-2 mr-4">Partly Agree</span>
-									<input type="checkbox" name="rating" value="Disagree" class="mycheck additionalf"><span class="ml-2 mr-4" onfocusin="EnableDisableTextBox(this)">Disagree</span>
-								</div>
-								<div>
-									<input type="text" name="dis_com" required class="form-control additionalfa" disabled placeholder="If Disagree, Please Provide Comments Why?">
-								</div>
-							</div>
-							<!-- div class="col-md-12 mt-3 mb-3">
-										Please Mention your Employee ID to Digitally Sign
-										<input type="number" name="" class="form-control">
-							</div> -->
 							<div class="col-md-12 mt-3">
 								<div class="form-group">
 									<label for="feedback">Comments and Feedbacks </label>
-								    <textarea rows="4" class="form-control" name="feedback" id="feedback"></textarea>
+								    <textarea rows="4" class="form-control" name="feedback" id="feedback" required></textarea>
 								</div>	
 							</div>
 							<div class="col-md-12 mt-5 " align="center">
@@ -329,12 +289,41 @@
 		}
 		$(".act_radio").on('click', function() {
 		  var $box = $(this);
+		  var $checkbox1 = $('#checkbox1');
+		  var $checkbox2 = $('#checkbox2');
+		  var $checkbox3 = $('#checkbox3');
+		  var $checkbox4 = $('#checkbox4');
+		  var $checkbox5 = $('#checkbox5');
+		  var $checkbox6 = $('#checkbox6');
+		  var $checkbox7 = $('#checkbox7');
+		  var $checkbox8 = $('#checkbox8');
+		  var $checkbox9 = $('#checkbox9');
 		  if ($box.is(":checked")) {
 		    var group = "input:checkbox[name='" + $box.attr("name") + "']";
 		    $(group).prop("checked", false);
+		    $checkbox1.removeAttr("required")
+		    $checkbox2.removeAttr("required")
+		    $checkbox3.removeAttr("required")
+		    $checkbox4.removeAttr("required")
+		    $checkbox5.removeAttr("required")
+		    $checkbox6.removeAttr("required")
+		    $checkbox7.removeAttr("required")
+		    $checkbox8.removeAttr("required")
+		    $checkbox9.removeAttr("required")
 		    $box.prop("checked", true);
+		    $box.attr("required",'');
 		  } else {
 		    $box.prop("checked", false);
+		    $checkbox1.removeAttr("required")
+		    $checkbox2.removeAttr("required")
+		    $checkbox3.removeAttr("required")
+		    $checkbox4.removeAttr("required")
+		    $checkbox5.removeAttr("required")
+		    $checkbox6.removeAttr("required")
+		    $checkbox7.removeAttr("required")
+		    $checkbox8.removeAttr("required")
+		    $checkbox9.removeAttr("required")
+		    $box.attr("required",'');
 		  }
 		});
 

@@ -394,8 +394,10 @@ class PartD_Appraisee(models.Model):
     emp_rm1 = models.CharField(max_length=200)
     emp_rm2 = models.CharField(max_length=200)
     emp_rm3 = models.CharField(max_length=200)
+
     strengths = models.TextField(blank=True, null=True)
     improvement_areas = models.TextField(blank=True, null=True)
+
     development_need_1 = models.TextField(blank=True, null=True)
     development_need_2 = models.TextField(blank=True, null=True)
     development_need_3 = models.TextField(blank=True, null=True)
@@ -412,15 +414,9 @@ class PartD_Appraisee(models.Model):
     desired_level_2 = models.TextField(blank=True, null=True)
     desired_level_3 = models.TextField(blank=True, null=True)
     desired_level_4 = models.TextField(blank=True, null=True)
-    train_identify_refitment = models.TextField(blank=True, null=True)
-    coach_train_redeploy = models.TextField(blank=True, null=True)
-    future_leaders = models.TextField(blank=True, null=True)
-    need_development = models.TextField(blank=True, null=True)
-    # solid_citizens_1 = models.TextField(blank=True, null=True)
-    # solid_citizens_2 = models.TextField(blank=True, null=True)
-    no_scope_improvement = models.TextField(blank=True, null=True)
-    need_development_coach = models.TextField(blank=True, null=True)
-    coach_on_value = models.TextField(blank=True, null=True)
+
+    checkbox = models.CharField(max_length=250,blank=True, null=True)
+
     traing_type_1= models.TextField(blank=True, null=True)
     traing_type_2= models.TextField(blank=True, null=True)
     traing_type_3= models.TextField(blank=True, null=True)
@@ -431,11 +427,22 @@ class PartD_Appraisee(models.Model):
     traing_time_3= models.TextField(blank=True, null=True)
     traing_time_4= models.TextField(blank=True, null=True)
     traing_time_5= models.TextField(blank=True, null=True)
+
+    mgr_appraisee_roles=models.TextField(blank=True, null=True)
+    mgr_appraisee_skills_required=models.TextField(blank=True, null=True)
+    mgr_appraisee_time_frame=models.TextField(blank=True, null=True)
+
     appraisee_roles=models.TextField(blank=True, null=True)
     appraisee_skills_required=models.TextField(blank=True, null=True)
     appraisee_time_frame=models.TextField(blank=True, null=True)
+
     agree=models.TextField(blank=True, null=True)
     if_disagree = models.TextField(blank=True, null=True)
+
     comments_feedback=models.TextField(blank=True, null=True)
+    mgr_comments_feedback=models.TextField(blank=True, null=True)
+
+    agent_complete_status = models.BooleanField(default=False)
     def __str__(self):
         return self.emp_name+" - "+self.emp_id
+

@@ -40,8 +40,8 @@
 							<h3>PART - A <span style="font-size: 18px;">(Performance Key Result Areas Review)</span></h3>
 						</div>
 					</div>
-					<form method="post" action="/appraisal/manparta/{{profile.emp_id}}" enctype="multipart/form-data" onsubmit="return FinalCheck();">
-						    {% csrf_token %}
+					<form method="post" action="/appraisal/manparta-save" enctype="multipart/form-data">
+						{% csrf_token %}
 						<div class="row">
 							<div class="col-md-6">
 								<div class="form-group">
@@ -267,6 +267,9 @@
 								    <button type="submit" class="btn btn-success btn-lg">Next</button>
 								</div>
 							</div>
+						</div>
+						<div class="hidden-fields">
+							<input type="hidden" name="emp_id" value="{{profile.emp_id}}">
 						</div>
 					</form>
 				</div>

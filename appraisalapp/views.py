@@ -5,14 +5,42 @@ from django.contrib import messages
 from .models import *
 from django.contrib.auth import login, logout, update_session_auth_hash, authenticate
 from django.urls import reverse
+# TL and AM List
+tl_am_list = ['Team Leader','Assistant Manager', 'Subject Matter Expert', 'Trainer','Learning and Development Head',
+              'Process Trainer','Trainer Sales',
+              ]
 
-agent_list = ['CRO']
-manager_list = ['Operations Manager', 'Team Leader']
+# Manager List
+manager_list = ['Quality Head','Operations Manager','Service Delivery Manager','Command Centre Head']
 
+# HR List
+hr_list = ['HR','HR Manager','Manager ER','HR Lead','Sr Recruiter','MIS Executive HR',
+'Lead HRBP','Employee Relations Specialist','Payroll Specialist','Recruiter','HR Generalist']
+
+#Agent List
+agent_list = [ 'Client Relationship Officer','MIS Executive','Patrolling officer',
+               'Data Analyst','Business Development Executive','Content Developer',
+               'Junior Developer','Web Developer','Trainee Developer',
+               'Jr Dev',
+                ]
+
+
+def LogoutFunc(request):
+    logout(request)
+    return redirect("/appraisal/indexing")
 
 def IndexPage(request):
-    logout(request)
+    id = "7875"
+    lst = []
+    for i in range(len(id)):
+        lst.append(ord(id[i]))
+    print(lst,"lst")
+    emp_id = ""
+    for i in lst:
+        emp_id += chr(i)
+    print(emp_id,"emp_id")
     return render(request, "common/index.html")
+
 
 
 def LoginPage(request):
@@ -38,24 +66,40 @@ def LoginPage(request):
                     messages.info(request, 'Waiting for your Manager to add Parameters. Please Check back Later!')
                     return redirect("/appraisal/")
 
-            elif desi in manager_list:
+            elif desi in manager_list or desi in tl_am_list or desi in hr_list:
                 return redirect("/appraisal/manager-dashboard")
             else:
                 messages.info(request, 'Something went wrong contact CC Team!')
                 return redirect("/appraisal/")
         else:
             messages.info(request, 'Invalid user !')
-            return redirect("/appraisal/login")
+            return redirect("/appraisal/")
     else:
         messages.info(request, 'Invalid Request !')
         return redirect("/appraisal/")
+
+@login_required
+def selfAppraisal(request):
+    emp_id = request.user.profile.emp_id
+    try:
+        partc = PartC_Appraisee.objects.get(Q(emp_id=emp_id))
+        if partc.agent_score == None:
+            return redirect("/appraisal/notice")
+        elif partc.mgr_score != None:
+            return redirect("view", id=emp_id)
+        else:
+            messages.info(request, 'Waiting for your Manager to complete. Please Check back Later!')
+            return redirect("/appraisal/manager-dashboard")
+    except:
+        messages.info(request, 'Waiting for your Manager to Add Parameters. Check back later.')
+        return redirect("/appraisal/manager-dashboard")
 
 
 @login_required
 def managerDashboard(request):
     emp_id = request.user.profile.emp_id
-    profile = PartC_Appraisee.objects.filter(Q(emp_rm1_id=emp_id))
-    data = {"profile": profile}
+    profile = PartD_Appraisee.objects.filter(Q(emp_rm1_id=emp_id))
+    data = {"profile": profile,"manager":manager_list}
     return render(request, "manager/manager_dashboard.html", data)
 
 
@@ -144,9 +188,33 @@ def part_a_save(request):
         return redirect("/appraisal/partb")
 
 
-def manager_part_a_save(request, id):
-    parta = PartA_Appraisee.objects.get(emp_id=id)
+@login_required
+def managerPartAView(request):
     if request.method == "POST":
+        id = request.POST["emp_id"]
+        parta = PartA_Appraisee.objects.get(emp_id=id)
+        try:
+            PartA_Appraisee.objects.get(Q(emp_id=id),~Q(mgr_score=None))
+            messages.info(request, "Part A for this Agent is Already done! Redirecting you to Part B.")
+            lst = []
+            for i in range(len(id)):
+                lst.append(ord(id[i]))
+            return redirect("manpartb", id=lst)
+        except PartA_Appraisee.DoesNotExist:
+            profile = Profile.objects.get(emp_id=id)
+            rm3_desi = Profile.objects.get(emp_id=id).emp_rm3_id
+            rm3_desi = Profile.objects.get(emp_id=rm3_desi).emp_desi
+            data = {"profile": profile, "parta": parta, "rm3_desi": rm3_desi}
+            return render(request, "manager/manager_part-a-form.html", data)
+    else:
+        messages.info(request, "Invalid Request. You have been Logged Out.")
+        return redirect("/appraisal/")
+
+@login_required
+def managerPartASave(request):
+    if request.method == "POST":
+        id = request.POST["emp_id"]
+        parta = PartA_Appraisee.objects.get(emp_id=id)
         supervisor_name = request.POST["sup_name"]
         supervisor_desig = request.POST["sup_desg"]
         reviewers_name = request.user.profile.emp_name
@@ -231,21 +299,15 @@ def manager_part_a_save(request, id):
             e.parameter_6_comment = parameter_6_comment
         e.mangr_special_comment = mgr_comment
         e.save()
-        return redirect("manpartb", id=id)
-
+        lst = []
+        for i in range(len(id)):
+            lst.append(ord(id[i]))
+        return redirect("manpartb", id=lst)
     else:
-        try:
-            PartA_Appraisee.objects.get(Q(emp_id=id),~Q(mgr_score=None))
-            messages.info(request, "Part A for this Agent is Already done! Redirecting you to Part B.")
-            return redirect("manpartb", id=id)
-        except PartA_Appraisee.DoesNotExist:
-            profile = Profile.objects.get(emp_id=id)
-            rm3_desi = Profile.objects.get(emp_id=id).emp_rm3_id
-            rm3_desi = Profile.objects.get(emp_id=rm3_desi).emp_desi
-            data = {"profile": profile, "parta": parta, "rm3_desi": rm3_desi}
-            return render(request, "manager/manager_part-a-form.html", data)
+        messages.info(request, "Invalid Request. You have been Logged Out.")
+        return redirect("/appraisal/")
 
-
+@login_required
 def part_b_save(request):
     user = request.user
     profile = Profile.objects.get(user=user)
@@ -538,9 +600,16 @@ def part_b_save(request):
         return redirect("/appraisal/partc")
 
 
-
+@login_required
 def manager_part_b_save(request, id):
-    user = request.user
+    id = id.strip('][').split(', ')
+    emp_id = ""
+    for i in id:
+        emp_id += chr(int(i))
+    id = emp_id
+    print(id,"iddd")
+    print(type(id),"iddd type")
+    print(PartB_Appraisee.objects.get(emp_id=id).emp_name)
     if request.method == "POST":
         # user = request.user
         mangr_one_comment = request.POST.get("one_com")
@@ -816,19 +885,26 @@ def manager_part_b_save(request, id):
         e.mangr_twentytwo_rating_4 = mangr_twentytwo_rating_4
         e.mangr_twentythree_rating_4 = mangr_twentythree_rating_4
         e.save()
-        return redirect("/appraisal/manpartc/"+id)
+        lst = []
+        for i in range(len(id)):
+            lst.append(ord(id[i]))
+        return redirect("manpartc", id=lst)
 
     else:
         try:
             PartB_Appraisee.objects.get(Q(emp_id=id),~Q(mgr_score=None))
             messages.info(request, "Part B for this Agent is Already done! Redirecting you to Part C.")
-            return redirect("/appraisal/manpartc/"+id)
+            lst = []
+            for i in range(len(id)):
+                lst.append(ord(id[i]))
+            return redirect("manpartc", id=lst)
         except PartB_Appraisee.DoesNotExist:
             profile = Profile.objects.get(emp_id=id)
             data = {"profile": profile}
             return render(request, 'manager/manager_partb.html', data)
 
 
+@login_required
 def part_c_save(request):
     user = request.user
     profile = Profile.objects.get(user=user)
@@ -861,8 +937,10 @@ def part_c_save(request):
             e.diversity_comment = diversity_comment
             e.excellence_comment = excellence_comment
             e.teamwork_comment = teamwork_comment
-
             e.save()
+            a = PartD_Appraisee.objects.get(emp_id=user.profile.emp_id)
+            a.agent_complete_status = True
+            a.save()
             messages.info(request, "You have completed your Appraisal. Please wait for your manager to complete it "
                                    "and then login to see your Result")
             return redirect("/appraisal/")
@@ -871,11 +949,17 @@ def part_c_save(request):
             data = {"profile": profile}
             return render(request, "agent/part_c.html", data)
     else:
-        messages.info(request, "You have completed your Appraisal. Please wait for your manager to complete it")
+        messages.info(request, "You have completed your Appraisal. Please wait for your manager to complete it.")
         return redirect("/appraisal/")
 
 
+@login_required
 def manager_part_c_save(request, id):
+    id = id.strip('][').split(', ')
+    emp_id = ""
+    for i in id:
+        emp_id += chr(int(i))
+    id = emp_id
     profile = Profile.objects.get(emp_id=id)
     if request.method == "POST":
         # us = request.user
@@ -907,21 +991,60 @@ def manager_part_c_save(request, id):
         e.mangr_teamwork_comment = teamwork_comment
 
         e.save()
-        return redirect("/appraisal/manpartd/"+id)
+        lst = []
+        for i in range(len(id)):
+            lst.append(ord(id[i]))
+        return redirect("manpartd", id=lst)
     else:
         try:
-            PartB_Appraisee.objects.get(Q(emp_id=id),~Q(mgr_score=None))
+            a = PartC_Appraisee.objects.get(Q(emp_id=id),~Q(mgr_score=None))
             messages.info(request, "Part C for this Agent is Already done! Redirecting you to Part D.")
-            return redirect("/appraisal/manpartd/"+id)
-        except PartB_Appraisee.DoesNotExist:
+            lst = []
+            for i in range(len(id)):
+                lst.append(ord(id[i]))
+            return redirect("manpartd", id=lst)
+        except PartC_Appraisee.DoesNotExist:
             profile = Profile.objects.get(emp_id=id)
             data = {"profile": profile}
             return render(request, "manager/manager_part_c.html", data)
 
 
+@login_required
 def part_d_save(request):
     if request.method == "POST":
-        userr = request.user
+
+        appraisee_roles = request.POST.get("appraisee_roles")
+        appraisee_skills_required = request.POST.get("appraisee_skills_required")
+        appraisee_time_frame = request.POST.get("appraisee_time_frame")
+        comments_feedback = request.POST.get("feedback")
+        agree = request.POST.get("rating")
+        if_disagree = request.POST.get("dis_com")
+
+        e = PartD_Appraisee.objects.get(emp_id=request.user.profile.emp_id)
+        e.appraisee_roles = appraisee_roles
+        e.appraisee_skills_required = appraisee_skills_required
+        e.appraisee_time_frame = appraisee_time_frame
+        e.comments_feedback = comments_feedback
+        e.agree = agree
+        e.if_disagree = if_disagree
+        e.save()
+        messages.info(request, "Successfully Submitted !")
+        return redirect("/appraisal/view/"+request.user.profile.emp_id)
+
+    else:
+        profile = Profile.objects.get(emp_id=request.user.profile.emp_id)
+        data = {"profile": profile}
+        return render(request, "agent/part_d.html", data)
+
+
+@login_required
+def manager_part_d_save(request, id):
+    id = id.strip('][').split(', ')
+    emp_id = ""
+    for i in id:
+        emp_id += chr(int(i))
+    id = emp_id
+    if request.method == "POST":
         strengths = request.POST["strengths"]
         improvement_areas = request.POST["improvement"]
         development_need_1 = request.POST["development1"]
@@ -940,15 +1063,7 @@ def part_d_save(request):
         desired_level_2 = request.POST["desired2"]
         desired_level_3 = request.POST["desired3"]
         desired_level_4 = request.POST["desired4"]
-        train_identify_refitment = request.POST.get("train_identify_refitment")
-        coach_train_redeploy = request.POST.get("coach_train_redeploy")
-        future_leaders = request.POST.get("future_leaders")
-        need_development = request.POST.get("need_development")
-        # solid_citizens_1 = request.POST.get("solid_citizens_1")
-        # solid_citizens_2 = request.POST.get("solid_citizens_2")
-        no_scope_improvement = request.POST.get("no_scope_improvement")
-        need_development_coach = request.POST.get("need_development_coach")
-        coach_on_value = request.POST.get("coach_on_value")
+        checkbox = request.POST["check"]
         traing_type_1 = request.POST.get("traing_type_1")
         traing_type_2 = request.POST.get("traing_type_2")
         traing_type_3 = request.POST.get("traing_type_3")
@@ -959,14 +1074,13 @@ def part_d_save(request):
         traing_time_3 = request.POST.get("traing_time_3")
         traing_time_4 = request.POST.get("traing_time_4")
         traing_time_5 = request.POST.get("traing_time_5")
-        appraisee_roles = request.POST.get("appraisee_roles")
-        appraisee_skills_required = request.POST.get("appraisee_skills_required")
-        appraisee_time_frame = request.POST.get("appraisee_time_frame")
-        agree = request.POST.get("rating")
-        if_disagree = request.POST.get("dis_com")
-        comments_feedback = request.POST.get("feedback")
 
-        e = PartD_Appraisee()
+        mgr_appraisee_roles = request.POST.get("appraisee_roles")
+        mgr_appraisee_skills_required = request.POST.get("appraisee_skills_required")
+        mgr_appraisee_time_frame = request.POST.get("appraisee_time_frame")
+        mgr_comments_feedback = request.POST.get("feedback")
+
+        e = PartD_Appraisee.objects.get(emp_id=id)
         e.strengths = strengths
         e.improvement_areas = improvement_areas
         e.development_need_1 = development_need_1
@@ -985,15 +1099,6 @@ def part_d_save(request):
         e.desired_level_2 = desired_level_2
         e.desired_level_3 = desired_level_3
         e.desired_level_4 = desired_level_4
-        e.train_identify_refitment = train_identify_refitment
-        e.coach_train_redeploy = coach_train_redeploy
-        e.future_leaders = future_leaders
-        e.need_development = need_development
-        # e.solid_citizens_1 =
-        # e.solid_citizens_2 =
-        e.no_scope_improvement = no_scope_improvement
-        e.need_development_coach = need_development_coach
-        e.coach_on_value = coach_on_value
         e.traing_type_1 = traing_type_1
         e.traing_type_2 = traing_type_2
         e.traing_type_3 = traing_type_3
@@ -1004,44 +1109,44 @@ def part_d_save(request):
         e.traing_time_3 = traing_time_3
         e.traing_time_4 = traing_time_4
         e.traing_time_5 = traing_time_5
-        e.appraisee_roles = appraisee_roles
-        e.appraisee_skills_required = appraisee_skills_required
-        e.appraisee_time_frame = appraisee_time_frame
-        e.agree = agree
-        e.if_disagree = if_disagree
-        e.comments_feedback = comments_feedback
-        e.appraisee = userr
+
+        e.checkbox = checkbox
+        e.mgr_appraisee_roles = mgr_appraisee_roles
+        e.mgr_appraisee_skills_required = mgr_appraisee_skills_required
+        e.mgr_appraisee_time_frame = mgr_appraisee_time_frame
+        e.mgr_comments_feedback = mgr_comments_feedback
 
         e.save()
 
-        return render(request, "common/part_d.html")
-
+        messages.info(request, "Successfully Completed! Click on View to view result.")
+        return redirect("/appraisal/manager-dashboard")
     else:
-        profile = Profile.objects.get(emp_id=request.user.profile.emp_id)
-        data = {"profile": profile}
-        return render(request, "agent/part_d.html", data)
-
-
-def manager_part_d_save(request, id):
-    if request.method == "POST":
-        pass
-        return redirect("/appraisal/login")
-    else:
-        part_d = PartC_Appraisee.objects.get(emp_id=id)
+        part_d = PartD_Appraisee.objects.get(emp_id=id)
         profile = Profile.objects.get(emp_id=id)
         data = {"part_d": part_d, "profile": profile}
         return render(request, "manager/manager_part_d.html", data)
 
 
+@login_required
 def viewAppraisal(request, id):
-    part_a = PartA_Appraisee.objects.get(emp_id=id)
-    part_b = PartB_Appraisee.objects.get(emp_id=id)
-    part_c = PartC_Appraisee.objects.get(emp_id=id)
+    emp_id = request.user.profile.emp_id
     profile = Profile.objects.get(emp_id=id)
-    data = {"part_a": part_a, "part_b": part_b, "part_c": part_c, "profile": profile}
-    return render(request, "common/viewall.html", data)
+    rm1 = profile.emp_rm1_id
+    rm2 = profile.emp_rm2_id
+    rm3 = profile.emp_rm3_id
+    if emp_id == id or rm1 == emp_id or rm2 == emp_id or rm3 == emp_id:
+        part_a = PartA_Appraisee.objects.get(emp_id=id)
+        part_b = PartB_Appraisee.objects.get(emp_id=id)
+        part_c = PartC_Appraisee.objects.get(emp_id=id)
+        part_d = PartD_Appraisee.objects.get(emp_id=id)
+        profile = Profile.objects.get(emp_id=id)
+        data = {"part_a": part_a, "part_b": part_b, "part_c": part_c, "partd": part_d, "profile": profile}
+        return render(request, "common/viewall.html", data)
+    else:
+        messages.info(request, "Unauthorized access you have been Logged Out :)")
+        return redirect("/appraisal/")
 
-
+@login_required
 def addParameters(request):
     emp_id = request.user.profile.emp_id
     profiles = Profile.objects.filter(emp_rm3_id=emp_id)
@@ -1092,3 +1197,16 @@ def addParameters(request):
         designation = [x for n, x in enumerate(designation) if x not in designation[:n]]
         data = {'designation': designation}
         return render(request, "manager/add_parameters.html", data)
+
+
+@login_required
+def dashboardRedirect(request):
+    emp_desi = request.user.profile.emp_desi
+    if emp_desi in manager_list or emp_desi in tl_am_list or emp_desi in hr_list:
+        return redirect("/appraisal/manager-dashboard")
+    else:
+        return redirect("/appraisal/")
+
+
+def test(request):
+    pass
