@@ -20,4 +20,8 @@ urlpatterns = [
     path('add-parameters', addParameters),
     path('dashboard', dashboardRedirect),
     path('self-appraisal', selfAppraisal),
+    path('under-agents', underAgents),
+    path('change-emp-password', changeEmpPassword),
+    path('settings',Settings),
+    path('change-password',change_password),
 ]

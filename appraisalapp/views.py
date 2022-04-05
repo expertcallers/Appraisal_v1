@@ -1,4 +1,6 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.hashers import make_password
 from django.db.models import Q, Sum
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -1208,5 +1210,58 @@ def dashboardRedirect(request):
         return redirect("/appraisal/")
 
 
-def test(request):
-    pass
+def underAgents(request):
+    emp_id = request.user.profile.emp_id
+    emp_desi = request.user.profile.emp_desi
+    if emp_desi in manager_list:
+        profile = Profile.objects.filter(Q(emp_rm1_id=emp_id)|Q(emp_rm2_id=emp_id)|Q(emp_rm3_id=emp_id))
+    else:
+        profile = Profile.objects.filter(Q(emp_rm1_id=emp_id))
+
+    data = {"profile":profile}
+    return render(request,"manager/agents.html",data)
+
+def changeEmpPassword(request):
+    if request.method == "POST":
+        new_pass = request.POST["new_pass"]
+        con_pass = request.POST["con_pass"]
+        emp_id = request.POST["emp_id"]
+        user = User.objects.get(username=emp_id)
+        if new_pass == con_pass:
+            user.password = make_password(new_pass)
+            user.save()
+            messages.info(request, "Password Changed Successfully!!")
+            return redirect("/appraisal/under-agents")
+        else:
+            messages.info(request, "New Password and Confirm Password does not match! try again!!")
+            return redirect("/appraisal/under-agents")
+    else:
+        messages.info(request, "Unauthorized access you have been Logged Out :)")
+        return redirect("/appraisal/")
+
+@login_required
+def Settings(request): # Test1
+    emp_id = request.user.profile.emp_id
+    emp = Profile.objects.get(emp_id=emp_id)
+    form = PasswordChangeForm(request.user)
+    data = {'emp':emp,'form':form}
+    return render(request,'manager/settings.html',data)
+
+@login_required
+def change_password(request): # Test1
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            user = request.user
+            user.profile.pc = True
+            user.save()
+            user.profile.save()
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('/appraisal/')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request,'manager/settings.html', {'form': form})

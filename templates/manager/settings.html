@@ -1,0 +1,37 @@
+{% extends 'manager/base_common.html' %}
+{% block main %}
+{% load static %}
+<style>
+    .textinput.textInput {
+        width: 100%;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+</style>
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  <h2>Change Password</h2>
+                </div>
+                <div class="card-body">
+                  {% load crispy_forms_tags %}
+                  <div class="row">
+                      <div class="col-md-12">
+                        <form method="post" action="/appraisal/change-password" enctype="multipart/form-data" style="width:100%;">
+                          {% csrf_token %}
+                          {{ form|crispy }}
+                            <br><br>
+                          <button type="submit" class="btn btn-primary">Save changes</button>
+                        </form>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /page content -->
+{% endblock %}
