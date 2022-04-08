@@ -32,18 +32,7 @@ def LogoutFunc(request):
     return redirect("/appraisal/indexing")
 
 def IndexPage(request):
-    id = "7875"
-    lst = []
-    for i in range(len(id)):
-        lst.append(ord(id[i]))
-    print(lst,"lst")
-    emp_id = ""
-    for i in lst:
-        emp_id += chr(i)
-    print(emp_id,"emp_id")
     return render(request, "common/index.html")
-
-
 
 def LoginPage(request):
     if request.method == "POST":
@@ -1196,8 +1185,11 @@ def addParameters(request):
                 pass
             except PartA_Appraisee.DoesNotExist:
                 designation.append(i.emp_desi)
-        designation = [x for n, x in enumerate(designation) if x not in designation[:n]]
-        data = {'designation': designation}
+        des =[]
+        for i in designation:
+            if i not in des:
+                des.append(i)
+        data = {'designation': des}
         return render(request, "manager/add_parameters.html", data)
 
 
