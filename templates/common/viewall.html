@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>HR</title>
-	<link rel="icon" type="icon" href="img/favicon.ico">
+	<link rel="icon" type="icon" href="{% static 'dash/img/favicon.ico' %}">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css">
@@ -23,7 +23,7 @@
 	<section class="">
 		<nav class="navbar fixed-top navbar-expand-lg">
 		  <a class="navbar-brand" href="#">
-		  	<img src="{% static 'appraisal/img/logo.png' %}" width="280" height="80" class="d-inline-block align-top" alt="">
+		  	<img src="{% static 'dash/img/logo.png' %}" width="280" height="80" class="d-inline-block align-top" alt="">
 		  </a>
 		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 		    <span class="navbar-toggler-icon"></span>
@@ -62,7 +62,7 @@
 	<section class="mt-5" id="main">
 		<div class="container-fluid">
 			<div class="row">
-				{% include 'common/emp_details.html' %}
+				{% include 'common/emp_details_with_score.html' %}
 				<div class="col-md-3" style="margin-right: 80px;"></div>
 				<div class="col-md-8">
 					<div class="secquestions mb-4" id="parta">
@@ -1880,79 +1880,74 @@
 						</div>
 					</div>
 					{% else %}
-					<div class="secquestions mb-4" id="agent_agreement">
+					<div class="secquestions mb-4" >
 						<div class="row">
 							<div class="col-md-12">
-									<div class="row">
-										<div class="col-md-12">
-											<h4 align="center">Development Succession Program</h4>
-											<h5>Ask yourself the following questions:</h5>
-											<ol>
-												<li>What direction is ECPL Customer going and what will the organization need from you in 2 years’ time?</li>
-												<li>What are your goals over the next 2 years? (This question is crucial to providing a motivational focus for everything that you do.)</li>
-												<li>What are your greatest strengths and how can you build on them more effectively?</li>
-												<li>Do you have any serious weaknesses that make it difficult to do your job or will prevent you from reaching your goals?</li>
-											</ol>
+								<div class="row">
+									<div class="col-md-12">
+										<h4 align="center">Development Succession Program</h4>
+										<h5>Ask yourself the following questions:</h5>
+										<ol>
+											<li>What direction is ECPL Customer going and what will the organization need from you in 2 years’ time?</li>
+											<li>What are your goals over the next 2 years? (This question is crucial to providing a motivational focus for everything that you do.)</li>
+											<li>What are your greatest strengths and how can you build on them more effectively?</li>
+											<li>Do you have any serious weaknesses that make it difficult to do your job or will prevent you from reaching your goals?</li>
+										</ol>
+									</div>
+									<div class="col-md-12">
+										<strong>Roles that Appraisee aspires to move into (To be filled by Appraisee):</strong>
+									</div>
+									<div class="col-md-12">
+										<table class="table table-bordered">
+											<thead>
+												<tr>
+													<th>Sl.</th>
+													<th>Roles</th>
+													<th>Skills Required</th>
+													<th>Time frame</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>1</td>
+													<td><textarea class="form-control" disabled name="appraisee_roles" rows="4" placeholder="If multiple seperate with comma">{% if partd.appraisee_roles != None %}{{partd.appraisee_roles}}{% else %}Waiting for user input{% endif %}</textarea></td>
+													<td><textarea class="form-control" disabled name="appraisee_skills_required" rows="4" placeholder="If multiple seperate with comma">{% if partd.appraisee_skills_required != None %}{{partd.appraisee_skills_required}}{% else %}Waiting for user input{% endif %}</textarea></td>
+													<td><textarea class="form-control" disabled name="appraisee_time_frame" rows="4" placeholder="If multiple seperate with comma">{% if partd.appraisee_time_frame != None %}{{partd.appraisee_time_frame}}{% else %}Waiting for user input{% endif %}</textarea></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="col-md-12" align="center">
+										<strong>To be filled by Appraisee</strong>
+										<p>Please read the statement below and tick the appropriate box indicating your opinion</p>
+										<p>“The ratings and comments in this appraisal are a fair and reasonable assessment of my work performance and development needs”.</p>
+										<div>
+											<input type="checkbox" name="rating" disabled {% if partd.agree == "Agree" %}checked{% endif %} value="Agree" class="mycheck"><span class="ml-2 mr-4">Agree</span>
+											<input type="checkbox" name="rating" disabled {% if partd.agree == "Partly Agree" %}checked{% endif %} value="Partly Agree" class="mycheck"><span class="ml-2 mr-4">Partly Agree</span>
+											<input type="checkbox" name="rating" disabled {% if partd.agree == "Disagree" %}checked{% endif %} value="Disagree" class="mycheck additionalf"><span class="ml-2 mr-4">Disagree</span>
 										</div>
-										<div class="col-md-12">
-											<strong>Roles that Appraisee aspires to move into (To be filled by Appraisee):</strong>
-										</div>
-										<div class="col-md-12">
-											<table class="table table-bordered">
-												<thead>
-													<tr>
-														<th>Sl.</th>
-														<th>Roles</th>
-														<th>Skills Required</th>
-														<th>Time frame</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<td>1</td>
-														<td><textarea class="form-control" disabled name="appraisee_roles" rows="4" placeholder="If multiple seperate with comma">{% if partd.appraisee_roles != None %}{{partd.appraisee_roles}}{% else %}Waiting for user input{% endif %}</textarea></td>
-														<td><textarea class="form-control" disabled name="appraisee_skills_required" rows="4" placeholder="If multiple seperate with comma">{% if partd.appraisee_skills_required != None %}{{partd.appraisee_skills_required}}Waiting for user input{% else %}{% endif %}</textarea></td>
-														<td><textarea class="form-control" disabled name="appraisee_time_frame" rows="4" placeholder="If multiple seperate with comma">{% if partd.appraisee_time_frame != None %}{{partd.appraisee_time_frame}}{% else %}Waiting for user input{% endif %}</textarea></td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
-										<div class="col-md-12" align="center">
-											<strong>To be filled by Appraisee</strong>
-											<p>Please read the statement below and tick the appropriate box indicating your opinion</p>
-											<p>“The ratings and comments in this appraisal are a fair and reasonable assessment of my work performance and development needs”.</p>
-											<div>
-												<input type="checkbox" name="rating" disabled {% if partd.agree == "Agree" %}checked{% endif %} value="Agree" class="mycheck"><span class="ml-2 mr-4">Agree</span>
-												<input type="checkbox" name="rating" disabled {% if partd.agree == "Partly Agree" %}checked{% endif %} value="Partly Agree" class="mycheck"><span class="ml-2 mr-4">Partly Agree</span>
-												<input type="checkbox" name="rating" disabled {% if partd.agree == "Disagree" %}checked{% endif %} value="Disagree" class="mycheck additionalf"><span class="ml-2 mr-4">Disagree</span>
-											</div>
-											<div>
-												<input type="text" name="dis_com" value="{% if partd.comments_feedback != None %}{{partd.if_disagree}}{% else %}{% endif %}" required class="form-control additionalfa" disabled placeholder="If Disagree, Please Provide Comments Why?">
-											</div>
-										</div>
-										<!-- div class="col-md-12 mt-3 mb-3">
-													Please Mention your Employee ID to Digitally Sign
-													<input type="number" name="" class="form-control">
-										</div> -->
-										<div class="col-md-12 mt-3">
-											<div class="form-group">
-												<label for="feedbackag">Comments and Feedbacks </label>
-												<textarea rows="4" class="form-control" name="feedback" disabled id="feedbackag">{% if partd.comments_feedback != None %}{{partd.comments_feedback}}{% else %}Waiting for user input{% endif %}</textarea>
-											</div>
-										</div>
-										<div class="col-md-12 mt-5 " align="center">
-											<div class="form-group">
-												{% if partd.comments_feedback == None %}
-												<button type="submit" class="btn btn-success btn-lg">Submit</button>
-												{% else %}
-												<a href="/appraisal" class="btn btn-danger btn-lg">Logout</a>
-												{% endif %}
-											</div>
+										<div>
+											<input type="text" name="dis_com" value="{% if partd.comments_feedback != None %}{{partd.if_disagree}}{% else %}{% endif %}" required class="form-control additionalfa" disabled placeholder="If Disagree, Please Provide Comments Why?">
 										</div>
 									</div>
-								{% if partd.comments_feedback == None %}
-								</form>
-								{% endif %}
+									<!-- div class="col-md-12 mt-3 mb-3">
+												Please Mention your Employee ID to Digitally Sign
+												<input type="number" name="" class="form-control">
+									</div> -->
+									<div class="col-md-12 mt-3">
+										<div class="form-group">
+											<label for="feedbackag">Comments and Feedbacks </label>
+											<textarea rows="4" class="form-control" name="feedback" disabled id="feedbackag">{% if partd.comments_feedback != None %}{{partd.comments_feedback}}{% else %}Waiting for user input{% endif %}</textarea>
+										</div>
+									</div>
+									<div class="col-md-12 mt-5 " align="center">
+										<div class="form-group">
+											<a href="/appraisal/manager-dashboard">
+												<button type="button" class="btn btn-success btn-lg">Back to Dashboard</button>
+											</a>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>

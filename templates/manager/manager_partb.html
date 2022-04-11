@@ -5,7 +5,7 @@
 	<section class="">
 		<nav class="navbar fixed-top navbar-expand-lg">
 		  <a class="navbar-brand" href="#">
-		  	<img src="{% static 'appraisal/img/logo.png' %}" width="280" height="80" class="d-inline-block align-top" alt="">
+		  	<img src="{% static 'dash/img/logo.png' %}" width="280" height="80" class="d-inline-block align-top" alt="">
 		  </a>
 		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 		    <span class="navbar-toggler-icon"></span>
@@ -58,6 +58,7 @@
 				                  <th scope="col" class="text-center align-middle" rowspan="3">Assumes personal ownership & accountability for ECPL’s business results and execution – Relentless, always strives for improvement</th>
 				                  <td scope="col" class="text-center align-middle">Enthusiastically supports and demonstrates a high commitment and ownership for ECPL’s  success and business results </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.one_rating}}</h6>
 				                   <select required name="one_rat" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -69,18 +70,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.one_comment}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="one_com" ></textarea>
+				                     <textarea rows="3" class="form-control" name="one_com" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Understands and balances the short and long term impact of business decisions on multiple constituencies -- customer, partner, employees, stockholders </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.two_rating}}</h6>
 				                   <select required name="two_rat" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -92,18 +94,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.two_comment}}</textarea>
 				                  </div>
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="two_com"></textarea>
+				                     <textarea rows="3" class="form-control" name="two_com" required></textarea>
 				                 </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Influences others to take actions which will speed measurable and sustained performance improvements</td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.three_rating}}</h6>
 				                   <select required name="three_rat" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -115,12 +118,12 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.three_comment}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="three_com" ></textarea>
+				                     <textarea rows="3" class="form-control" name="three_com" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
@@ -128,6 +131,7 @@
 				                  <th scope="col" class="text-center align-middle" rowspan="3">Consistently delivers results that meet or exceed expectations</th>
 				                  <td scope="col" class="text-center align-middle">Consistently meets or exceeds departmental objectives and aids other staff members in achieving/exceeding group results </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.four_rating}}</h6>
 				                   <select required name="four_rat" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -139,18 +143,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.four_comment}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control"  name="four_com"></textarea>
+				                     <textarea rows="3" class="form-control"  name="four_com" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Seeks out and initiates actions which will  drive performance results of the group </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.five_rating}}</h6>
 				                   <select required name="five_rat" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -162,18 +167,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.five_comment}}</textarea>
 				                  </div>
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="five_com" ></textarea>
+				                     <textarea rows="3" class="form-control" name="five_com" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Meets deadlines, consistently follows through on actions, stays within budget</td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.six_rating}}</h6>
 				                   <select required name="six_rat" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -185,12 +191,12 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.six_comment}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="six_com" ></textarea>
+				                     <textarea rows="3" class="form-control" name="six_com" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
@@ -198,6 +204,7 @@
 				                  <th scope="col" class="text-center align-middle" rowspan="3">Builds industry leading plans that are market & customer focused, are meaningful externally, have achievable goals– that we win!</th>
 				                  <td scope="col" class="text-center align-middle">Translate ECPL strategies into the specific objectives of your organization with a focus on industry and customer leadership</td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.seven_rating}}</h6>
 				                   <select required name="seven_rat" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -209,18 +216,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.seven_comment}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="seven_com" ></textarea>
+				                     <textarea rows="3" class="form-control" name="seven_com" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Build achievable plans which utilize all elements of the management value chain, e.g. organization, operations infrastructure, alignment, integration risks dependencies, contingencies</td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.eight_rating}}</h6>
 				                   <select required name="eight_rat" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -232,18 +240,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.eight_comment}}</textarea>
 				                  </div>
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="eight_com" ></textarea>
+				                     <textarea rows="3" class="form-control" name="eight_com" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Define and build breakthrough plans which will positively change ECPL’s market  position in area of responsibility</td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.nine_rating}}</h6>
 				                   <select required name="nine_rat" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -255,12 +264,12 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.nine_comment}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="nine_com"></textarea>
+				                     <textarea rows="3" class="form-control" name="nine_com" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
@@ -268,6 +277,7 @@
 				                  <th scope="col" class="text-center align-middle" rowspan="3">Makes data-driven, fact-based decisions – exercises solid judgment</th>
 				                  <td scope="col" class="text-center align-middle">Make sound decisions which take into account broad, system wide implications </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.ten_rating}}</h6>
 				                   <select required name="ten_rat" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -279,18 +289,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.ten_comment}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="ten_com"></textarea>
+				                     <textarea rows="3" class="form-control" name="ten_com" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Apply knowledge and facts; understand relevant issues and stakeholders; thoroughly understand financial and operational implications; cost/risk/benefits </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.eleven_rating}}</h6>
 				                   <select required name="eleven_rat" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -302,18 +313,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.eleven_comment}}</textarea>
 				                  </div>
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="eleven_com" ></textarea>
+				                     <textarea rows="3" class="form-control" name="eleven_com" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Make timely decisions, balancing analysis with decisiveness</td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.twelve_rating}}</h6>
 				                   <select required name="twelve_rat" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -325,12 +337,12 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.twelve_comment}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="twelve_com" ></textarea>
+				                     <textarea rows="3" class="form-control" name="twelve_com" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
@@ -338,6 +350,7 @@
 				                  <th scope="col" class="text-center align-middle" rowspan="3">Sets the bar high, makes the difficult decisions</th>
 				                  <td scope="col" class="text-center align-middle">Sets high standards; sets the pace and process for change; makes the difficult decisions needed accelerate execution </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.thirteen_rating}}</h6>
 				                   <select required name="thirteen_rat" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -349,18 +362,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.thirteen_comment}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="thirteen_com"></textarea>
+				                     <textarea rows="3" class="form-control" name="thirteen_com" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Use key indicators, processes and management systems to monitor the organization’s performance; re- set objectives; leverage performance. Intervenes quickly to address lagging performance, define turnaround plans</td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.fourteen_rating}}</h6>
 				                   <select required name="fourteen_rat" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -372,18 +386,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.fourteen_comment}}</textarea>
 				                  </div>
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="fourteen_com"></textarea>
+				                     <textarea rows="3" class="form-control" name="fourteen_com" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Intervenes quickly to address lagging performance, define turnaround plans</td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.fifteen_rating}}</h6>
 				                   <select required name="fifteen_rat" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -395,12 +410,12 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.fifteen_comment}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="fifteen_com"></textarea>
+				                     <textarea rows="3" class="form-control" name="fifteen_com" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
@@ -408,6 +423,7 @@
 				                  <th scope="col" class="text-center align-middle" rowspan="3">Simplify what we do, streamline the internal and customer processes</th>
 				                  <td scope="col" class="text-center align-middle">Lead simplification for your group --  re-organize work/structure to foster  simplification </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.sixteen_rating}}</h6>
 				                   <select required name="sixteen_rat" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -419,18 +435,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.sixteen_comment}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="sixteen_com" ></textarea>
+				                     <textarea rows="3" class="form-control" name="sixteen_com" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Define a system wide process view; consider all internal and external sources/partners; seek opportunities for improvement, optimize for business results </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.seventeen_rating}}</h6>
 				                   <select required name="seventeen_rat" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -442,18 +459,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.seventeen_comment}}</textarea>
 				                  </div>
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="seventeen_com"></textarea>
+				                     <textarea rows="3" class="form-control" name="seventeen_com" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Set standards, manage performance, leverage best practices</td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.eighteen_rating}}</h6>
 				                   <select required name="eighteen_rat" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -465,12 +483,12 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.eighteen_comment}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="eighteen_com"></textarea>
+				                     <textarea rows="3" class="form-control" name="eighteen_com" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
@@ -492,7 +510,7 @@
 				                  <th scope="col" class="text-center align-middle" rowspan="3">Proactively solves Customers’ problems, makes and keeps commitments, improves their business performance</th>
 				                  <td scope="col" class="text-center align-middle">Provide strategic value to customers by providing in-depth industry knowledge, understanding of their business </td>
 				                  <td class="text-center align-middle">
-				                  	<center><h5>{{part_b.one_rating_2}}</h5></center>
+								   <h6 align="center">Agent Score:<br> {{partb.one_rating_2}}</h6>
 				                   <select required name="one_rat2" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -504,18 +522,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.one_comment_2}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="one_com2"></textarea>
+				                     <textarea rows="3" class="form-control" name="one_com2" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Align ECPL resources and to support customer obligations and opportunities.</td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.two_rating_2}}</h6>
 				                   <select required name="two_rat2" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -527,18 +546,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.two_comment_2}}</textarea>
 				                  </div>
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="two_com2"></textarea>
+				                     <textarea rows="3" class="form-control" name="two_com2" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Develop customer approaches and solutions of mutual benefit to both ECPL and our customers </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.three_rating_2}}</h6>
 				                   <select required name="three_rat2" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -550,12 +570,12 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.three_comment_2}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="three_com2"></textarea>
+				                     <textarea rows="3" class="form-control" name="three_com2" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
@@ -563,6 +583,7 @@
 				                  <th scope="col" class="text-center align-middle" rowspan="4">Earn confidence and loyalty with our customers by providing best in Industry innovation and value</th>
 				                  <td scope="col" class="text-center align-middle">Foster a customer focused organization which is relentless on providing value and innovation to customers </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.four_rating_2}}</h6>
 				                   <select required name="four_rat2" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -574,18 +595,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.four_comment_2}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="four_com2"></textarea>
+				                     <textarea rows="3" class="form-control" name="four_com2" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Internalize customer feedback and data to create new innovation and business opportunities – new markets, products, solutions</td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.five_rating_2}}</h6>
 				                   <select required name="five_rat2" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -597,18 +619,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.five_comment_2}}</textarea>
 				                  </div>
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="five_com2"></textarea>
+				                     <textarea rows="3" class="form-control" name="five_com2" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Build strong and deep customer relationships which help position ECPL as a preferred vendor. </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.six_rating_2}}</h6>
 				                   <select required name="six_rat2" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -620,18 +643,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.six_comment_2}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="six_com2"></textarea>
+				                     <textarea rows="3" class="form-control" name="six_com2" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Drives  ECPL Mission / Values into group operations </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.seven_rating_2}}</h6>
 				                   <select required name="seven_rat2" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -643,12 +667,12 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.seven_comment_2}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="seven_com2" ></textarea>
+				                     <textarea rows="3" class="form-control" name="seven_com2" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
@@ -656,6 +680,7 @@
 				                  <th scope="col" class="text-center align-middle" rowspan="2">Ensure that ECPL products, services and solutions reflect our commitment to quality </th>
 				                  <td scope="col" class="text-center align-middle">Cultivates a passion for quality. Ensure customer processes, products, services and solutions work as expected and committed; always seek to improve </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.eight_rating_2}}</h6>
 				                   <select required name="eight_rat2" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -667,18 +692,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.eight_comment_2}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="eight_com2" ></textarea>
+				                     <textarea rows="3" class="form-control" name="eight_com2" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Eliminate roadblocks which reduce employees ability to support customer needs and commitments </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.nine_rating_2}}</h6>
 				                   <select required name="nine_rat2" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -690,12 +716,12 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.nine_comment_2}}</textarea>
 				                  </div>
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="nine_com2" ></textarea>
+				                     <textarea rows="3" class="form-control" name="nine_com2" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
@@ -703,6 +729,7 @@
 				                  <th scope="col" class="text-center align-middle" rowspan="2">Links contribution of one’s own responsibilities and work group to the customer experience</th>
 				                  <td scope="col" class="text-center align-middle">Strive for best in class  customer experience from all aspects of the customer experience lifecycle </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.ten_rating_2}}</h6>
 				                   <select required name="ten_rat2" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -714,18 +741,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.ten_comment_2}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="ten_com2"></textarea>
+				                     <textarea rows="3" class="form-control" name="ten_com2" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Identify issues, opportunities and build measurable solutions into your plans to improve the customer experience</td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.eleven_rating_2}}</h6>
 				                   <select required name="eleven_rat2" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -737,12 +765,12 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.eleven_comment_2}}</textarea>
 				                  </div>
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="eleven_com2"></textarea>
+				                     <textarea rows="3" class="form-control" name="eleven_com2" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
@@ -764,6 +792,7 @@
 				                  <th scope="col" class="text-center align-middle" rowspan="2">Understands how the business operates, how the performance of ECPL is evaluated, what changes will improve performance</th>
 				                  <td scope="col" class="text-center align-middle">Has a deep understanding of the business strategy, plans and performance of ECPL.  Provides leadership in managing the achievement of group plan </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.one_rating_3}}</h6>
 				                   <select required name="one_rat3" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -775,18 +804,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.one_comment_3}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="one_com3"></textarea>
+				                     <textarea rows="3" class="form-control" name="one_com3" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Understand how operation works, what actions to take to improve results on both the growth and expense sides of the business – at the same time! </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.two_rating_3}}</h6>
 				                   <select required name="two_rat3" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -798,12 +828,12 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.two_comment_3}}</textarea>
 				                  </div>
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="two_com3"></textarea>
+				                     <textarea rows="3" class="form-control" name="two_com3" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
@@ -811,6 +841,7 @@
 				                  <th scope="col" class="text-center align-middle" rowspan="2">Drives innovation, champions change</th>
 				                  <td scope="col" class="text-center align-middle">Provides and environment which fosters innovation and change, where risks can be taken to create extraordinary return </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.three_rating_3}}</h6>
 				                   <select required name="three_rat3" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -822,18 +853,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.three_comment_3}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="three_com3"></textarea>
+				                     <textarea rows="3" class="form-control" name="three_com3" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Is recognized as a change champion  in supporting ECPL  transition</td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.four_rating_3}}</h6>
 				                   <select required name="four_rat3" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -845,12 +877,12 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.four_comment_3}}</textarea>
 				                  </div>
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="four_com3"></textarea>
+				                     <textarea rows="3" class="form-control" name="four_com3" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
@@ -858,6 +890,7 @@
 				                  <th scope="col" class="text-center align-middle" rowspan="4">Makes ethical decisions, with utmost integrity</th>
 				                  <td scope="col" class="text-center align-middle">Provides a role model for professional integrity </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.five_rating_3}}</h6>
 				                   <select required name="five_rat3" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -869,18 +902,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.five_comment_3}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="five_com3"></textarea>
+				                     <textarea rows="3" class="form-control" name="five_com3" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Ensures all employee and customer transactions are based on ECPL’s standards for business and leadership </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.six_rating_3}}</h6>
 				                   <select required name="six_rat3" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -892,18 +926,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.six_comment_3}}</textarea>
 				                  </div>
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="six_com3"></textarea>
+				                     <textarea rows="3" class="form-control" name="six_com3" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Treats other resources and teams with respect </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.seven_rating_3}}</h6>
 				                   <select required name="seven_rat3" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -915,18 +950,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.seven_comment_3}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="seven_com3"></textarea>
+				                     <textarea rows="3" class="form-control" name="seven_com3" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td scope="col" class="text-center align-middle">Models behaviours and actions consistent with ECPL standards and values</td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.eight_rating_3}}</h6>
 				                   <select required name="eight_rat3" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -938,12 +974,12 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.eight_comment_3}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="eight_com3"></textarea>
+				                     <textarea rows="3" class="form-control" name="eight_com3" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
@@ -965,6 +1001,7 @@
 				                  <th scope="col" class="text-center align-middle" rowspan="3">Drives a performance based culture that recognizes & rewards employees on demonstrated performance</th>
 				                  <td scope="col" class="text-center align-middle">Set the tone and expectation that performance management and leadership capability development is fundamental responsibility and business requirement of all managers </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.one_rating_4}}</h6>
 				                   <select required name="one_rat4" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -976,18 +1013,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.one_comment_4}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="one_com4"></textarea>
+				                     <textarea rows="3" class="form-control" name="one_com4" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Creates an environment where performance excellence is rewarded and the basis for promotion and new opportunities </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.two_rating_4}}</h6>
 				                   <select required name="two_rat4" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -999,18 +1037,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.two_comment_4}}</textarea>
 				                  </div>
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="two_com4"></textarea>
+				                     <textarea rows="3" class="form-control" name="two_com4" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Helps employees envision a greater sense of possibilities, extend their aspirations</td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.three_rating_4}}</h6>
 				                   <select required name="three_rat4" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -1022,12 +1061,12 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.three_comment_4}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="three_com4"></textarea>
+				                     <textarea rows="3" class="form-control" name="three_com4" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
@@ -1035,6 +1074,7 @@
 				                  <th scope="col" class="text-center align-middle" rowspan="2">Ensures clarity of assignment, mission, objectives, goals; Make it simple for employees to understand what they need to do to succeed</th>
 				                  <td scope="col" class="text-center align-middle">Help employees and the team understand how the jobs and roles connect to the organization and operations – help them gain a line of site between the plan and their work </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.four_rating_4}}</h6>
 				                   <select required name="four_rat4" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -1046,18 +1086,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.four_comment_4}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="four_com4"></textarea>
+				                     <textarea rows="3" class="form-control" name="four_com4" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Ensures that all managers are proactively defining and reviewing  job and development plans as a key part of their responsibilities – high quality, open discussions and coaching</td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.five_rating_4}}</h6>
 				                   <select required name="five_rat4" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -1069,12 +1110,12 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.five_comment_4}}</textarea>
 				                  </div>
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="five_com4"></textarea>
+				                     <textarea rows="3" class="form-control" name="five_com4" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
@@ -1082,6 +1123,7 @@
 				                  <th scope="col" class="text-center align-middle" rowspan="2">Makes performance based talent decisions; Staff with the best talent</th>
 				                  <td scope="col" class="text-center align-middle">Defines a workforce, talent and development plan which will support the long term needs of the organization</td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.six_rating_4}}</h6>
 				                   <select required name="six_rat4" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -1093,18 +1135,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.six_comment_4}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="six_com4" ></textarea>
+				                     <textarea rows="3" class="form-control" name="six_com4" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Accelerate our leadership capability by ensuring we place top talent in each and every position. Has a defined succession plan </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.seven_rating_4}}</h6>
 				                   <select required name="seven_rat4" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -1116,12 +1159,12 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.seven_comment_4}}</textarea>
 				                  </div>
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="seven_com4" ></textarea>
+				                     <textarea rows="3" class="form-control" name="seven_com4" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
@@ -1129,6 +1172,7 @@
 				                  <th scope="col" class="text-center align-middle" rowspan="3">Communicates the logic behind decision; Builds understanding, not consensus agreement </th>
 				                  <td scope="col" class="text-center align-middle">Makes sure that all sides of the issue are understood before difficult decisions are made </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.eight_rating_4}}</h6>
 				                   <select required name="eight_rat4" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -1140,18 +1184,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.eight_comment_4}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="eight_com4"></textarea>
+				                     <textarea rows="3" class="form-control" name="eight_com4" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Spends the time to help people understand the logic behind decisions, the broader view of why they were made; value to ECPL </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.nine_rating_4}}</h6>
 				                   <select required name="nine_rat4" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -1163,18 +1208,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.nine_comment_4}}</textarea>
 				                  </div>
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="nine_com4"></textarea>
+				                     <textarea rows="3" class="form-control" name="nine_com4" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Discourages ongoing debate once a decision had been made</td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.ten_rating_4}}</h6>
 				                   <select required name="ten_rat4" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -1186,12 +1232,12 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.ten_comment_4}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="ten_com4"></textarea>
+				                     <textarea rows="3" class="form-control" name="ten_com4" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
@@ -1199,6 +1245,7 @@
 				                  <th scope="col" class="text-center align-middle" rowspan="3">Forms strong networks of people & implement solutions reflecting global and regional implications</th>
 				                  <td scope="col" class="text-center align-middle">Drive global and regional integration and thinking in your group; ensure deliverable are adaptable globally.</td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.eleven_rating_4}}</h6>
 				                   <select required name="eleven_rat4" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -1210,18 +1257,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.eleven_comment_4}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="eleven_com4"></textarea>
+				                     <textarea rows="3" class="form-control" name="eleven_com4" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Understand the global market and build plans that support ECPL global and regional strategies and plan </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.twelve_rating_4}}</h6>
 				                   <select required name="twelve_rat4" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -1233,18 +1281,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.twelve_comment_4}}</textarea>
 				                  </div>
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="twelve_com4"></textarea>
+				                     <textarea rows="3" class="form-control" name="twelve_com4" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Take advantage of global resources  to improve business results; build strong global and regional teams</td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.thirteen_rating_4}}</h6>
 				                   <select required name="thirteen_rat4" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -1256,12 +1305,12 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.thirteen_comment_4}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="thirteen_com4"></textarea>
+				                     <textarea rows="3" class="form-control" name="thirteen_com4" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
@@ -1269,6 +1318,7 @@
 				                  <th scope="col" class="text-center align-middle" rowspan="2">Honest, open, consistent communications:  No surprises, actions and behaviour match words</th>
 				                  <td scope="col" class="text-center align-middle">Set the standard for communication in your organization.  Open, honest, two-way, safe, valued </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.fourteen_rating_4}}</h6>
 				                   <select required name="fourteen_rat4" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -1280,18 +1330,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.fourteen_comment_4}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="fourteen_com4"></textarea>
+				                     <textarea rows="3" class="form-control" name="fourteen_com4" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Provide various communication forums to ensure that employees are staying current with plans and progress, actions, successes, best practices, issues, opportunities </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.fifteen_rating_4}}</h6>
 				                   <select required name="fifteen_rat4" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -1303,12 +1354,12 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.fifteen_comment_4}}</textarea>
 				                  </div>
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="fifteen_com4"></textarea>
+				                     <textarea rows="3" class="form-control" name="fifteen_com4" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
@@ -1316,6 +1367,7 @@
 				                  <th scope="col" class="text-center align-middle" rowspan="3">Builds diversity in your teams which utilizes the full potential of people </th>
 				                  <td scope="col" class="text-center align-middle">Actively promotes the recruitment, development, retention, success and advancement of people from diverse backgrounds </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.sixteen_rating_4}}</h6>
 				                   <select required name="sixteen_rat4" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -1327,18 +1379,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.sixteen_comment_4}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="sixteen_com4"></textarea>
+				                     <textarea rows="3" class="form-control" name="sixteen_com4" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Leverages differences to achieve business goals, helps people understand the business value of cultural </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.seventeen_rating_4}}</h6>
 				                   <select required name="seventeen_rat4" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -1350,18 +1403,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.seventeen_comment_4}}</textarea>
 				                  </div>
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="seventeen_com4"></textarea>
+				                     <textarea rows="3" class="form-control" name="seventeen_com4" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Adheres to and promotes ECPL diversity practices and policies</td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.eighteen_rating_4}}</h6>
 				                   <select required name="eighteen_rat4" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -1373,12 +1427,12 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.eighteen_comment_4}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="eighteen_com4"></textarea>
+				                     <textarea rows="3" class="form-control" name="eighteen_com4" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
@@ -1386,6 +1440,7 @@
 				                  <th scope="col" class="text-center align-middle" rowspan="2">Seeks to enhance employee engagement in their work and ECPL</th>
 				                  <td scope="col" class="text-center align-middle">Promotes employee and team communication; actively listens, supports an open dialog  </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.nineteen_rating_4}}</h6>
 				                   <select required name="nineteen_rat4" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -1397,18 +1452,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.nineteen_comment_4}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="nineteen_com4"></textarea>
+				                     <textarea rows="3" class="form-control" name="nineteen_com4" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Sponsor employee forums, focus group meetings, small group discussions  </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.twenty_rating_4}}</h6>
 				                   <select required name="twenty_rat4" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -1420,12 +1476,12 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.twenty_comment_4}}</textarea>
 				                  </div>
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="twenty_com4" ></textarea>
+				                     <textarea rows="3" class="form-control" name="twenty_com4" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
@@ -1433,6 +1489,7 @@
 				                  <th scope="col" class="text-center align-middle" rowspan="3">Understand self, build your skills and capabilities, increase the capabilities of your team </th>
 				                  <td scope="col" class="text-center align-middle">Build a portfolio of knowledge, experiences, assignments which give a broad understanding of the business and deep expertise in your area of responsibility </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.twentyone_rating_4}}</h6>
 				                   <select required name="twentyone_rat4" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -1444,18 +1501,19 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.twentyone_comment_4}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="twentyone_com4"></textarea>
+				                     <textarea rows="3" class="form-control" name="twentyone_com4" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Keep ahead of the industry – strive to be on the leading edge of thought </td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.twentytwo_rating_4}}</h6>
 				                   <select required name="twentytwo_rat4" class="form-control">
 				                     <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
@@ -1467,20 +1525,21 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.twentytwo_comment_4}}</textarea>
 				                  </div>
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="twentytwo_com4" ></textarea>
+				                     <textarea rows="3" class="form-control" name="twentytwo_com4" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>
 				                <tr>
 				                  <td class="text-center align-middle">Inspire your organization to be actively developing their skills and capabilities as a personal responsibility</td>
 				                  <td class="text-center align-middle">
+								   <h6 align="center">Agent Score:<br> {{partb.twentythree_rating_4}}</h6>
 				                   <select required name="twentythree_rat4" class="form-control">
-				                     <option value="" selected disabled>-Select-</option>
+									   <option value="" selected disabled>-Select-</option>
 				                      <option value="1">1</option>
 				                      <option value="2">2</option>
 				                      <option value="3">3</option>
@@ -1490,12 +1549,12 @@
 				                  </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" disabled></textarea>
+				                     <textarea rows="3" class="form-control" disabled>{{partb.twentythree_comment_4}}</textarea>
 				                  </div>
 				                 </td>
 				                  <td class="text-center align-middle">
 				                  <div class="form-group">
-				                     <textarea rows="3" class="form-control" name="twentythree_com4" ></textarea>
+				                     <textarea rows="3" class="form-control" name="twentythree_com4" required></textarea>
 				                  </div>
 				                 </td>
 				                </tr>

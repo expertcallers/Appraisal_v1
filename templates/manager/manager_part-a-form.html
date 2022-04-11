@@ -5,7 +5,7 @@
 	<section class="">
 		<nav class="navbar fixed-top navbar-expand-lg">
 		  <a class="navbar-brand" href="#">
-		  	<img src="{% static 'appraisal/img/logo.png' %}" width="280" height="80" class="d-inline-block align-top" alt="">
+		  	<img src="{% static 'dash/img/logo.png' %}" width="280" height="80" class="d-inline-block align-top" alt="">
 		  </a>
 		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 		    <span class="navbar-toggler-icon"></span>
@@ -97,6 +97,7 @@
 								      <td>{{parta.parameter_1}}</td>
 								      <td>{{parta.parameter_1_score}}%</td>
 								      <td>
+								   		<h6 align="center">Agent Score:<br><span id="parameter_1"></span></h6>
 								      	<select required name="parameter_1_rating" class="form-control">
 								      		<option value="" selected disabled>-Select-</option>
 											<option value="1">1</option>
@@ -108,12 +109,12 @@
 								      </td>
 								      <td>
 										<div class="form-group">
-											<textarea rows="3" class="form-control" readonly></textarea>
+											<textarea rows="3" class="form-control" readonly>{{parta.parameter_1_comment_agent}}</textarea>
 										</div>
 								      </td>
 								      <td>
 										<div class="form-group">
-											<textarea rows="3" class="form-control" name="parameter_1_comment"></textarea>
+											<textarea rows="3" class="form-control" name="parameter_1_comment" required></textarea>
 										</div>
 									  </td>
 								    </tr>
@@ -124,6 +125,7 @@
 								      <td>{{parta.parameter_2}}</td>
 								      <td>{{parta.parameter_2_score}}%</td>
 								      <td>
+								   		<h6 align="center">Agent Score:<br><span id="parameter_2"></span></h6>
 								      	<select required name="parameter_2_rating" class="form-control">
 								      		<option value="" selected disabled>-Select-</option>
 											<option value="1">1</option>
@@ -135,12 +137,12 @@
 								      </td>
 								      <td>
 										<div class="form-group">
-											<textarea rows="3" class="form-control" readonly></textarea>
+											<textarea rows="3" class="form-control" readonly>{{parta.parameter_2_comment_agent}}</textarea>
 										</div>
 								      </td>
 								      <td>
 										<div class="form-group">
-											<textarea rows="3" class="form-control" name="parameter_2_comment"></textarea>
+											<textarea rows="3" class="form-control" name="parameter_2_comment" required></textarea>
 										</div>
 									  </td>
 								    </tr>
@@ -151,6 +153,7 @@
 								      <td>{{parta.parameter_3}}</td>
 								      <td>{{parta.parameter_3_score}}%</td>
 								      <td>
+								   		<h6 align="center">Agent Score:<br><span id="parameter_3"></span></h6>
 								      	<select required name="parameter_3_rating" class="form-control">
 								      		<option value="" selected disabled>-Select-</option>
 											<option value="1">1</option>
@@ -162,12 +165,12 @@
 								      </td>
 								      <td>
 										<div class="form-group">
-											<textarea rows="3" class="form-control" readonly></textarea>
+											<textarea rows="3" class="form-control" readonly>{{parta.parameter_3_comment_agent}}</textarea>
 										</div>
 								      </td>
 								      <td>
 										<div class="form-group">
-											<textarea rows="3" class="form-control" name="parameter_3_comment"></textarea>
+											<textarea rows="3" class="form-control" name="parameter_3_comment" required></textarea>
 										</div>
 									  </td>
 								    </tr>
@@ -178,6 +181,7 @@
 								      <td>{{parta.parameter_4}}</td>
 								      <td>{{parta.parameter_4_score}}%</td>
 								      <td>
+								   		<h6 align="center">Agent Score:<br><span id="parameter_4"></span></h6>
 								      	<select required name="parameter_4_rating" class="form-control">
 								      		<option value="" selected disabled>-Select-</option>
 											<option value="1">1</option>
@@ -189,12 +193,12 @@
 								      </td>
 								      <td>
 										<div class="form-group">
-											<textarea rows="3" class="form-control" readonly></textarea>
+											<textarea rows="3" class="form-control" readonly>{{parta.parameter_4_comment_agent}}</textarea>
 										</div>
 								      </td>
 								      <td>
 										<div class="form-group">
-											<textarea rows="3" class="form-control" name="parameter_4_comment"></textarea>
+											<textarea rows="3" class="form-control" name="parameter_4_comment" required></textarea>
 										</div>
 									  </td>
 								    </tr>
@@ -205,6 +209,7 @@
 								      <td>{{parta.parameter_5}}</td>
 								      <td>{{parta.parameter_5_score}}%</td>
 								      <td>
+								   		<h6 align="center">Agent Score:<br><span id="parameter_5"></span></h6>
 								      	<select required name="parameter_5_rating" class="form-control">
 								      		<option value="" selected disabled>-Select-</option>
 											<option value="1">1</option>
@@ -216,12 +221,12 @@
 								      </td>
 								      <td>
 										<div class="form-group">
-											<textarea rows="3" class="form-control" readonly></textarea>
+											<textarea rows="3" class="form-control" readonly>{{parta.parameter_5_comment_agent}}</textarea>
 										</div>
 								      </td>
 								      <td>
 										<div class="form-group">
-											<textarea rows="3" class="form-control" name="parameter_5_comment"></textarea>
+											<textarea rows="3" class="form-control" name="parameter_5_comment" required></textarea>
 										</div>
 									  </td>
 								    </tr>
@@ -232,6 +237,7 @@
 								      <td>{{parta.parameter_6}}</td>
 								      <td>{{parta.parameter_6_score}}%</td>
 								      <td>
+								   		<h6 align="center">Agent Score:<br><span id="parameter_6"></span></h6>
 								      	<select required name="parameter_6_rating" class="form-control">
 								      		<option value="" selected disabled>-Select-</option>
 											<option value="1">1</option>
@@ -243,12 +249,12 @@
 									  </td>
 								      <td>
 										<div class="form-group">
-											<textarea rows="3" class="form-control" readonly></textarea>
+											<textarea rows="3" class="form-control" readonly>{{parta.parameter_6_comment_agent}}</textarea>
 										</div>
 								      </td>
 								      <td>
 										<div class="form-group">
-											<textarea rows="3" class="form-control" name="parameter_6_comment"></textarea>
+											<textarea rows="3" class="form-control" name="parameter_6_comment" required></textarea>
 										</div>
 									  </td>
 								    </tr>
@@ -276,4 +282,41 @@
 			</div>
 		</div>
 	</section>
+{% endblock %}
+{% block script %}
+<script>
+	$parameter_1_rating = {{parta.parameter_1_rating_agent}};
+	$parameter_1_score = {{parta.parameter_1_score}};
+	$("#parameter_1").html(($parameter_1_rating*$parameter_1_score)/100);
+
+	{% if parta.parameter_2 %}
+	$parameter_2_rating = {{parta.parameter_2_rating_agent}};
+	$parameter_2_score = {{parta.parameter_2_score}};
+	$("#parameter_2").html(($parameter_2_rating*$parameter_2_score)/100);
+	{% endif %}
+
+	{% if parta.parameter_3 %}
+	$parameter_3_rating = {{parta.parameter_3_rating_agent}};
+	$parameter_3_score = {{parta.parameter_3_score}};
+	$("#parameter_3").html(($parameter_3_rating*$parameter_3_score)/100);
+	{% endif %}
+
+	{% if parta.parameter_4 %}
+	$parameter_4_rating = {{parta.parameter_4_rating_agent}};
+	$parameter_4_score = {{parta.parameter_4_score}};
+	$("#parameter_4").html(($parameter_4_rating*$parameter_4_score)/100);
+	{% endif %}
+
+	{% if parta.parameter_5 %}
+	$parameter_5_rating = {{parta.parameter_5_rating_agent}};
+	$parameter_5_score = {{parta.parameter_5_score}};
+	$("#parameter_5").html(($parameter_5_rating*$parameter_5_score)/100);
+	{% endif %}
+
+	{% if parta.parameter_6 %}
+	$parameter_6_rating = {{parta.parameter_6_rating_agent}};
+	$parameter_6_score = {{parta.parameter_6_score}};
+	$("#parameter_6").html(($parameter_6_rating*$parameter_6_score)/100);
+	{% endif %}
+</script>
 {% endblock %}

@@ -7,32 +7,35 @@ from django.contrib import messages
 from .models import *
 from django.contrib.auth import login, logout, update_session_auth_hash, authenticate
 from django.urls import reverse
+
 # TL and AM List
-tl_am_list = ['Team Leader','Assistant Manager', 'Subject Matter Expert', 'Trainer','Learning and Development Head',
-              'Process Trainer','Trainer Sales',
+tl_am_list = ['Team Leader', 'Assistant Manager', 'Subject Matter Expert', 'Trainer', 'Learning and Development Head',
+              'Process Trainer', 'Trainer Sales',
               ]
 
 # Manager List
-manager_list = ['Quality Head','Operations Manager','Service Delivery Manager','Command Centre Head']
+manager_list = ['Quality Head', 'Operations Manager', 'Service Delivery Manager', 'Command Centre Head']
 
 # HR List
-hr_list = ['HR','HR Manager','Manager ER','HR Lead','Sr Recruiter','MIS Executive HR',
-'Lead HRBP','Employee Relations Specialist','Payroll Specialist','Recruiter','HR Generalist']
+hr_list = ['HR', 'HR Manager', 'Manager ER', 'HR Lead', 'Sr Recruiter', 'MIS Executive HR',
+           'Lead HRBP', 'Employee Relations Specialist', 'Payroll Specialist', 'Recruiter', 'HR Generalist']
 
-#Agent List
-agent_list = [ 'Client Relationship Officer','MIS Executive','Patrolling officer',
-               'Data Analyst','Business Development Executive','Content Developer',
-               'Junior Developer','Web Developer','Trainee Developer',
-               'Jr Dev',
-                ]
+# Agent List
+agent_list = ['Client Relationship Officer', 'MIS Executive', 'Patrolling officer',
+              'Data Analyst', 'Business Development Executive', 'Content Developer',
+              'Junior Developer', 'Web Developer', 'Trainee Developer',
+              'Jr Dev',
+              ]
 
 
 def LogoutFunc(request):
     logout(request)
     return redirect("/appraisal/indexing")
 
+
 def IndexPage(request):
     return render(request, "common/index.html")
+
 
 def LoginPage(request):
     if request.method == "POST":
@@ -43,31 +46,36 @@ def LoginPage(request):
             # user_login
             login(request, user)
             desi = request.user.profile.emp_desi
-            if desi in agent_list:
-                try:
-                    partc = PartC_Appraisee.objects.get(Q(emp_id=username))
-                    if partc.agent_score == None:
-                        return redirect("/appraisal/notice")
-                    elif partc.mgr_score != None:
-                        return redirect("view", id=username)
-                    else:
-                        messages.info(request, 'Waiting for your Manager to complete. Please Check back Later!')
-                        return redirect("/appraisal/")
-                except PartC_Appraisee.DoesNotExist:
-                    messages.info(request, 'Waiting for your Manager to add Parameters. Please Check back Later!')
-                    return redirect("/appraisal/")
-
-            elif desi in manager_list or desi in tl_am_list or desi in hr_list:
-                return redirect("/appraisal/manager-dashboard")
+            pc = request.user.profile.pc
+            if pc == False:
+                return redirect("/appraisal/change-password")
             else:
-                messages.info(request, 'Something went wrong contact CC Team!')
-                return redirect("/appraisal/")
+                if desi in agent_list:
+                    try:
+                        partc = PartC_Appraisee.objects.get(Q(emp_id=username))
+                        if partc.agent_score == None:
+                            return redirect("/appraisal/notice")
+                        elif partc.mgr_score != None:
+                            return redirect("view", id=username)
+                        else:
+                            messages.info(request, 'Waiting for your Manager to complete. Please Check back Later!')
+                            return redirect("/appraisal/")
+                    except PartC_Appraisee.DoesNotExist:
+                        messages.info(request, 'Waiting for your Manager to add Parameters. Please Check back Later!')
+                        return redirect("/appraisal/")
+
+                elif desi in manager_list or desi in tl_am_list or desi in hr_list:
+                    return redirect("/appraisal/manager-dashboard")
+                else:
+                    messages.info(request, 'Something went wrong contact CC Team!')
+                    return redirect("/appraisal/")
         else:
             messages.info(request, 'Invalid user !')
             return redirect("/appraisal/")
     else:
         messages.info(request, 'Invalid Request !')
         return redirect("/appraisal/")
+
 
 @login_required
 def selfAppraisal(request):
@@ -90,7 +98,7 @@ def selfAppraisal(request):
 def managerDashboard(request):
     emp_id = request.user.profile.emp_id
     profile = PartD_Appraisee.objects.filter(Q(emp_rm1_id=emp_id))
-    data = {"profile": profile,"manager":manager_list}
+    data = {"profile": profile, "manager": manager_list}
     return render(request, "manager/manager_dashboard.html", data)
 
 
@@ -185,7 +193,7 @@ def managerPartAView(request):
         id = request.POST["emp_id"]
         parta = PartA_Appraisee.objects.get(emp_id=id)
         try:
-            PartA_Appraisee.objects.get(Q(emp_id=id),~Q(mgr_score=None))
+            PartA_Appraisee.objects.get(Q(emp_id=id), ~Q(mgr_score=None))
             messages.info(request, "Part A for this Agent is Already done! Redirecting you to Part B.")
             lst = []
             for i in range(len(id)):
@@ -200,6 +208,7 @@ def managerPartAView(request):
     else:
         messages.info(request, "Invalid Request. You have been Logged Out.")
         return redirect("/appraisal/")
+
 
 @login_required
 def managerPartASave(request):
@@ -297,6 +306,7 @@ def managerPartASave(request):
     else:
         messages.info(request, "Invalid Request. You have been Logged Out.")
         return redirect("/appraisal/")
+
 
 @login_required
 def part_b_save(request):
@@ -453,8 +463,9 @@ def part_b_save(request):
                                    int(twentytwo_rating_4), int(twentythree_rating_4)]
             agent_table_4_total = round(sum(agent_table_4_total) / 23, 2)
 
-            agent_score = round((agent_table_1_total + agent_table_2_total + agent_table_3_total + agent_table_4_total) / 4,
-                                2)
+            agent_score = round(
+                (agent_table_1_total + agent_table_2_total + agent_table_3_total + agent_table_4_total) / 4,
+                2)
 
             e = PartB_Appraisee.objects.get(agent=user.profile)
             e.agent_score = agent_score
@@ -598,9 +609,6 @@ def manager_part_b_save(request, id):
     for i in id:
         emp_id += chr(int(i))
     id = emp_id
-    print(id,"iddd")
-    print(type(id),"iddd type")
-    print(PartB_Appraisee.objects.get(emp_id=id).emp_name)
     if request.method == "POST":
         # user = request.user
         mangr_one_comment = request.POST.get("one_com")
@@ -883,7 +891,7 @@ def manager_part_b_save(request, id):
 
     else:
         try:
-            PartB_Appraisee.objects.get(Q(emp_id=id),~Q(mgr_score=None))
+            PartB_Appraisee.objects.get(Q(emp_id=id), ~Q(mgr_score=None))
             messages.info(request, "Part B for this Agent is Already done! Redirecting you to Part C.")
             lst = []
             for i in range(len(id)):
@@ -891,7 +899,8 @@ def manager_part_b_save(request, id):
             return redirect("manpartc", id=lst)
         except PartB_Appraisee.DoesNotExist:
             profile = Profile.objects.get(emp_id=id)
-            data = {"profile": profile}
+            partb = PartB_Appraisee.objects.get(emp_id=id)
+            data = {"profile": profile, "partb": partb}
             return render(request, 'manager/manager_partb.html', data)
 
 
@@ -988,7 +997,7 @@ def manager_part_c_save(request, id):
         return redirect("manpartd", id=lst)
     else:
         try:
-            a = PartC_Appraisee.objects.get(Q(emp_id=id),~Q(mgr_score=None))
+            a = PartC_Appraisee.objects.get(Q(emp_id=id), ~Q(mgr_score=None))
             messages.info(request, "Part C for this Agent is Already done! Redirecting you to Part D.")
             lst = []
             for i in range(len(id)):
@@ -996,7 +1005,8 @@ def manager_part_c_save(request, id):
             return redirect("manpartd", id=lst)
         except PartC_Appraisee.DoesNotExist:
             profile = Profile.objects.get(emp_id=id)
-            data = {"profile": profile}
+            partc = PartC_Appraisee.objects.get(emp_id=id)
+            data = {"profile": profile, "partc": partc}
             return render(request, "manager/manager_part_c.html", data)
 
 
@@ -1020,7 +1030,7 @@ def part_d_save(request):
         e.if_disagree = if_disagree
         e.save()
         messages.info(request, "Successfully Submitted !")
-        return redirect("/appraisal/view/"+request.user.profile.emp_id)
+        return redirect("/appraisal/view/" + request.user.profile.emp_id)
 
     else:
         profile = Profile.objects.get(emp_id=request.user.profile.emp_id)
@@ -1131,18 +1141,24 @@ def viewAppraisal(request, id):
         part_c = PartC_Appraisee.objects.get(emp_id=id)
         part_d = PartD_Appraisee.objects.get(emp_id=id)
         profile = Profile.objects.get(emp_id=id)
-        data = {"part_a": part_a, "part_b": part_b, "part_c": part_c, "partd": part_d, "profile": profile}
+        self_score = round(
+            (((part_a.agent_score * 70) / 100) + ((part_b.agent_score * 20) / 100) + ((part_c.agent_score * 10) / 100)),
+            2)
+        manager_score = round(
+            (((part_a.mgr_score * 70) / 100) + ((part_b.mgr_score * 20) / 100) + ((part_c.mgr_score * 10) / 100)), 2)
+        data = {"part_a": part_a, "part_b": part_b, "part_c": part_c, "partd": part_d, "profile": profile,
+                "self_score": self_score, "manager_score": manager_score}
         return render(request, "common/viewall.html", data)
     else:
         messages.info(request, "Unauthorized access you have been Logged Out :)")
         return redirect("/appraisal/")
 
+
 @login_required
 def addParameters(request):
     emp_id = request.user.profile.emp_id
-    profiles = Profile.objects.filter(emp_rm3_id=emp_id)
     if request.method == "POST":
-        designation = request.POST["designation"]
+        emp = request.POST.getlist("emp")
         parameter_1 = request.POST["parameter_1"]
         parameter_1_score = request.POST["parameter_1_score"]
         parameter_2 = request.POST.get("parameter_2")
@@ -1155,41 +1171,32 @@ def addParameters(request):
         parameter_5_score = request.POST.get("parameter_5_score")
         parameter_6 = request.POST.get("parameter_6")
         parameter_6_score = request.POST.get("parameter_6_score")
-        for i in profiles:
-            if i.emp_desi == designation:
-                PartA_Appraisee.objects.create(agent=i, emp_id=i.emp_id, emp_name=i.emp_name, emp_desi=i.emp_desi,
-                                                   emp_rm1_id=i.emp_rm1_id, emp_rm2_id=i.emp_rm2_id,
-                                                   emp_rm3_id=i.emp_rm3_id, emp_process=i.emp_process,
-                                                   parameter_1=parameter_1, parameter_1_score=parameter_1_score,
-                                                   parameter_2=parameter_2, parameter_2_score=parameter_2_score,
-                                                   parameter_3=parameter_3, parameter_3_score=parameter_3_score,
-                                                   parameter_4=parameter_4, parameter_4_score=parameter_4_score,
-                                                   parameter_5=parameter_5, parameter_5_score=parameter_5_score,
-                                                   parameter_6=parameter_6, parameter_6_score=parameter_6_score)
-                PartB_Appraisee.objects.create(agent=i, emp_id=i.emp_id, emp_name=i.emp_name,emp_rm1=i.emp_rm1,
-                                                    emp_rm2=i.emp_rm2,emp_rm3=i.emp_rm3,emp_rm1_id=i.emp_rm1_id,
-                                                    emp_rm2_id=i.emp_rm2_id, emp_rm3_id=i.emp_rm3_id)
-                PartC_Appraisee.objects.create(agent=i, emp_id=i.emp_id, emp_name=i.emp_name,emp_rm1=i.emp_rm1,
-                                                    emp_rm2=i.emp_rm2,emp_rm3=i.emp_rm3,emp_rm1_id=i.emp_rm1_id,
-                                                    emp_rm2_id=i.emp_rm2_id, emp_rm3_id=i.emp_rm3_id)
-                PartD_Appraisee.objects.create(agent=i, emp_id=i.emp_id, emp_name=i.emp_name,emp_rm1=i.emp_rm1,
-                                                    emp_rm2=i.emp_rm2,emp_rm3=i.emp_rm3,emp_rm1_id=i.emp_rm1_id,
-                                                    emp_rm2_id=i.emp_rm2_id, emp_rm3_id=i.emp_rm3_id)
+        for j in emp:
+            i = Profile.objects.get(emp_id=j)
+            PartA_Appraisee.objects.create(agent=i, emp_id=i.emp_id, emp_name=i.emp_name, emp_desi=i.emp_desi,
+                                           emp_rm1_id=i.emp_rm1_id, emp_rm2_id=i.emp_rm2_id,
+                                           emp_rm3_id=i.emp_rm3_id, emp_process=i.emp_process,
+                                           parameter_1=parameter_1, parameter_1_score=parameter_1_score,
+                                           parameter_2=parameter_2, parameter_2_score=parameter_2_score,
+                                           parameter_3=parameter_3, parameter_3_score=parameter_3_score,
+                                           parameter_4=parameter_4, parameter_4_score=parameter_4_score,
+                                           parameter_5=parameter_5, parameter_5_score=parameter_5_score,
+                                           parameter_6=parameter_6, parameter_6_score=parameter_6_score)
+            PartB_Appraisee.objects.create(agent=i, emp_id=i.emp_id, emp_name=i.emp_name, emp_rm1=i.emp_rm1,
+                                           emp_rm2=i.emp_rm2, emp_rm3=i.emp_rm3, emp_rm1_id=i.emp_rm1_id,
+                                           emp_rm2_id=i.emp_rm2_id, emp_rm3_id=i.emp_rm3_id)
+            PartC_Appraisee.objects.create(agent=i, emp_id=i.emp_id, emp_name=i.emp_name, emp_rm1=i.emp_rm1,
+                                           emp_rm2=i.emp_rm2, emp_rm3=i.emp_rm3, emp_rm1_id=i.emp_rm1_id,
+                                           emp_rm2_id=i.emp_rm2_id, emp_rm3_id=i.emp_rm3_id)
+            PartD_Appraisee.objects.create(agent=i, emp_id=i.emp_id, emp_name=i.emp_name, emp_rm1=i.emp_rm1,
+                                           emp_rm2=i.emp_rm2, emp_rm3=i.emp_rm3, emp_rm1_id=i.emp_rm1_id,
+                                           emp_rm2_id=i.emp_rm2_id, emp_rm3_id=i.emp_rm3_id)
         messages.info(request, "The Parameters Added Successfully!")
         return redirect("/appraisal/add-parameters")
     else:
-        designation = []
-        for i in profiles:
-            try:
-                PartA_Appraisee.objects.get(emp_id=i.emp_id, emp_rm3_id=emp_id, emp_desi=i.emp_desi)
-                pass
-            except PartA_Appraisee.DoesNotExist:
-                designation.append(i.emp_desi)
-        des =[]
-        for i in designation:
-            if i not in des:
-                des.append(i)
-        data = {'designation': des}
+        profiles = Profile.objects.filter(emp_rm1_id=emp_id).exclude(
+            emp_id__in=PartA_Appraisee.objects.filter(emp_rm1_id=emp_id).values("emp_id"))
+        data = {'emp': profiles}
         return render(request, "manager/add_parameters.html", data)
 
 
@@ -1206,12 +1213,13 @@ def underAgents(request):
     emp_id = request.user.profile.emp_id
     emp_desi = request.user.profile.emp_desi
     if emp_desi in manager_list:
-        profile = Profile.objects.filter(Q(emp_rm1_id=emp_id)|Q(emp_rm2_id=emp_id)|Q(emp_rm3_id=emp_id))
+        profile = Profile.objects.filter(Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id))
     else:
         profile = Profile.objects.filter(Q(emp_rm1_id=emp_id))
 
-    data = {"profile":profile}
-    return render(request,"manager/agents.html",data)
+    data = {"profile": profile}
+    return render(request, "manager/agents.html", data)
+
 
 def changeEmpPassword(request):
     if request.method == "POST":
@@ -1231,16 +1239,18 @@ def changeEmpPassword(request):
         messages.info(request, "Unauthorized access you have been Logged Out :)")
         return redirect("/appraisal/")
 
+
 @login_required
-def Settings(request): # Test1
+def Settings(request):  # Test1
     emp_id = request.user.profile.emp_id
     emp = Profile.objects.get(emp_id=emp_id)
     form = PasswordChangeForm(request.user)
-    data = {'emp':emp,'form':form}
-    return render(request,'manager/settings.html',data)
+    data = {'emp': emp, 'form': form}
+    return render(request, 'manager/settings.html', data)
+
 
 @login_required
-def change_password(request): # Test1
+def change_password(request):  # Test1
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
@@ -1256,4 +1266,4 @@ def change_password(request): # Test1
             messages.error(request, 'Please correct the error below.')
     else:
         form = PasswordChangeForm(request.user)
-    return render(request,'manager/settings.html', {'form': form})
+    return render(request, 'common/change_password.html', {'form': form})

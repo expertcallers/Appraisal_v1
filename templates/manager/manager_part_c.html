@@ -5,7 +5,7 @@
 	<section class="">
 		<nav class="navbar fixed-top navbar-expand-lg">
 		  <a class="navbar-brand" href="#">
-		  	<img src="{% static 'appraisal/img/logo.png' %}" width="280" height="80" class="d-inline-block align-top" alt="">
+		  	<img src="{% static 'dash/img/logo.png' %}" width="280" height="80" class="d-inline-block align-top" alt="">
 		  </a>
 		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 		    <span class="navbar-toggler-icon"></span>
@@ -69,7 +69,7 @@
 								      	</ul>
 								      </td>
 								      <td class="text-center align-middle">
-								      	<center><h5>{{part_c.respect_rating}}</h5></center>
+								   		<h6 align="center">Agent Score:<br> {{partc.respect_rating}}</h6>
 								      	<select required name="res_rat" class="form-control">
 											<option value="" selected disabled>-Select-</option>
 								      		<option value="1">1</option>
@@ -81,12 +81,12 @@
 								      </td>
 								      <td class="text-center align-middle">
 										<div class="form-group"> 
-											<textarea rows="8" class="form-control" disabled>{{part_c.respect_comment}}</textarea>
+											<textarea rows="8" class="form-control" disabled>{{partc.respect_comment}}</textarea>
 										</div>
 									  </td>
 								      <td class="text-center align-middle">
 										<div class="form-group">
-											<textarea rows="8" class="form-control" name="res_com"></textarea>
+											<textarea rows="8" class="form-control" name="res_com" required></textarea>
 										</div>
 									  </td>
 								    </tr>
@@ -104,7 +104,7 @@
 								      	</ul>
 								      </td>
 								      <td class="text-center align-middle">
-								      	<center><h5>{{part_c.integrity_rating}}</h5></center>
+								   		<h6 align="center">Agent Score:<br> {{partc.integrity_rating}}</h6>
 								      	<select required name="int_rat" class="form-control">
 											<option value="" selected disabled>-Select-</option>
 								      		<option value="1">1</option>
@@ -116,12 +116,12 @@
 								      </td>
 								      <td class="text-center align-middle">
 										<div class="form-group">
-											<textarea rows="8" class="form-control" disabled>{{part_c.integrity_comment}}</textarea>
+											<textarea rows="8" class="form-control" disabled>{{partc.integrity_comment}}</textarea>
 										</div>
 									  </td>
 								      <td class="text-center align-middle">
 										<div class="form-group">
-											<textarea rows="8" class="form-control" name="int_com"></textarea>
+											<textarea rows="8" class="form-control" name="int_com" required></textarea>
 										</div>
 									  </td>
 								    </tr>
@@ -139,7 +139,7 @@
 								      	</ul>
 								      </td>
 								      <td class="text-center align-middle">
-								      	<center><h5>{{part_c.diversity_rating}}</h5></center>
+								   		<h6 align="center">Agent Score:<br> {{partc.diversity_rating}}</h6>
 								      	<select required name="div_rat" class="form-control">
 											<option value="" selected disabled>-Select-</option>
 								      		<option value="1">1</option>
@@ -151,12 +151,12 @@
 								      </td>
 								      <td class="text-center align-middle">
 										<div class="form-group">
-											<textarea rows="8" class="form-control" disabled>{{part_c.diversity_comment}}</textarea>
+											<textarea rows="8" class="form-control" disabled>{{partc.diversity_comment}}</textarea>
 										</div>
 									  </td>
 								      <td class="text-center align-middle">
 										<div class="form-group">
-											<textarea rows="8" class="form-control" name="div_com"></textarea>
+											<textarea rows="8" class="form-control" name="div_com" required></textarea>
 										</div>
 									  </td>
 								    </tr>
@@ -175,7 +175,7 @@
 								      	</ul>
 								      </td>
 								      <td class="text-center align-middle">
-								      	<center><h5>{{part_c.excellence_rating}}</h5></center>
+								   		<h6 align="center">Agent Score:<br> {{partc.excellence_rating}}</h6>
 								      	<select required name="exc_rat" class="form-control">
 											<option value="" selected disabled>-Select-</option>
 								      		<option value="1">1</option>
@@ -187,12 +187,12 @@
 								      </td>
 								      <td class="text-center align-middle">
 										<div class="form-group">
-											<textarea rows="8" class="form-control" disabled>{{part_c.excellence_comment}}</textarea>
+											<textarea rows="8" class="form-control" disabled>{{partc.excellence_comment}}</textarea>
 										</div>
 									  </td>
 								      <td class="text-center align-middle">
 										<div class="form-group">
-											<textarea rows="8" class="form-control" name="exc_com"></textarea>
+											<textarea rows="8" class="form-control" name="exc_com" required></textarea>
 										</div>
 									  </td>
 								    </tr>
@@ -210,7 +210,7 @@
 								      	</ul>
 								      </td>
 								      <td class="text-center align-middle">
-								      	<center><h5>{{part_c.teamwork_rating}}</h5></center>
+								   		<h6 align="center">Agent Score:<br> {{partc.teamwork_rating}}</h6>
 								      	<select required name="tea_rat" class="form-control">
 											<option value="" selected disabled>-Select-</option>
 								      		<option value="1">1</option>
@@ -222,12 +222,12 @@
 								      </td>
 								      <td class="text-center align-middle">
 										<div class="form-group">
-											<textarea rows="8" class="form-control" disabled>{{part_c.teamwork_comment}}</textarea>
+											<textarea rows="8" class="form-control" disabled>{{partc.teamwork_comment}}</textarea>
 										</div>
 									  </td>
 								      <td class="text-center align-middle">
 										<div class="form-group">
-											<textarea rows="8" class="form-control" name="tea_com"></textarea>
+											<textarea rows="8" class="form-control" name="tea_com" required></textarea>
 										</div>
 									  </td>
 								    </tr>
