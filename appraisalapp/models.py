@@ -447,3 +447,16 @@ class PartD_Appraisee(models.Model):
     def __str__(self):
         return self.emp_name+" - "+self.emp_id
 
+class Data(models.Model):
+    emp_id = models.CharField(max_length=12)
+    emp_name = models.CharField(max_length=200)
+    emp_desi = models.CharField(max_length=200)
+    emp_rm1 = models.CharField(max_length=200)
+    emp_rm1_id = models.CharField(max_length=30)
+    emp_rm2 = models.CharField(max_length=200)
+    emp_rm2_id = models.CharField(max_length=30)
+    emp_rm3 = models.CharField(max_length=200)
+    emp_rm3_id = models.CharField(max_length=30)
+    emp_process = models.CharField(max_length=200)
+    process_id = models.IntegerField(null=True,blank=True)
+    emp_doj = models.DateField(null=True,blank=True)

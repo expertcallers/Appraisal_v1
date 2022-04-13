@@ -19,4 +19,5 @@ admin.site.register(PartA_Appraisee,TableSearch)
 admin.site.register(PartB_Appraisee,TableSearch)
 admin.site.register(PartC_Appraisee,TableSearch)
 admin.site.register(PartD_Appraisee,PartDSearch)
+admin.site.register(Data,ProfileSearch)
 

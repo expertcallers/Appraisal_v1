@@ -97,10 +97,41 @@ def selfAppraisal(request):
 @login_required
 def managerDashboard(request):
     emp_id = request.user.profile.emp_id
-    profile = PartD_Appraisee.objects.filter(Q(emp_rm1_id=emp_id))
-    data = {"profile": profile, "manager": manager_list}
-    return render(request, "manager/manager_dashboard.html", data)
+    emp_desi = request.user.profile.emp_desi
+    if emp_desi not in agent_list:
+        profile = PartD_Appraisee.objects.filter(Q(emp_rm1_id=emp_id))
+        data = {"profile": profile, "manager": manager_list}
+        return render(request, "manager/manager_dashboard.html", data)
+    else:
+        messages.info(request, "Unauthorized access you have been Logged Out :)")
+        return redirect("/appraisal/")
 
+
+@login_required
+def underAgents(request):
+    emp_id = request.user.profile.emp_id
+    emp_desi = request.user.profile.emp_desi
+    if emp_desi not in agent_list:
+        profile = Profile.objects.filter(Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id))
+        partd = PartD_Appraisee.objects.filter(Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id))
+        data = {"profile": profile,"partd": partd}
+        return render(request, "manager/agents.html", data)
+    else:
+        messages.info(request, "Unauthorized access you have been Logged Out :)")
+        return redirect("/appraisal/")
+
+@login_required
+def underAgentsCompleted(request):
+    emp_id = request.user.profile.emp_id
+    emp_desi = request.user.profile.emp_desi
+    if emp_desi not in agent_list:
+        profile = PartD_Appraisee.objects.filter(Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id))
+        parta = PartA_Appraisee.objects.filter(Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id))
+        data = {"profile": profile, "parta": parta}
+        return render(request, "manager/agents_completed.html", data)
+    else:
+        messages.info(request, "Unauthorized access you have been Logged Out :)")
+        return redirect("/appraisal/")
 
 @login_required
 def Notice(request):
@@ -1132,6 +1163,7 @@ def manager_part_d_save(request, id):
 def viewAppraisal(request, id):
     emp_id = request.user.profile.emp_id
     profile = Profile.objects.get(emp_id=id)
+    partd = PartD_Appraisee.objects.get(emp_id=id)
     rm1 = profile.emp_rm1_id
     rm2 = profile.emp_rm2_id
     rm3 = profile.emp_rm3_id
@@ -1201,6 +1233,43 @@ def addParameters(request):
 
 
 @login_required
+def updateParameters(request):
+    if request.method == "POST":
+        emp = request.POST["emp_id"]
+        parameter_1 = request.POST["parameter_1"]
+        parameter_1_score = request.POST["parameter_1_score"]
+        parameter_2 = request.POST.get("parameter_2")
+        parameter_2_score = request.POST.get("parameter_2_score")
+        parameter_3 = request.POST.get("parameter_3")
+        parameter_3_score = request.POST.get("parameter_3_score")
+        parameter_4 = request.POST.get("parameter_4")
+        parameter_4_score = request.POST.get("parameter_4_score")
+        parameter_5 = request.POST.get("parameter_5")
+        parameter_5_score = request.POST.get("parameter_5_score")
+        parameter_6 = request.POST.get("parameter_6")
+        parameter_6_score = request.POST.get("parameter_6_score")
+        parta = PartA_Appraisee.objects.get(emp_id=emp)
+        parta.parameter_1 = parameter_1
+        parta.parameter_1_score = parameter_1_score
+        parta.parameter_2 = parameter_2
+        parta.parameter_2_score = parameter_2_score
+        parta.parameter_3 = parameter_3
+        parta.parameter_3_score = parameter_3_score
+        parta.parameter_4 = parameter_4
+        parta.parameter_4_score = parameter_4_score
+        parta.parameter_5 = parameter_5
+        parta.parameter_5_score = parameter_5_score
+        parta.parameter_6 = parameter_6
+        parta.parameter_6_score = parameter_6_score
+        parta.save()
+        messages.info(request, "The Parameters Updated Successfully!")
+        return redirect("/appraisal/added-parameters-agents")
+    else:
+        messages.info(request, "Unauthorized access you have been Logged Out :)")
+        return redirect("/appraisal/")
+
+
+@login_required
 def dashboardRedirect(request):
     emp_desi = request.user.profile.emp_desi
     if emp_desi in manager_list or emp_desi in tl_am_list or emp_desi in hr_list:
@@ -1208,17 +1277,6 @@ def dashboardRedirect(request):
     else:
         return redirect("/appraisal/")
 
-
-def underAgents(request):
-    emp_id = request.user.profile.emp_id
-    emp_desi = request.user.profile.emp_desi
-    if emp_desi in manager_list:
-        profile = Profile.objects.filter(Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id))
-    else:
-        profile = Profile.objects.filter(Q(emp_rm1_id=emp_id))
-
-    data = {"profile": profile}
-    return render(request, "manager/agents.html", data)
 
 
 def changeEmpPassword(request):

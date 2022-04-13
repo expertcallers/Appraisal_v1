@@ -1,0 +1,275 @@
+{% extends 'manager/base_common.html' %}
+
+{% load static %}
+{% block main %}
+        <!-- page content -->
+        <div class="right_col" role="main">
+
+            <div class="page-title">
+              <div class="title_left">
+                <h3>Agents for whom parameters are added</h3>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <table  id="datatablex" class="table table-striped" style="max-width: 100% !important;">
+                      <thead>
+                        <tr>
+                            <th>Employee Name</th>
+                            <th>Employee ID</th>
+                            <th>Process</th>
+                            <th>Designation</th>
+                            <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tfoot>
+                        <tr>
+                            <th>Employee Name</th>
+                            <th>Employee ID</th>
+                            <th>Process</th>
+                            <th>Designation</th>
+                            <th>Action</th>
+                        </tr>
+                      </tfoot>
+                      <tbody>
+                      {% for i in profile %}
+                            <tr>
+                                <td>{{i.agent.emp_name}}</td>
+                                <td>{{i.agent.emp_id}}</td>
+                                <td>{{i.agent.emp_process}}</td>
+                                <td>{{i.agent.emp_desi}}</td>
+                                <td>
+                                    {% if i.agent_complete_status == False %}
+                                        Waiting for <b>Agent</b> to complete.<br>
+                                        {% if request.user.profile.emp_id == i.emp_rm1_id %}
+                                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#change_para{{i.emp_id}}">Change Parameters</button>
+                                        {% endif %}
+                                    {% endif %}
+                                    {% if i.mgr_comments_feedback == None and i.agent_complete_status == True %}
+                                        Waiting for their <b>Manager</b> to Complete.
+                                    {% endif %}
+                                    {% if i.mgr_comments_feedback != None %}
+                                        <a href="/appraisal/view/{{i.emp_id}}" class="btn btn-sm btn-primary">view</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                      {% endfor %}
+                      </tbody>
+                      </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+        </div>
+        <!-- /page content -->
+
+<!-- Start Change Password -->
+{% for i in parta %}
+<div class="modal fade" id="change_para{{i.emp_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Change Parameters of {{i.emp_name}} ({{i.emp_id}})</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="/appraisal/update-parameters" method="POST" enctype="multipart/form-data" onsubmit="return FinalCheck{{i.emp_id}}();">
+          {% csrf_token %}
+          <div class="modal-body">
+                <input type="hidden" value="{{i.emp_id}}" name="emp_id">
+                <div class="row mt-2">
+                    <div class="col-md-8">
+                        <input type="text" name="parameter_1" value="{{i.parameter_1}}" class="form-control" placeholder="Parameter 1" required>
+                    </div>
+                    <div class="col-md-4">
+                            <input type="number" min="1" max="100" value="{{i.parameter_1_score}}" onfocusout="parameter1{{i.emp_id}}(this)" name="parameter_1_score" class="form-control parameter_1_score_{{i.emp_id}}" placeholder="score" required>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-8">
+                        <input type="text" name="parameter_2" value="{% if i.parameter_2 %}{{i.parameter_2}}{% else %}{% endif %}" onfocusout="parameter2{{i.emp_id}}(this)" class="form-control parameter_2_{{i.emp_id}}" placeholder="Parameter 2">
+                    </div>
+                    <div class="col-md-4">
+                        <input type="number" min="1" max="100" value="{{i.parameter_2_score}}" onfocusout="parameterScore2{{i.emp_id}}(this)" name="parameter_2_score" class="form-control parameter_2_score_{{i.emp_id}}" placeholder="score" disabled>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-8">
+                        <input type="text" name="parameter_3" value="{% if i.parameter_3 %}{{i.parameter_3}}{% else %}{% endif %}" onfocusout="parameter3{{i.emp_id}}(this)" class="form-control parameter_3_{{i.emp_id}}" placeholder="Parameter 3">
+                    </div>
+                    <div class="col-md-4">
+                        <input type="number" min="1" max="100" value="{{i.parameter_3_score}}" onfocusout="parameterScore3{{i.emp_id}}(this)" name="parameter_3_score" class="form-control parameter_3_score_{{i.emp_id}}" placeholder="score" disabled>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-8">
+                        <input type="text" name="parameter_4" value="{% if i.parameter_4 %}{{i.parameter_4}}{% else %}{% endif %}" onfocusout="parameter4{{i.emp_id}}(this)" class="form-control parameter_4_{{i.emp_id}}" placeholder="Parameter 4">
+                    </div>
+                    <div class="col-md-4">
+                        <input type="number" min="1" max="100" value="{{i.parameter_4_score}}" onfocusout="parameterScore4{{i.emp_id}}(this)" name="parameter_4_score" class="form-control parameter_4_score_{{i.emp_id}}" placeholder="score" disabled>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-8">
+                        <input type="text" name="parameter_5" value="{% if i.parameter_5 %}{{i.parameter_5}}{% else %}{% endif %}" onfocusout="parameter5{{i.emp_id}}(this)" class="form-control parameter_5_{{i.emp_id}}" placeholder="Parameter 5">
+                    </div>
+                    <div class="col-md-4">
+                        <input type="number" min="1" max="100" value="{{i.parameter_5_score}}" onfocusout="parameterScore5{{i.emp_id}}(this)" name="parameter_5_score" class="form-control parameter_5_score_{{i.emp_id}}" placeholder="score" disabled>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-8">
+                        <input type="text" name="parameter_6" value="{% if i.parameter_6 %}{{i.parameter_6}}{% else %}{% endif %}" onfocusout="parameter6{{i.emp_id}}(this)" class="form-control parameter_6_{{i.emp_id}}" placeholder="Parameter 6">
+                    </div>
+                    <div class="col-md-4">
+                        <input type="number" min="1" max="100" value="{{i.parameter_6_score}}" onfocusout="parameterScore6{{i.emp_id}}(this)" name="parameter_6_score" class="form-control parameter_6_score_{{i.emp_id}}" placeholder="score" disabled>
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+          </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endfor %}
+<!-- End Change Password -->
+
+{% endblock %}
+
+{% block script %}
+{% for i in parta %}
+<script>
+$parameter_2_{{i.emp_id}} = $(".parameter_2_{{i.emp_id}}").val();
+$parameter_3_{{i.emp_id}} = $(".parameter_3_{{i.emp_id}}").val();
+$parameter_4_{{i.emp_id}} = $(".parameter_4_{{i.emp_id}}").val();
+$parameter_5_{{i.emp_id}} = $(".parameter_5_{{i.emp_id}}").val();
+$parameter_6_{{i.emp_id}} = $(".parameter_6_{{i.emp_id}}").val();
+$parameter_1_score_{{i.emp_id}} = $(".parameter_1_score_{{i.emp_id}}").val();
+$parameter_2_score_{{i.emp_id}} = $(".parameter_2_score_{{i.emp_id}}").val();
+$parameter_3_score_{{i.emp_id}} = $(".parameter_3_score_{{i.emp_id}}").val();
+$parameter_4_score_{{i.emp_id}} = $(".parameter_4_score_{{i.emp_id}}").val();
+$parameter_5_score_{{i.emp_id}} = $(".parameter_5_score_{{i.emp_id}}").val();
+$parameter_6_score_{{i.emp_id}} = $(".parameter_6_score_{{i.emp_id}}").val();
+if ($parameter_2_{{i.emp_id}} != "") {
+    $(".parameter_2_score_{{i.emp_id}}").removeAttr("disabled");
+}
+if ($parameter_3_{{i.emp_id}} != "") {
+    $(".parameter_3_score_{{i.emp_id}}").removeAttr("disabled");
+}
+if ($parameter_4_{{i.emp_id}} != "") {
+    $(".parameter_4_score_{{i.emp_id}}").removeAttr("disabled");
+}
+if ($parameter_5_{{i.emp_id}} != "") {
+    $(".parameter_5_score_{{i.emp_id}}").removeAttr("disabled");
+}
+if ($parameter_6_{{i.emp_id}} != "") {
+    $(".parameter_6_score_{{i.emp_id}}").removeAttr("disabled");
+}
+var $score_1 = {% if i.parameter_1_score %}$parameter_1_score_{{i.emp_id}}{% else %}0{% endif %}
+var $score_2 = {% if i.parameter_2_score %}$parameter_2_score_{{i.emp_id}}{% else %}0{% endif %}
+var $score_3 = {% if i.parameter_3_score %}$parameter_3_score_{{i.emp_id}}{% else %}0{% endif %}
+var $score_4 = {% if i.parameter_4_score %}$parameter_4_score_{{i.emp_id}}{% else %}0{% endif %}
+var $score_5 = {% if i.parameter_5_score %}$parameter_5_score_{{i.emp_id}}{% else %}0{% endif %}
+var $score_6 = {% if i.parameter_6_score %}$parameter_6_score_{{i.emp_id}}{% else %}0{% endif %}
+
+
+    function parameter1{{i.emp_id}}(e){
+        $score_1 = e.value;
+    }
+    function parameter2{{i.emp_id}}(e){
+        $score = $(".parameter_2_score_{{i.emp_id}}")
+        if (e.value != ""){
+            $score.removeAttr('disabled')
+            $score.attr('required','')
+        } else {
+            $score.val("")
+            $score.removeAttr('required')
+            $score.attr('disabled','')
+            $score_2 = 0
+        }
+    }
+    function parameter3{{i.emp_id}}(e){
+        $score = $(".parameter_3_score_{{i.emp_id}}")
+        if (e.value != ""){
+            $score.removeAttr('disabled')
+            $score.attr('required','')
+        } else {
+            $score.val("")
+            $score.removeAttr('required')
+            $score.attr('disabled','')
+            $score_3 = 0
+        }
+    }
+    function parameter4{{i.emp_id}}(e){
+        $score = $(".parameter_4_score_{{i.emp_id}}")
+        if (e.value != ""){
+            $score.removeAttr('disabled')
+            $score.attr('required','')
+        } else {
+            $score.val("")
+            $score.removeAttr('required')
+            $score.attr('disabled','')
+            $score_4 = 0
+        }
+    }
+
+    function parameter5{{i.emp_id}}(e){
+        $score = $(".parameter_5_score_{{i.emp_id}}")
+        if (e.value != ""){
+            $score.removeAttr('disabled')
+            $score.attr('required','')
+        } else {
+            $score.val("")
+            $score.removeAttr('required')
+            $score.attr('disabled','')
+            $score_5 = 0
+        }
+    }
+    function parameter6{{i.emp_id}}(e){
+        $score = $(".parameter_6_score_{{i.emp_id}}")
+        if (e.value != ""){
+            $score.removeAttr('disabled')
+            $score.attr('required','')
+        } else {
+            $score.val("")
+            $score.removeAttr('required')
+            $score.attr('disabled','')
+            $score_6 = 0
+        }
+    }
+function parameterScore2{{i.emp_id}}(e){
+	$score_2 = e.value
+}
+function parameterScore3{{i.emp_id}}(e){
+	$score_3 = e.value
+}
+function parameterScore4{{i.emp_id}}(e){
+	$score_4 = e.value
+}
+function parameterScore5{{i.emp_id}}(e){
+	$score_5 = e.value
+}
+function parameterScore6{{i.emp_id}}(e){
+	$score_6 = e.value
+}
+
+    function FinalCheck{{i.emp_id}}(){
+        $score = parseInt($score_1)+parseInt($score_2)+parseInt($score_3)+parseInt($score_4)+parseInt($score_5)+parseInt($score_6);
+        if ($score == 100) {
+            return true;
+        } else {
+            alert("The Scores don't match up to 100. Please Check and then click NEXT");
+            return false;
+        }
+    }
+</script>
+{% endfor %}
+{% endblock %}
+
