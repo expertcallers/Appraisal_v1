@@ -26,4 +26,5 @@ urlpatterns = [
     path('change-emp-password', changeEmpPassword),
     path('settings',Settings),
     path('change-password',change_password),
+    path('create-user',createUserandProfile),
 ]

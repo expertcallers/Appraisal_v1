@@ -114,11 +114,12 @@ def underAgents(request):
     if emp_desi not in agent_list:
         profile = Profile.objects.filter(Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id))
         partd = PartD_Appraisee.objects.filter(Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id))
-        data = {"profile": profile,"partd": partd}
+        data = {"profile": profile, "partd": partd}
         return render(request, "manager/agents.html", data)
     else:
         messages.info(request, "Unauthorized access you have been Logged Out :)")
         return redirect("/appraisal/")
+
 
 @login_required
 def underAgentsCompleted(request):
@@ -132,6 +133,7 @@ def underAgentsCompleted(request):
     else:
         messages.info(request, "Unauthorized access you have been Logged Out :)")
         return redirect("/appraisal/")
+
 
 @login_required
 def Notice(request):
@@ -1278,7 +1280,6 @@ def dashboardRedirect(request):
         return redirect("/appraisal/")
 
 
-
 def changeEmpPassword(request):
     if request.method == "POST":
         new_pass = request.POST["new_pass"]
@@ -1325,3 +1326,49 @@ def change_password(request):  # Test1
     else:
         form = PasswordChangeForm(request.user)
     return render(request, 'common/change_password.html', {'form': form})
+
+
+def createUserandProfile(request):  # Need to work
+    emp = Data.objects.all()
+    for i in emp:
+        user = User.objects.filter(username=i.emp_id)
+        if user.exists():
+            usr = User.objects.get(username=i.emp_id)
+            prof = Profile.objects.filter(emp_id=i.emp_id)
+            if prof.exists():
+                doj = ""
+                for j in prof:
+                    myprof = Profile.objects.get(emp_id=j.emp_id)
+                    doj = i.emp_doj
+                    if doj != "":
+                        myprof.emp_doj = doj
+                        myprof.save()
+                        break
+            else:
+                Profile.objects.create(
+                    emp_id=i.emp_id, emp_name=i.emp_name, emp_desi=i.emp_desi,
+                    emp_rm1=i.emp_rm1, emp_rm2=i.emp_rm2, emp_rm3=i.emp_rm3,
+                    emp_process=i.emp_process, user=usr,
+                    emp_rm1_id=i.emp_rm1_id,
+                    emp_rm2_id=i.emp_rm2_id,
+                    emp_rm3_id=i.emp_rm3_id,
+                    process_id=int(i.process_id),
+                    emp_doj=i.emp_doj
+                )
+
+        else:
+            User.objects.create_user(username=i.emp_id, password=str(i.emp_id))
+            usr = User.objects.get(username=i.emp_id)
+            Profile.objects.create(
+                emp_id=i.emp_id, emp_name=i.emp_name, emp_desi=i.emp_desi,
+                emp_rm1=i.emp_rm1, emp_rm2=i.emp_rm2, emp_rm3=i.emp_rm3,
+                emp_process=i.emp_process, user=usr,
+                emp_rm1_id=i.emp_rm1_id,
+                emp_rm2_id=i.emp_rm2_id,
+                emp_rm3_id=i.emp_rm3_id,
+                process_id=int(i.process_id),
+                emp_doj=i.emp_doj
+            )
+
+    messages.info(request,"Users and Profiles added Successfully!")
+    return redirect("/appraisal/")
