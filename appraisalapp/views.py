@@ -112,8 +112,8 @@ def underAgents(request):
     emp_id = request.user.profile.emp_id
     emp_desi = request.user.profile.emp_desi
     if emp_desi not in agent_list:
-        profile = Profile.objects.filter(Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id))
-        partd = PartD_Appraisee.objects.filter(Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id))
+        profile = Profile.objects.filter(Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id)).distinct()
+        partd = PartD_Appraisee.objects.filter(Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id)).distinct()
         data = {"profile": profile, "partd": partd}
         return render(request, "manager/agents.html", data)
     else:
@@ -126,8 +126,8 @@ def underAgentsCompleted(request):
     emp_id = request.user.profile.emp_id
     emp_desi = request.user.profile.emp_desi
     if emp_desi not in agent_list:
-        profile = PartD_Appraisee.objects.filter(Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id))
-        parta = PartA_Appraisee.objects.filter(Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id))
+        profile = PartD_Appraisee.objects.filter(Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id)).distinct()
+        parta = PartA_Appraisee.objects.filter(Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id)).distinct()
         data = {"profile": profile, "parta": parta}
         return render(request, "manager/agents_completed.html", data)
     else:
