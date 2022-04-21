@@ -1,30 +1,41 @@
+import json
+from datetime import date
+
+from django.contrib import messages
+from django.contrib.auth import login, logout, update_session_auth_hash, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.hashers import make_password
-from django.db.models import Q, Sum
+from django.db.models import Q
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.contrib import messages
+
 from .models import *
-from django.contrib.auth import login, logout, update_session_auth_hash, authenticate
-from django.urls import reverse
 
-# TL and AM List
-tl_am_list = ['Team Leader', 'Assistant Manager', 'Subject Matter Expert', 'Trainer', 'Learning and Development Head',
-              'Process Trainer', 'Trainer Sales',
-              ]
+# TL and AM List (For whom 2 Parameters are Fixed)
+tl_am_list = ['Team Leader', 'Assistant Manager','AM']
 
-# Manager List
-manager_list = ['Quality Head', 'Operations Manager', 'Service Delivery Manager', 'Command Centre Head']
+# For whom Parameters are NOT Fixed but need Dashboard Access
+manager_list = ['Quality Head', 'Command Centre Head', 'Chief Executive Officer', 'Associate Director',
+                'Managing Director', 'IT Manager', 'Learning and Development Head', 'Trainer',
+                'Process Trainer', 'Trainer Sales', 'HR Lead', 'HR Manager', 'Manager ER', 'Assistant Manager (L&D)',
+                'Service Delivery Manager', 'Sales Trainer', 'Chief Technology Officer', 'Board member',
+                'Chief Compliance Officer', 'Vice President', 'Admin Executive', 'Lead HRBP', 'Team Leader IT',
+                'Assistant Manager IT', 'Assistant Manager CC']
 
-# HR List
-hr_list = ['HR', 'HR Manager', 'Manager ER', 'HR Lead', 'Sr Recruiter', 'MIS Executive HR',
-           'Lead HRBP', 'Employee Relations Specialist', 'Payroll Specialist', 'Recruiter', 'HR Generalist']
+# For whom 4 Parameters are Fixed
+mgr_list = ['Operations Manager']
 
-# Agent List
-agent_list = ['Client Relationship Officer', 'MIS Executive', 'Patrolling officer',
+# Agent List (No Fixed Parameters and No Dashboard Access)
+agent_list = ['Client Relationship Officer', 'MIS Executive', 'Patrolling Officer', 'Patrolling officer',
               'Data Analyst', 'Business Development Executive', 'Content Developer',
               'Junior Developer', 'Web Developer', 'Trainee Developer',
-              'Jr Dev',
+              'Jr Dev', 'HR', 'Sr Recruiter', 'MIS Executive HR',
+              'Employee Relations Specialist', 'Payroll Specialist', 'Recruiter', 'HR Generalist',
+              'Junior Recruiter', 'CRO', 'Client Relationship Officer - Malayalam', 'Subject Matter Expert', 'QA',
+              'SME', 'Quality Analyst', 'Office Boy', 'Housekeeping', 'Security',
+              'Receptionist', 'System Admin L2', 'System Admin L1', 'Hardware Technician',
+              'System Architecture', 'Customer Support Associate', 'Growth Sales'
               ]
 
 
@@ -47,28 +58,37 @@ def LoginPage(request):
             login(request, user)
             desi = request.user.profile.emp_desi
             pc = request.user.profile.pc
-            if pc == False:
-                return redirect("/appraisal/change-password")
+            doj = request.user.profile.emp_doj
+            if doj is None:
+                messages.info(request, 'Something went wrong contact CC Team!')
+                return redirect("/appraisal/")
             else:
-                if desi in agent_list:
-                    try:
-                        partc = PartC_Appraisee.objects.get(Q(emp_id=username))
-                        if partc.agent_score == None:
-                            return redirect("/appraisal/notice")
-                        elif partc.mgr_score != None:
-                            return redirect("view", id=username)
-                        else:
-                            messages.info(request, 'Waiting for your Manager to complete. Please Check back Later!')
-                            return redirect("/appraisal/")
-                    except PartC_Appraisee.DoesNotExist:
-                        messages.info(request, 'Waiting for your Manager to add Parameters. Please Check back Later!')
-                        return redirect("/appraisal/")
-
-                elif desi in manager_list or desi in tl_am_list or desi in hr_list:
-                    return redirect("/appraisal/manager-dashboard")
+                if pc == False:
+                    return redirect("/appraisal/change-password")
                 else:
-                    messages.info(request, 'Something went wrong contact CC Team!')
-                    return redirect("/appraisal/")
+                    if desi in agent_list:
+                        if doj > date(2021,9,30):
+                            messages.info(request, 'Your are not qualified for Appraisal as you joining date is '+str(doj)+' !')
+                            return redirect("/appraisal/")
+                        else:
+                            try:
+                                partc = PartC_Appraisee.objects.get(Q(emp_id=username))
+                                if partc.agent_score == None:
+                                    return redirect("/appraisal/notice")
+                                elif partc.mgr_score != None:
+                                    return redirect("view", id=username)
+                                else:
+                                    messages.info(request, 'Waiting for your Manager to complete. Please Check back Later!')
+                                    return redirect("/appraisal/")
+                            except PartC_Appraisee.DoesNotExist:
+                                messages.info(request, 'Waiting for your Manager to add Parameters. Please Check back Later!')
+                                return redirect("/appraisal/")
+
+                    elif desi in manager_list or desi in tl_am_list or desi in mgr_list:
+                        return redirect("/appraisal/manager-dashboard")
+                    else:
+                        messages.info(request, 'Something went wrong contact CC Team!')
+                        return redirect("/appraisal/")
         else:
             messages.info(request, 'Invalid user !')
             return redirect("/appraisal/")
@@ -80,18 +100,23 @@ def LoginPage(request):
 @login_required
 def selfAppraisal(request):
     emp_id = request.user.profile.emp_id
-    try:
-        partc = PartC_Appraisee.objects.get(Q(emp_id=emp_id))
-        if partc.agent_score == None:
-            return redirect("/appraisal/notice")
-        elif partc.mgr_score != None:
-            return redirect("view", id=emp_id)
-        else:
-            messages.info(request, 'Waiting for your Manager to complete. Please Check back Later!')
-            return redirect("/appraisal/manager-dashboard")
-    except:
-        messages.info(request, 'Waiting for your Manager to Add Parameters. Check back later.')
+    doj = request.user.profile.emp_doj
+    if doj > date(2021,9,30):
+        messages.info(request, 'Your are not qualified for Appraisal as you joining date is '+str(doj)+' !')
         return redirect("/appraisal/manager-dashboard")
+    else:
+        try:
+            partc = PartC_Appraisee.objects.get(Q(emp_id=emp_id))
+            if partc.agent_score == None:
+                return redirect("/appraisal/notice")
+            elif partc.mgr_score != None:
+                return redirect("view", id=emp_id)
+            else:
+                messages.info(request, 'Waiting for your Manager to complete. Please Check back Later!')
+                return redirect("/appraisal/manager-dashboard")
+        except:
+            messages.info(request, 'Waiting for your Manager to Add Parameters. Check back later.')
+            return redirect("/appraisal/manager-dashboard")
 
 
 @login_required
@@ -113,7 +138,8 @@ def underAgents(request):
     emp_desi = request.user.profile.emp_desi
     if emp_desi not in agent_list:
         profile = Profile.objects.filter(Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id)).distinct()
-        partd = PartD_Appraisee.objects.filter(Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id)).distinct()
+        partd = PartD_Appraisee.objects.filter(
+            Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id)).distinct()
         data = {"profile": profile, "partd": partd}
         return render(request, "manager/agents.html", data)
     else:
@@ -126,8 +152,10 @@ def underAgentsCompleted(request):
     emp_id = request.user.profile.emp_id
     emp_desi = request.user.profile.emp_desi
     if emp_desi not in agent_list:
-        profile = PartD_Appraisee.objects.filter(Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id)).distinct()
-        parta = PartA_Appraisee.objects.filter(Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id)).distinct()
+        profile = PartD_Appraisee.objects.filter(
+            Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id)).distinct()
+        parta = PartA_Appraisee.objects.filter(
+            Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id)).distinct()
         data = {"profile": profile, "parta": parta}
         return render(request, "manager/agents_completed.html", data)
     else:
@@ -1149,9 +1177,20 @@ def manager_part_d_save(request, id):
         e.mgr_appraisee_skills_required = mgr_appraisee_skills_required
         e.mgr_appraisee_time_frame = mgr_appraisee_time_frame
         e.mgr_comments_feedback = mgr_comments_feedback
-
         e.save()
 
+        part_a = PartA_Appraisee.objects.get(emp_id=id)
+        part_b = PartB_Appraisee.objects.get(emp_id=id)
+        part_c = PartC_Appraisee.objects.get(emp_id=id)
+        profile = Profile.objects.get(emp_id=id)
+        self_score = round(
+            (((part_a.agent_score * 70) / 100) + ((part_b.agent_score * 20) / 100) + ((part_c.agent_score * 10) / 100)),
+            2)
+        manager_score = round(
+            (((part_a.mgr_score * 70) / 100) + ((part_b.mgr_score * 20) / 100) + ((part_c.mgr_score * 10) / 100)), 2)
+        profile.agent_score = self_score
+        profile.final_score = manager_score
+        profile.save()
         messages.info(request, "Successfully Completed! Click on View to view result.")
         return redirect("/appraisal/manager-dashboard")
     else:
@@ -1197,14 +1236,24 @@ def addParameters(request):
         parameter_1_score = request.POST["parameter_1_score"]
         parameter_2 = request.POST.get("parameter_2")
         parameter_2_score = request.POST.get("parameter_2_score")
+        if parameter_2_score == "":
+            parameter_2_score = 0
         parameter_3 = request.POST.get("parameter_3")
         parameter_3_score = request.POST.get("parameter_3_score")
+        if parameter_3_score == "":
+            parameter_3_score = 0
         parameter_4 = request.POST.get("parameter_4")
         parameter_4_score = request.POST.get("parameter_4_score")
+        if parameter_4_score == "":
+            parameter_4_score = 0
         parameter_5 = request.POST.get("parameter_5")
         parameter_5_score = request.POST.get("parameter_5_score")
+        if parameter_5_score == "":
+            parameter_5_score = 0
         parameter_6 = request.POST.get("parameter_6")
         parameter_6_score = request.POST.get("parameter_6_score")
+        if parameter_6_score == "":
+            parameter_6_score = 0
         for j in emp:
             i = Profile.objects.get(emp_id=j)
             PartA_Appraisee.objects.create(agent=i, emp_id=i.emp_id, emp_name=i.emp_name, emp_desi=i.emp_desi,
@@ -1228,10 +1277,62 @@ def addParameters(request):
         messages.info(request, "The Parameters Added Successfully!")
         return redirect("/appraisal/add-parameters")
     else:
-        profiles = Profile.objects.filter(emp_rm1_id=emp_id).exclude(
+        profiles = Profile.objects.filter(emp_rm1_id=emp_id, emp_doj__lt=date(2021, 9, 30)).exclude(
             emp_id__in=PartA_Appraisee.objects.filter(emp_rm1_id=emp_id).values("emp_id"))
-        data = {'emp': profiles}
+        desi = Profile.objects.filter(emp_rm1_id=emp_id, emp_doj__lt=date(2021, 9, 30)).exclude(
+            emp_id__in=PartA_Appraisee.objects.filter(emp_rm1_id=emp_id).values("emp_id")).distinct()
+
+        desi_list = []
+        for i in desi:
+            if i.emp_desi in tl_am_list: # 2 Fixed Parameters
+                desi_list.append('TL and Above')
+            elif i.emp_desi in agent_list: # No Fixed Parameters
+                desi_list.append('Agent')
+            elif i.emp_desi in mgr_list: # 4 Fixed Parameters
+                desi_list.append('Operation Manager')
+            elif i.emp_desi in manager_list: # No Fixed Parameters
+                desi_list.append('Other')
+        new_desi = []
+        for i in desi_list:
+            if i not in new_desi:
+                new_desi.append(i)
+        data = {'emp': profiles, 'desi': new_desi}
         return render(request, "manager/add_parameters.html", data)
+
+
+@login_required
+def getEmp(requset):
+    emp_id = requset.user.profile.emp_id
+    emp_desi = requset.POST['desi']
+    if emp_desi == "Agent":
+        profile = Profile.objects.filter(Q(emp_rm1_id=emp_id), Q(emp_desi__in=agent_list) | Q(emp_desi__in=manager_list),
+                                         Q(emp_doj__lt=date(2021, 9, 30))).exclude(
+            emp_id__in=PartA_Appraisee.objects.filter(emp_rm1_id=emp_id).values("emp_id"))
+        prof_list = [{'data': 'Agent'}]
+    elif emp_desi == "TL and Above":
+        profile = Profile.objects.filter(emp_rm1_id=emp_id, emp_desi__in=tl_am_list,
+                                         emp_doj__lt=date(2021, 9, 30)).exclude(
+            emp_id__in=PartA_Appraisee.objects.filter(emp_rm1_id=emp_id).values("emp_id"))
+        prof_list = [{'data': 'TL and Above'}, {'parameter': 'Attrition', 'weightage': 10},
+                     {'parameter': 'Absenteeism', 'weightage': 5}]
+    elif emp_desi == "Operation Manager":
+        profile = Profile.objects.filter(emp_rm1_id=emp_id, emp_desi__in=mgr_list,
+                                         emp_doj__lt=date(2021, 9, 30)).exclude(
+            emp_id__in=PartA_Appraisee.objects.filter(emp_rm1_id=emp_id).values("emp_id"))
+        prof_list = [{'data': 'OM'}, {'parameter': 'Financials and Operations', 'weightage': 50},
+                     {'parameter': 'Organization', 'weightage': 20}, {'parameter': 'People', 'weightage': 20},
+                     {'parameter': 'Infrastructure', 'weightage': 10}]
+    else:
+        profile = Profile.objects.filter(Q(emp_rm1_id=emp_id), Q(emp_desi__in=manager_list),
+                                         emp_doj__lt=date(2021, 9, 30)).exclude(
+            emp_id__in=PartA_Appraisee.objects.filter(emp_rm1_id=emp_id).values("emp_id"))
+        prof_list = [{'data': 'Agent'}]
+    for i in profile:
+        prof_dict = {}
+        prof_dict['emp_name'] = i.emp_name
+        prof_dict['emp_id'] = i.emp_id
+        prof_list.append(prof_dict)
+    return HttpResponse(json.dumps(prof_list))
 
 
 @login_required
@@ -1274,12 +1375,13 @@ def updateParameters(request):
 @login_required
 def dashboardRedirect(request):
     emp_desi = request.user.profile.emp_desi
-    if emp_desi in manager_list or emp_desi in tl_am_list or emp_desi in hr_list:
+    if emp_desi in manager_list or emp_desi in tl_am_list:
         return redirect("/appraisal/manager-dashboard")
     else:
         return redirect("/appraisal/")
 
 
+@login_required
 def changeEmpPassword(request):
     if request.method == "POST":
         new_pass = request.POST["new_pass"]
@@ -1370,5 +1472,5 @@ def createUserandProfile(request):  # Need to work
                 emp_doj=i.emp_doj
             )
 
-    messages.info(request,"Users and Profiles added Successfully!")
+    messages.info(request, "Users and Profiles added Successfully!")
     return redirect("/appraisal/")

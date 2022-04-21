@@ -18,44 +18,51 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-4 form-group">
-                                        <label for="emp">Select Employees</label>
-                                        <select id="emp" name="emp" class="form-control select2" multiple required>
-                                            {% for i in emp %}
-                                            <option value="{{i.emp_id}}">{{i.emp_name}} ({{i.emp_id}})</option>
+                                        <label for="sel_desi">Select Designation</label>
+                                        <select id="sel_desi" name="sel_desi" class="form-control select2" required>
+                                            <option value="" selected disabled>Please Select</option>
+                                            {% for i in desi %}
+                                            <option value="{{i}}">{{i}}</option>
                                             {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <label for="emp">Select Employees <span>(Only Eligible Employees are Visible)</span></label>
+                                        <select id="emp" name="emp" class="form-control select2" multiple required>
+
                                         </select>
                                     </div>
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col-md-8">
-                                        <input type="text" name="parameter_1" class="form-control" placeholder="Parameter 1" required>
+                                        <input type="text" name="parameter_1" id="parameter_1" class="form-control" placeholder="Parameter 1" required>
                                     </div>
                                     <div class="col-md-4">
-                                        <input type="number" min="1" max="100" onfocusout="parameter1(this)" name="parameter_1_score" class="form-control" placeholder="Weightage" required>
+                                        <input type="number" id="parameter_1_score" min="1" max="100" onfocusout="parameterScore1(this)" name="parameter_1_score" class="form-control" placeholder="Weightage">
                                     </div>
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col-md-8">
-                                        <input type="text" name="parameter_2" onfocusout="parameter2(this)" class="form-control" placeholder="Parameter 2">
+                                        <input type="text" name="parameter_2" id="parameter_2" onfocusout="parameter2(this)" class="form-control" placeholder="Parameter 2">
                                     </div>
                                     <div class="col-md-4">
-                                        <input type="number" min="1" max="100" onfocusout="parameterScore2(this)" name="parameter_2_score" class="form-control" placeholder="Weightage" disabled>
+                                        <input type="number" min="1" max="100" onfocusout="parameterScore2(this)" id="parameter_2_score" name="parameter_2_score" class="form-control" placeholder="Weightage" readonly>
                                     </div>
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col-md-8">
-                                        <input type="text" name="parameter_3" onfocusout="parameter3(this)" class="form-control" placeholder="Parameter 3">
+                                        <input type="text" name="parameter_3" id="parameter_3" onfocusout="parameter3(this)" class="form-control" placeholder="Parameter 3">
                                     </div>
                                     <div class="col-md-4">
-                                        <input type="number" min="1" max="100" onfocusout="parameterScore3(this)" name="parameter_3_score" class="form-control" placeholder="Weightage" disabled>
+                                        <input type="number" min="1" max="100" id="parameter_3_score" onfocusout="parameterScore3(this)" name="parameter_3_score" class="form-control" placeholder="Weightage" readonly>
                                     </div>
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col-md-8">
-                                        <input type="text" name="parameter_4" onfocusout="parameter4(this)" class="form-control" placeholder="Parameter 4">
+                                        <input type="text" name="parameter_4" id="parameter_4" onfocusout="parameter4(this)" class="form-control" placeholder="Parameter 4">
                                     </div>
                                     <div class="col-md-4">
-                                        <input type="number" min="1" max="100" onfocusout="parameterScore4(this)" name="parameter_4_score" class="form-control" placeholder="Weightage" disabled>
+                                        <input type="number" min="1" max="100" id="parameter_4_score" onfocusout="parameterScore4(this)" name="parameter_4_score" class="form-control" placeholder="Weightage" readonly>
                                     </div>
                                 </div>
                                 <div class="row mt-2">
@@ -63,7 +70,7 @@
                                         <input type="text" name="parameter_5" onfocusout="parameter5(this)" class="form-control" placeholder="Parameter 5">
                                     </div>
                                     <div class="col-md-4">
-                                        <input type="number" min="1" max="100" onfocusout="parameterScore5(this)" name="parameter_5_score" class="form-control" placeholder="Weightage" disabled>
+                                        <input type="number" min="1" max="100" onfocusout="parameterScore5(this)" name="parameter_5_score" class="form-control" placeholder="Weightage" readonly>
                                     </div>
                                 </div>
                                 <div class="row mt-2">
@@ -71,7 +78,7 @@
                                         <input type="text" name="parameter_6" onfocusout="parameter6(this)" class="form-control" placeholder="Parameter 6">
                                     </div>
                                     <div class="col-md-4">
-                                        <input type="number" min="1" max="100" onfocusout="parameterScore6(this)" name="parameter_6_score" class="form-control" placeholder="Weightage" disabled>
+                                        <input type="number" min="1" max="100" onfocusout="parameterScore6(this)" name="parameter_6_score" class="form-control" placeholder="Weightage" readonly>
                                     </div>
                                 </div>
                                 <div class="row mt-2">
@@ -105,42 +112,164 @@ var $score_3 = 0
 var $score_4 = 0
 var $score_5 = 0
 var $score_6 = 0
+    $('#sel_desi').change(function(){
+        $csrf = $('[name="csrfmiddlewaretoken"]').val();
+        $.ajax({
+          type: "POST",
+          url: "get-emps",
+          data: {
+            desi: this.value,
+            csrfmiddlewaretoken: $csrf
+          },
+          success: function(data) {
+            var profile = eval('(' + data + ')');
+            options = ""
+            if (profile[0].data == "TL and Above"){
+                for (var i = 3; i < profile.length; i++ ){
+                    options += "<option value="+profile[i].emp_id+">"+profile[i].emp_name+" ("+profile[i].emp_id+")</option>";
+                }
+                $("#parameter_1").val(profile[1].parameter)
+                $("#parameter_1").attr('readonly','')
+                $("#parameter_1").removeAttr('onfocusout')
+                $("#parameter_1_score").val(profile[1].weightage)
+                $("#parameter_1_score").attr('readonly','')
+                $("#parameter_2").val(profile[2].parameter)
+                $("#parameter_2").attr('readonly','')
+                $("#parameter_2").removeAttr('onfocusout')
+                $("#parameter_2_score").val(profile[2].weightage)
+                $("#parameter_3").val('')
+                $("#parameter_3").removeAttr('readonly')
+                $("#parameter_3_score").val('')
+                $("#parameter_4").val('')
+                $("#parameter_4").removeAttr('readonly')
+                $("#parameter_4_score").val('')
+                $("#parameter_5").val('')
+                $("#parameter_5_score").val('')
+                $("#parameter_6").val('')
+                $("#parameter_6_score").val('')
+
+                $("#parameter_3").attr('onfocusout','parameter3(this)')
+                $("#parameter_4").attr('onfocusout','parameter4(this)')
+                $score_1 = profile[1].weightage
+                $score_2 = profile[2].weightage
+                $score_3 = 0
+                $score_4 = 0
+            }
+            if (profile[0].data == "Agent"){
+                for (var i = 1; i < profile.length; i++ ){
+                    options += "<option value="+profile[i].emp_id+">"+profile[i].emp_name+" ("+profile[i].emp_id+")</option>";
+                }
+                $("#parameter_1").attr('onfocusout','parameter1(this)')
+                $("#parameter_2").attr('onfocusout','parameter2(this)')
+                $("#parameter_3").attr('onfocusout','parameter3(this)')
+                $("#parameter_4").attr('onfocusout','parameter4(this)')
+                $("#parameter_1").val('')
+                $("#parameter_1").removeAttr('readonly')
+                $("#parameter_1_score").val('')
+                $("#parameter_2").val('')
+                $("#parameter_2_score").val('')
+                $("#parameter_2").removeAttr('readonly')
+                $("#parameter_3").val('')
+                $("#parameter_3").removeAttr('readonly')
+                $("#parameter_3_score").val('')
+                $("#parameter_4").val('')
+                $("#parameter_4").removeAttr('readonly')
+                $("#parameter_4_score").val('')
+                $("#parameter_5").val('')
+                $("#parameter_5_score").val('')
+                $("#parameter_6").val('')
+                $("#parameter_6_score").val('')
+                $score_1 = 0
+                $score_2 = 0
+                $score_3 = 0
+                $score_4 = 0
+            }
+            if (profile[0].data == "OM"){
+                for (var i = 5; i < profile.length; i++ ){
+                    options += "<option value="+profile[i].emp_id+">"+profile[i].emp_name+" ("+profile[i].emp_id+")</option>";
+                }
+                $("#parameter_1").val(profile[1].parameter)
+                $("#parameter_1").attr('readonly','')
+                $("#parameter_1_score").attr('readonly','')
+                $("#parameter_1_score").val(profile[1].weightage)
+                $("#parameter_2").val(profile[2].parameter)
+                $("#parameter_2").attr('readonly','')
+                $("#parameter_2").removeAttr('onfocusout')
+                $("#parameter_2_score").val(profile[2].weightage)
+                $("#parameter_3").val(profile[3].parameter)
+                $("#parameter_3").attr('readonly','')
+                $("#parameter_3").removeAttr('onfocusout')
+                $("#parameter_3_score").val(profile[3].weightage)
+                $("#parameter_4").val(profile[4].parameter)
+                $("#parameter_4").attr('readonly','')
+                $("#parameter_4").removeAttr('onfocusout')
+                $("#parameter_4_score").val(profile[4].weightage)
+                $("#parameter_5").val('')
+                $("#parameter_5_score").val('')
+                $("#parameter_6").val('')
+                $("#parameter_6_score").val('')
+
+                $score_1 = profile[1].weightage
+                $score_2 = profile[2].weightage
+                $score_3 = profile[3].weightage
+                $score_4 = profile[4].weightage
+            }
+            $("#emp").html(options);
+          },
+          error:function(e){
+              alert("something wrong "+ e) // this will alert an error
+          }
+        });
+    });
+
     function parameter1(e){
+        $score = $("input[name='parameter_1_score']")
+        if (e.value != ""){
+            $score.removeAttr('readonly')
+            $score.attr('required','')
+        } else {
+            $score.val("")
+            $score.removeAttr('required')
+            $score.attr('readonly','')
+            $score_1 = 0
+        }
+    }
+    function parameterScore1(e){
         $score_1 = e.value;
     }
     function parameter2(e){
         $score = $("input[name='parameter_2_score']")
         if (e.value != ""){
-            $score.removeAttr('disabled')
+            $score.removeAttr('readonly')
             $score.attr('required','')
         } else {
             $score.val("")
             $score.removeAttr('required')
-            $score.attr('disabled','')
+            $score.attr('readonly','')
             $score_2 = 0
         }
     }
     function parameter3(e){
         $score = $("input[name='parameter_3_score']")
         if (e.value != ""){
-            $score.removeAttr('disabled')
+            $score.removeAttr('readonly')
             $score.attr('required','')
         } else {
             $score.val("")
             $score.removeAttr('required')
-            $score.attr('disabled','')
+            $score.attr('readonly','')
             $score_3 = 0
         }
     }
     function parameter4(e){
         $score = $("input[name='parameter_4_score']")
         if (e.value != ""){
-            $score.removeAttr('disabled')
+            $score.removeAttr('readonly')
             $score.attr('required','')
         } else {
             $score.val("")
             $score.removeAttr('required')
-            $score.attr('disabled','')
+            $score.attr('readonly','')
             $score_4 = 0
         }
     }
@@ -148,24 +277,24 @@ var $score_6 = 0
     function parameter5(e){
         $score = $("input[name='parameter_5_score']")
         if (e.value != ""){
-            $score.removeAttr('disabled')
+            $score.removeAttr('readonly')
             $score.attr('required','')
         } else {
             $score.val("")
             $score.removeAttr('required')
-            $score.attr('disabled','')
+            $score.attr('readonly','')
             $score_5 = 0
         }
     }
     function parameter6(e){
         $score = $("input[name='parameter_6_score']")
         if (e.value != ""){
-            $score.removeAttr('disabled')
+            $score.removeAttr('readonly')
             $score.attr('required','')
         } else {
             $score.val("")
             $score.removeAttr('required')
-            $score.attr('disabled','')
+            $score.attr('readonly','')
             $score_6 = 0
         }
     }

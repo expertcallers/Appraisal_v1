@@ -17,6 +17,8 @@ class Profile(models.Model):
     process_id = models.IntegerField(null=True,blank=True)
     emp_doj = models.DateField(null=True,blank=True)
     pc = models.BooleanField(default=False)
+    agent_score = models.FloatField(null=True,blank=True)
+    final_score = models.FloatField(null=True,blank=True)
     def __str__(self):
         return self.emp_name+" - "+self.emp_id
 
