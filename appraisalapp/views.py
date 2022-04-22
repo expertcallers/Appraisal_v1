@@ -1291,7 +1291,7 @@ def addParameters(request):
             elif i.emp_desi in mgr_list: # 4 Fixed Parameters
                 desi_list.append('Operation Manager')
             elif i.emp_desi in manager_list: # No Fixed Parameters
-                desi_list.append('Other')
+                desi_list.append('All designations above Agent')
         new_desi = []
         for i in desi_list:
             if i not in new_desi:
@@ -1305,7 +1305,7 @@ def getEmp(requset):
     emp_id = requset.user.profile.emp_id
     emp_desi = requset.POST['desi']
     if emp_desi == "Agent":
-        profile = Profile.objects.filter(Q(emp_rm1_id=emp_id), Q(emp_desi__in=agent_list) | Q(emp_desi__in=manager_list),
+        profile = Profile.objects.filter(Q(emp_rm1_id=emp_id), Q(emp_desi__in=agent_list),
                                          Q(emp_doj__lt=date(2021, 9, 30))).exclude(
             emp_id__in=PartA_Appraisee.objects.filter(emp_rm1_id=emp_id).values("emp_id"))
         prof_list = [{'data': 'Agent'}]

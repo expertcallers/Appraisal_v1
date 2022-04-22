@@ -22,5 +22,6 @@ from appraisalapp.views import *
 urlpatterns = [
     path('appraisal/admin/', admin.site.urls),
     path('accounts/login/', IndexPage),
+    path('', IndexPage),
     path('appraisal/',include('appraisalapp.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
