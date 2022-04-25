@@ -17,6 +17,8 @@ class ProfileSearch(ImportExportModelAdmin):
 class DataSearchResource(resources.ModelResource):
   class Meta:
      model = Data
+     fields = ['emp_id', 'emp_name', 'emp_desi', 'emp_rm1_id', 'emp_rm2_id', 'emp_rm3_id', 'emp_process', "emp_rm1", "emp_rm2", "emp_rm3",'emp_doj']
+     import_id_fields = ('emp_id',)
 
 class DataSearch(ImportExportModelAdmin):
     search_fields = ('emp_name', 'emp_id', "emp_desi", 'emp_process')
