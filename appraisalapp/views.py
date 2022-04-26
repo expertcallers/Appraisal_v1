@@ -462,7 +462,6 @@ def part_b_save(request):
                                    int(ten_rating), int(eleven_rating), int(twelve_rating),
                                    int(thirteen_rating), int(fourteen_rating), int(fifteen_rating),
                                    int(sixteen_rating), int(seventeen_rating), int(eighteen_rating)]
-            agent_table_1_total = round(sum(agent_table_1_total) / 18, 2)
             one_rating_2 = request.POST["one_rat2"]
             two_rating_2 = request.POST["two_rat2"]
             three_rating_2 = request.POST["three_rat2"]
@@ -477,8 +476,7 @@ def part_b_save(request):
             agent_table_2_total = [int(one_rating_2), int(two_rating_2), int(three_rating_2),
                                    int(four_rating_2), int(five_rating_2), int(six_rating_2),
                                    int(seven_rating_2), int(eight_rating_2), int(nine_rating_2),
-                                   int(ten_rating), int(eleven_rating)]
-            agent_table_2_total = round(sum(agent_table_2_total) / 11, 2)
+                                   int(ten_rating_2), int(eleven_rating_2)]
             one_rating_3 = request.POST["one_rat3"]
             two_rating_3 = request.POST["two_rat3"]
             three_rating_3 = request.POST["three_rat3"]
@@ -488,9 +486,8 @@ def part_b_save(request):
             seven_rating_3 = request.POST["seven_rat3"]
             eight_rating_3 = request.POST["eight_rat3"]
             agent_table_3_total = [int(one_rating_3), int(two_rating_3), int(three_rating_3),
-                                   int(four_rating_3), int(five_rating_3), int(six_rating),
+                                   int(four_rating_3), int(five_rating_3), int(six_rating_3),
                                    int(seven_rating_3), int(eight_rating_3)]
-            agent_table_3_total = round(sum(agent_table_3_total) / 8, 2)
             one_rating_4 = request.POST["one_rat4"]
             two_rating_4 = request.POST["two_rat4"]
             three_rating_4 = request.POST["three_rat4"]
@@ -522,10 +519,9 @@ def part_b_save(request):
                                    int(sixteen_rating_4), int(seventeen_rating_4), int(eighteen_rating_4),
                                    int(nineteen_rating_4), int(twenty_rating_4), int(twentyone_rating_4),
                                    int(twentytwo_rating_4), int(twentythree_rating_4)]
-            agent_table_4_total = round(sum(agent_table_4_total) / 23, 2)
 
             agent_score = round(
-                (agent_table_1_total + agent_table_2_total + agent_table_3_total + agent_table_4_total) / 4,
+                (sum(agent_table_1_total) + sum(agent_table_2_total) + sum(agent_table_3_total) + sum(agent_table_4_total)) / 60,
                 2)
 
             e = PartB_Appraisee.objects.get(agent=user.profile)
@@ -757,7 +753,6 @@ def manager_part_b_save(request, id):
                              int(mangr_ten_rating), int(mangr_eleven_rating), int(mangr_twelve_rating),
                              int(mangr_thirteen_rating), int(mangr_fourteen_rating), int(mangr_fifteen_rating),
                              int(mangr_sixteen_rating), int(mangr_seventeen_rating), int(mangr_eighteen_rating)]
-        mgr_table_1_total = round(sum(mgr_table_1_total) / 18, 2)
         mangr_one_rating_2 = request.POST["one_rat2"]
         mangr_two_rating_2 = request.POST["two_rat2"]
         mangr_three_rating_2 = request.POST["three_rat2"]
@@ -772,8 +767,7 @@ def manager_part_b_save(request, id):
         mgr_table_2_total = [int(mangr_one_rating_2), int(mangr_two_rating_2), int(mangr_three_rating_2),
                              int(mangr_four_rating_2), int(mangr_five_rating_2), int(mangr_six_rating_2),
                              int(mangr_seven_rating_2), int(mangr_eight_rating_2), int(mangr_nine_rating_2),
-                             int(mangr_ten_rating), int(mangr_eleven_rating)]
-        mgr_table_2_total = round(sum(mgr_table_2_total) / 11, 2)
+                             int(mangr_ten_rating_2), int(mangr_eleven_rating_2)]
         mangr_one_rating_3 = request.POST["one_rat3"]
         mangr_two_rating_3 = request.POST["two_rat3"]
         mangr_three_rating_3 = request.POST["three_rat3"]
@@ -783,9 +777,8 @@ def manager_part_b_save(request, id):
         mangr_seven_rating_3 = request.POST["seven_rat3"]
         mangr_eight_rating_3 = request.POST["eight_rat3"]
         mgr_table_3_total = [int(mangr_one_rating_3), int(mangr_two_rating_3), int(mangr_three_rating_3),
-                             int(mangr_four_rating_3), int(mangr_five_rating_3), int(mangr_six_rating),
+                             int(mangr_four_rating_3), int(mangr_five_rating_3), int(mangr_six_rating_3),
                              int(mangr_seven_rating_3), int(mangr_eight_rating_3)]
-        mgr_table_3_total = round(sum(mgr_table_3_total) / 8, 2)
         mangr_one_rating_4 = request.POST["one_rat4"]
         mangr_two_rating_4 = request.POST["two_rat4"]
         mangr_three_rating_4 = request.POST["three_rat4"]
@@ -817,9 +810,8 @@ def manager_part_b_save(request, id):
                              int(mangr_sixteen_rating_4), int(mangr_seventeen_rating_4), int(mangr_eighteen_rating_4),
                              int(mangr_nineteen_rating_4), int(mangr_twenty_rating_4), int(mangr_twentyone_rating_4),
                              int(mangr_twentytwo_rating_4), int(mangr_twentythree_rating_4)]
-        mgr_table_4_total = round(sum(mgr_table_4_total) / 23, 2)
 
-        mgr_score = round((mgr_table_1_total + mgr_table_2_total + mgr_table_3_total + mgr_table_4_total) / 4, 2)
+        mgr_score = round((sum(mgr_table_1_total) + sum(mgr_table_2_total) + sum(mgr_table_3_total) + sum(mgr_table_4_total)) / 60, 2)
 
         e = PartB_Appraisee.objects.get(emp_id=id)
         e.mgr_score = mgr_score
