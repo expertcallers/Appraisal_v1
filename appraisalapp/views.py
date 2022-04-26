@@ -22,7 +22,7 @@ manager_list = ['Quality Head', 'Command Centre Head', 'Chief Executive Officer'
                 'Process Trainer', 'Trainer Sales', 'HR Lead', 'HR Manager', 'Manager ER', 'Assistant Manager (L&D)',
                 'Service Delivery Manager', 'Sales Trainer', 'Chief Technology Officer', 'Board member',
                 'Chief Compliance Officer', 'Vice President', 'Admin Executive', 'Lead HRBP', 'Team Leader IT',
-                'Assistant Manager IT', 'Assistant Manager CC']
+                'Assistant Manager IT', 'Assistant Manager CC','Team Leader Admin']
 
 # For whom 4 Parameters are Fixed
 mgr_list = ['Operations Manager']
