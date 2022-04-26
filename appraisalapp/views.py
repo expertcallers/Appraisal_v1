@@ -1,5 +1,6 @@
 import json
 from datetime import date
+from re import A
 
 from django.contrib import messages
 from django.contrib.auth import login, logout, update_session_auth_hash, authenticate
@@ -456,12 +457,14 @@ def part_b_save(request):
             sixteen_rating = request.POST["sixteen_rat"]
             seventeen_rating = request.POST["seventeen_rat"]
             eighteen_rating = request.POST["eighteen_rat"]
+
             agent_table_1_total = [int(one_rating), int(two_rating), int(three_rating),
                                    int(four_rating), int(five_rating), int(six_rating),
                                    int(seven_rating), int(eight_rating), int(nine_rating),
                                    int(ten_rating), int(eleven_rating), int(twelve_rating),
                                    int(thirteen_rating), int(fourteen_rating), int(fifteen_rating),
                                    int(sixteen_rating), int(seventeen_rating), int(eighteen_rating)]
+
             agent_table_1_total = round(sum(agent_table_1_total) / 18, 2)
             one_rating_2 = request.POST["one_rat2"]
             two_rating_2 = request.POST["two_rat2"]
@@ -474,10 +477,12 @@ def part_b_save(request):
             nine_rating_2 = request.POST["nine_rat2"]
             ten_rating_2 = request.POST["ten_rat2"]
             eleven_rating_2 = request.POST["eleven_rat2"]
+
             agent_table_2_total = [int(one_rating_2), int(two_rating_2), int(three_rating_2),
                                    int(four_rating_2), int(five_rating_2), int(six_rating_2),
                                    int(seven_rating_2), int(eight_rating_2), int(nine_rating_2),
                                    int(ten_rating), int(eleven_rating)]
+
             agent_table_2_total = round(sum(agent_table_2_total) / 11, 2)
             one_rating_3 = request.POST["one_rat3"]
             two_rating_3 = request.POST["two_rat3"]
@@ -487,9 +492,11 @@ def part_b_save(request):
             six_rating_3 = request.POST["six_rat3"]
             seven_rating_3 = request.POST["seven_rat3"]
             eight_rating_3 = request.POST["eight_rat3"]
+
             agent_table_3_total = [int(one_rating_3), int(two_rating_3), int(three_rating_3),
                                    int(four_rating_3), int(five_rating_3), int(six_rating),
                                    int(seven_rating_3), int(eight_rating_3)]
+
             agent_table_3_total = round(sum(agent_table_3_total) / 8, 2)
             one_rating_4 = request.POST["one_rat4"]
             two_rating_4 = request.POST["two_rat4"]
@@ -514,6 +521,7 @@ def part_b_save(request):
             twentyone_rating_4 = request.POST["twentyone_rat4"]
             twentytwo_rating_4 = request.POST["twentytwo_rat4"]
             twentythree_rating_4 = request.POST["twentythree_rat4"]
+
             agent_table_4_total = [int(one_rating_4), int(two_rating_4), int(three_rating_4),
                                    int(four_rating_4), int(five_rating_4), int(six_rating_4),
                                    int(seven_rating_4), int(eight_rating_4), int(nine_rating_4),
@@ -522,11 +530,13 @@ def part_b_save(request):
                                    int(sixteen_rating_4), int(seventeen_rating_4), int(eighteen_rating_4),
                                    int(nineteen_rating_4), int(twenty_rating_4), int(twentyone_rating_4),
                                    int(twentytwo_rating_4), int(twentythree_rating_4)]
-            agent_table_4_total = round(sum(agent_table_4_total) / 23, 2)
 
+            agent_table_4_total = round(sum(agent_table_4_total) / 23, 2)
             agent_score = round(
                 (agent_table_1_total + agent_table_2_total + agent_table_3_total + agent_table_4_total) / 4,
                 2)
+
+
 
             e = PartB_Appraisee.objects.get(agent=user.profile)
             e.agent_score = agent_score
