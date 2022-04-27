@@ -154,13 +154,138 @@ def underAgentsCompleted(request):
     emp_desi = request.user.profile.emp_desi
     if emp_desi not in agent_list:
         profile = PartD_Appraisee.objects.filter(
-            Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id)).distinct()
+            Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id))
+        profiles = Profile.objects.filter(
+            Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id), Q(emp_doj__lt=date(2021,9,30)))
+        total_profiles = profiles.count()
+        total_added = profile.count()
+        completed = PartD_Appraisee.objects.filter(
+            Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id), Q(agent_complete_status=True),
+            ~Q(mgr_comments_feedback=None)
+        )
+        total_completed = completed.count()
+        total_pending = profiles.exclude(emp_id__in=completed.values('emp_id')).count()
         parta = PartA_Appraisee.objects.filter(
             Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id)).distinct()
-        data = {"profile": profile, "parta": parta}
+
+        data = {"profile": profile, "parta": parta, 'total_profiles': total_profiles, 'total_added': total_added,
+                'total_completed': total_completed, 'total_pending':total_pending}
         return render(request, "manager/agents_completed.html", data)
     else:
         messages.info(request, "Unauthorized access you have been Logged Out :)")
+        return redirect("/appraisal/")
+
+
+@login_required
+def getAgents(request, status):
+    emp_id = request.user.profile.emp_id
+    emp_desi = request.user.profile.emp_desi
+    if status == 'pending':
+        profiles = Profile.objects.filter(
+            Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id), Q(emp_doj__lt=date(2021,9,30)))
+        completed = PartD_Appraisee.objects.filter(
+            Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id), Q(agent_complete_status=True),
+            ~Q(mgr_comments_feedback=None)
+        )
+        total_pending = profiles.exclude(emp_id__in=completed.values('emp_id'))
+        pending_lst = []
+        for i in total_pending:
+            profile_dict = {}
+            profile_dict['emp_id']=i.emp_id
+            profile_dict['emp_name']=i.emp_name
+            profile_dict['emp_desi']=i.emp_desi
+            profile_dict['emp_process']=i.emp_process
+            profile_dict['emp_rm1']=i.emp_rm1
+            profile_dict['emp_rm2']=i.emp_rm2
+            profile_dict['emp_rm3']=i.emp_rm3
+            try:
+                part_d = PartD_Appraisee.objects.get(emp_id=i.emp_id)
+                if part_d.agent_complete_status == False:
+                    profile_dict['status'] = "Waiting for Agent to complete."
+                elif part_d.agent_complete_status == True and part_d.mgr_comments_feedback == None:
+                    profile_dict['status'] = "Waiting for their Manager to Complete."
+            except PartD_Appraisee.DoesNotExist:
+                profile_dict['status'] = "Parameters Not Added"
+            pending_lst.append(profile_dict)
+        data = {'profiles': pending_lst, 'status': status}
+        return render(request, "manager/agents_status.html", data)
+    elif status == 'completed':
+        completed = PartD_Appraisee.objects.filter(
+            Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id), Q(agent_complete_status=True),
+            ~Q(mgr_comments_feedback=None)
+        )
+        score_profile = Profile.objects.filter(
+            Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id))
+        completed_lst = []
+        for i in completed:
+            profile_dict = {}
+            profile_dict['emp_id'] = i.emp_id
+            profile_dict['agent'] = i.agent
+            profile_dict['emp_name'] = i.emp_name
+            profile_dict['emp_desi'] = i.agent.emp_desi
+            profile_dict['emp_process'] = i.agent.emp_process
+            profile_dict['emp_rm1'] = i.emp_rm1
+            profile_dict['emp_rm2'] = i.emp_rm2
+            profile_dict['emp_rm3'] = i.emp_rm3
+            profile_dict['status'] = "Completed"
+            completed_lst.append(profile_dict)
+        data = {'profiles': completed_lst, 'status': status}
+        return render(request, "manager/agents_status.html", data)
+    elif status == 'parameters':
+        parameters = PartA_Appraisee.objects.filter(
+            Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id)
+        )
+        completed_lst = []
+        for i in parameters:
+            profile_dict = {}
+            profile_dict['emp_id'] = i.agent.emp_id
+            profile_dict['emp_name'] = i.agent.emp_name
+            profile_dict['emp_desi'] = i.agent.emp_desi
+            profile_dict['emp_process'] = i.agent.emp_process
+            profile_dict['emp_rm1'] = i.agent.emp_rm1
+            profile_dict['emp_rm2'] = i.agent.emp_rm2
+            profile_dict['emp_rm3'] = i.agent.emp_rm3
+            try:
+                part_d = PartD_Appraisee.objects.get(emp_id=i.emp_id)
+                if part_d.agent_complete_status == False:
+                    profile_dict['status'] = "Waiting for Agent to complete."
+                elif part_d.agent_complete_status == True and part_d.mgr_comments_feedback == None:
+                    profile_dict['status'] = "Waiting for their Manager to Complete."
+                else:
+                    profile_dict['status'] = "Appraisal Completed."
+            except PartD_Appraisee.DoesNotExist:
+                profile_dict['status'] = "Parameters Not Added"
+            completed_lst.append(profile_dict)
+        data = {'profiles': completed_lst, 'status': status}
+        return render(request, "manager/agents_status.html", data)
+    elif status == 'total':
+        profiles = Profile.objects.filter(
+            Q(emp_rm1_id=emp_id) | Q(emp_rm2_id=emp_id) | Q(emp_rm3_id=emp_id), Q(emp_doj__lt=date(2021, 9, 30)))
+        pending_lst = []
+        for i in profiles:
+            profile_dict = {}
+            profile_dict['emp_id'] = i.emp_id
+            profile_dict['emp_name'] = i.emp_name
+            profile_dict['emp_desi'] = i.emp_desi
+            profile_dict['emp_process'] = i.emp_process
+            profile_dict['emp_rm1'] = i.emp_rm1
+            profile_dict['emp_rm2'] = i.emp_rm2
+            profile_dict['emp_rm3'] = i.emp_rm3
+            try:
+                part_d = PartD_Appraisee.objects.get(emp_id=i.emp_id)
+                if part_d.agent_complete_status == False:
+                    profile_dict['status'] = "Waiting for Agent to complete."
+                elif part_d.agent_complete_status == True and part_d.mgr_comments_feedback == None:
+                    profile_dict['status'] = "Waiting for their Manager to Complete."
+                else:
+                    profile_dict['status'] = "Appraisal Completed."
+            except PartD_Appraisee.DoesNotExist:
+                profile_dict['status'] = "Parameters Not Added"
+            pending_lst.append(profile_dict)
+        data = {'profiles': pending_lst, 'status': status}
+        return render(request, "manager/agents_status.html", data)
+    else:
+        messages.info(request, "Invalid Request, you have been Logged out :)")
         return redirect("/appraisal/")
 
 
@@ -1197,7 +1322,15 @@ def manager_part_d_save(request, id):
     else:
         part_d = PartD_Appraisee.objects.get(emp_id=id)
         profile = Profile.objects.get(emp_id=id)
-        data = {"part_d": part_d, "profile": profile}
+        part_a = PartA_Appraisee.objects.get(emp_id=id)
+        part_b = PartB_Appraisee.objects.get(emp_id=id)
+        part_c = PartC_Appraisee.objects.get(emp_id=id)
+        self_score = round(
+            (((part_a.agent_score * 70) / 100) + ((part_b.agent_score * 20) / 100) + ((part_c.agent_score * 10) / 100)),
+            2)
+        manager_score = round(
+            (((part_a.mgr_score * 70) / 100) + ((part_b.mgr_score * 20) / 100) + ((part_c.mgr_score * 10) / 100)), 2)
+        data = {"part_d": part_d, "profile": profile, 'self_score': self_score, 'manager_score': manager_score}
         return render(request, "manager/manager_part_d.html", data)
 
 
@@ -1302,9 +1435,9 @@ def addParameters(request):
 
 
 @login_required
-def getEmp(requset):
-    emp_id = requset.user.profile.emp_id
-    emp_desi = requset.POST['desi']
+def getEmp(request):
+    emp_id = request.user.profile.emp_id
+    emp_desi = request.POST['desi']
     if emp_desi == "Agent":
         profile = Profile.objects.filter(Q(emp_rm1_id=emp_id), Q(emp_desi__in=agent_list),
                                          Q(emp_doj__lt=date(2021, 9, 30))).exclude(

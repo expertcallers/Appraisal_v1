@@ -28,4 +28,5 @@ urlpatterns = [
     path('change-password',change_password),
     path('create-user',createUserandProfile),
     path('get-emps', getEmp),
+    path('agent-status/<str:status>', getAgents),
 ]

@@ -124,8 +124,8 @@
 									  <td>{{part_a.parameter_1}}</td>
 									  <td>{{part_a.parameter_1_score}}%</td>
 									  <td align="center">
-										<p>Agent rating:<br> {{part_a.parameter_1_rating_agent}}</p>
-										<p>Reviewer's rating:<br>{{part_a.parameter_1_rating}}</p>
+										<p>Agent rating:<br> <span id="parameter_1"></span></p>
+										<p>Reviewer's rating:<br><span id="parameter_1_mgr"></span></p>
 									  </td>
 									  <td>
 										<div class="form-group">
@@ -144,8 +144,8 @@
 									  <td>{{part_a.parameter_2}}</td>
 									  <td>{{part_a.parameter_2_score}}%</td>
 									  <td align="center">
-										<p>Agent rating:<br> {{part_a.parameter_2_rating_agent}}</p>
-										<p>Reviewer's rating:<br>{{part_a.parameter_2_rating}}</p>
+										<p>Agent rating:<br> <span id="parameter_2"></span></p>
+										<p>Reviewer's rating:<br><span id="parameter_2_mgr"></span></p>
 									  </td>
 									  <td>
 										<div class="form-group">
@@ -165,8 +165,8 @@
 									  <td>{{part_a.parameter_3}}</td>
 									  <td>{{part_a.parameter_3_score}}%</td>
 									  <td align="center">
-										<p>Agent rating:<br> {{part_a.parameter_3_rating_agent}}</p>
-										<p>Reviewer's rating:<br>{{part_a.parameter_3_rating}}</p>
+										<p>Agent rating:<br> <span id="parameter_3"></span></p>
+										<p>Reviewer's rating:<br><span id="parameter_3_mgr"></span></p>
 									  </td>
 									  <td>
 										<div class="form-group">
@@ -186,8 +186,8 @@
 									  <td>{{part_a.parameter_4}}</td>
 									  <td>{{part_a.parameter_4_score}}%</td>
 									  <td align="center">
-										<p>Agent rating:<br> {{part_a.parameter_4_rating_agent}}</p>
-										<p>Reviewer's rating:<br>{{part_a.parameter_4_rating}}</p>
+										<p>Agent rating:<br> <span id="parameter_4"></span></p>
+										<p>Reviewer's rating:<br><span id="parameter_4_mgr"></span></p>
 									  </td>
 									  <td>
 										<div class="form-group">
@@ -207,8 +207,8 @@
 									  <td>{{part_a.parameter_5}}</td>
 									  <td>{{part_a.parameter_5_score}}%</td>
 									  <td align="center">
-										<p>Agent rating:<br> {{part_a.parameter_5_rating_agent}}</p>
-										<p>Reviewer's rating:<br>{{part_a.parameter_5_rating}}</p>
+										<p>Agent rating:<br> <span id="parameter_5"></span></p>
+										<p>Reviewer's rating:<br><span id="parameter_5_mgr"></span></p>
 									  </td>
 									  <td>
 										<div class="form-group">
@@ -228,8 +228,8 @@
 									  <td>{{part_a.parameter_6}}</td>
 									  <td>{{part_a.parameter_6_score}}%</td>
 									  <td align="center">
-										<p>Agent rating:<br> {{part_a.parameter_6_rating_agent}}</p>
-										<p>Reviewer's rating:<br>{{part_a.parameter_6_rating}}</p>
+										<p>Agent rating:<br><span id="parameter_6"></span></p>
+										<p>Reviewer's rating:<br><span id="parameter_6_mgr"></span></p>
 									  </td>
 									  <td>
 										<div class="form-group">
@@ -1995,7 +1995,76 @@
 			});
     	});
 	</script>
+<script>
+	$parameter_1_rating = {{part_a.parameter_1_rating_agent}};
+	$parameter_1_score = {{part_a.parameter_1_score}};
+	$("#parameter_1").html(($parameter_1_rating*100)/$parameter_1_score);
 
+	{% if part_a.parameter_2 %}
+	$parameter_2_rating = {{part_a.parameter_2_rating_agent}};
+	$parameter_2_score = {{part_a.parameter_2_score}};
+	$("#parameter_2").html(($parameter_2_rating*100)/$parameter_2_score);
+	{% endif %}
+
+	{% if part_a.parameter_3 %}
+	$parameter_3_rating = {{part_a.parameter_3_rating_agent}};
+	$parameter_3_score = {{part_a.parameter_3_score}};
+	$("#parameter_3").html(($parameter_3_rating*100)/$parameter_3_score);
+	{% endif %}
+
+	{% if part_a.parameter_4 %}
+	$parameter_4_rating = {{part_a.parameter_4_rating_agent}};
+	$parameter_4_score = {{part_a.parameter_4_score}};
+	$("#parameter_4").html(($parameter_4_rating*100)/$parameter_4_score);
+	{% endif %}
+
+	{% if part_a.parameter_5 %}
+	$parameter_5_rating = {{part_a.parameter_5_rating_agent}};
+	$parameter_5_score = {{part_a.parameter_5_score}};
+	$("#parameter_5").html(($parameter_5_rating*100)/$parameter_5_score);
+	{% endif %}
+
+	{% if part_a.parameter_6 %}
+	$parameter_6_rating = {{part_a.parameter_6_rating_agent}};
+	$parameter_6_score = {{part_a.parameter_6_score}};
+	$("#parameter_6").html(($parameter_6_rating*100)/$parameter_6_score);
+	{% endif %}
+
+
+	$parameter_1_rating_mgr = {{part_a.parameter_1_rating}};
+	$parameter_1_score_mgr = {{part_a.parameter_1_score}};
+	$("#parameter_1_mgr").html(($parameter_1_rating_mgr*100)/$parameter_1_score_mgr);
+
+	{% if part_a.parameter_2 %}
+	$parameter_2_rating_mgr = {{part_a.parameter_2_rating}};
+	$parameter_2_score_mgr = {{part_a.parameter_2_score}};
+	$("#parameter_2_mgr").html(($parameter_2_rating_mgr*100)/$parameter_2_score_mgr);
+	{% endif %}
+
+	{% if part_a.parameter_3 %}
+	$parameter_3_rating_mgr = {{part_a.parameter_3_rating}};
+	$parameter_3_score_mgr = {{part_a.parameter_3_score}};
+	$("#parameter_3_mgr").html(($parameter_3_rating_mgr*100)/$parameter_3_score_mgr);
+	{% endif %}
+
+	{% if part_a.parameter_4 %}
+	$parameter_4_rating_mgr = {{part_a.parameter_4_rating}};
+	$parameter_4_score_mgr = {{part_a.parameter_4_score}};
+	$("#parameter_4_mgr").html(($parameter_4_rating_mgr*100)/$parameter_4_score_mgr);
+	{% endif %}
+
+	{% if part_a.parameter_5 %}
+	$parameter_5_rating_mgr = {{part_a.parameter_5_rating}};
+	$parameter_5_score_mgr = {{part_a.parameter_5_score}};
+	$("#parameter_5_mgr").html(($parameter_5_rating_mgr*100)/$parameter_5_score_mgr);
+	{% endif %}
+
+	{% if part_a.parameter_6 %}
+	$parameter_6_rating_mgr = {{part_a.parameter_6_rating}};
+	$parameter_6_score_mgr = {{part_a.parameter_6_score}};
+	$("#parameter_6_mgr").html(($parameter_6_rating_mgr*100)/$parameter_6_score_mgr);
+	{% endif %}
+</script>
 {% if messages %}
 	<script>
 			{% for m in messages %}

@@ -5,52 +5,7 @@
         <!-- page content -->
         <div class="right_col" role="main">
 
-            <div class="page-title">
-              <div class="title_left">
-                <h3>Agents for whom parameters are added</h3>
-              </div>
-            </div>
             <div class="row">
-                <div class="col-md-3">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5>Total Agents</h5>
-                        </div>
-                        <div class="card-body" align="center">
-                            <a href="/appraisal/agent-status/total"><h1>{{total_profiles}}</h1></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5>Total Agents for whom parameters are added</h5>
-                        </div>
-                        <div class="card-body" align="center">
-                            <a href="/appraisal/agent-status/parameters"><h1>{{total_added}}</h1></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5>Employees Completed Appraisal</h5>
-                        </div>
-                        <div class="card-body" align="center">
-                            <a href="/appraisal/agent-status/completed"><h1>{{total_completed}}</h1></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5>Pending Appraisal</h5>
-                        </div>
-                        <div class="card-body" align="center">
-                            <a href="/appraisal/agent-status/pending"><h1>{{total_pending}}</h1></a>
-                        </div>
-                    </div>
-                </div>
               <div class="col-md-12 mt-3">
                 <div class="card">
                   <div class="card-body">
@@ -61,7 +16,15 @@
                             <th>Employee ID</th>
                             <th>Process</th>
                             <th>Designation</th>
-                            <th>Action</th>
+                            <th>RM1</th>
+                            <th>RM2</th>
+                            <th>RM3</th>
+                            {% if status == 'completed' %}
+                            <th>Agent Score</th>
+                            <th>Manager Score</th>
+                            {% else %}
+                            <th>Status</th>
+                            {% endif %}
                         </tr>
                       </thead>
                       <tfoot>
@@ -70,31 +33,36 @@
                             <th>Employee ID</th>
                             <th>Process</th>
                             <th>Designation</th>
-                            <th>Action</th>
+                            <th>RM1</th>
+                            <th>RM2</th>
+                            <th>RM3</th>
+                            {% if status == 'completed' %}
+                            <th>Agent Score</th>
+                            <th>Manager Score</th>
+                            {% else %}
+                            <th>Status</th>
+                            {% endif %}
                         </tr>
                       </tfoot>
                       <tbody>
-                      {% for i in profile %}
+                      {% for i in profiles %}
                             <tr>
-                                <td>{{i.agent.emp_name}}</td>
-                                <td>{{i.agent.emp_id}}</td>
-                                <td>{{i.agent.emp_process}}</td>
-                                <td>{{i.agent.emp_desi}}</td>
+                                <td>{{i.emp_name}}</td>
+                                <td>{{i.emp_id}}</td>
+                                <td>{{i.emp_process}}</td>
+                                <td>{{i.emp_desi}}</td>
+                                <td>{{i.emp_rm1}}</td>
+                                <td>{{i.emp_rm2}}</td>
+                                <td>{{i.emp_rm3}}</td>
+
+                                {% if status == 'completed' %}
+                                <td>{{i.agent.agent_score}}</td>
+                                <td>{{i.agent.final_score}}</td>
+                                {% else %}
                                 <td>
-                                    {% if i.agent_complete_status == False %}
-                                        Waiting for <b>Agent</b> to complete.<br>
-                                        {% if request.user.profile.emp_id == i.emp_rm1_id %}
-                                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#change_para{{i.emp_id}}">Change Parameters</button>
-                                        {% endif %}
-                                    {% endif %}
-                                    {% if i.mgr_comments_feedback == None and i.agent_complete_status == True %}
-                                        Waiting for their <b>Manager</b> to Complete.
-                                    {% endif %}
-                                    {% if i.mgr_comments_feedback != None %}
-                                        Employee Satisfaction: {% if i.agree %}{{i.agree}}{% else %}Not Signed by Employee{% endif %}<br>
-                                        <a href="/appraisal/view/{{i.emp_id}}" class="btn btn-sm btn-primary">view</a>
-                                    {% endif %}
+                                    {{i.status}}
                                 </td>
+                                {% endif %}
                             </tr>
                       {% endfor %}
                       </tbody>

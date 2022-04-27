@@ -287,36 +287,36 @@
 <script>
 	$parameter_1_rating = {{parta.parameter_1_rating_agent}};
 	$parameter_1_score = {{parta.parameter_1_score}};
-	$("#parameter_1").html(($parameter_1_rating*$parameter_1_score)/100);
+	$("#parameter_1").html(($parameter_1_rating*100)/$parameter_1_score);
 
 	{% if parta.parameter_2 %}
 	$parameter_2_rating = {{parta.parameter_2_rating_agent}};
 	$parameter_2_score = {{parta.parameter_2_score}};
-	$("#parameter_2").html(($parameter_2_rating*$parameter_2_score)/100);
+	$("#parameter_2").html(($parameter_2_rating*100)/$parameter_2_score);
 	{% endif %}
 
 	{% if parta.parameter_3 %}
 	$parameter_3_rating = {{parta.parameter_3_rating_agent}};
 	$parameter_3_score = {{parta.parameter_3_score}};
-	$("#parameter_3").html(($parameter_3_rating*$parameter_3_score)/100);
+	$("#parameter_3").html(($parameter_3_rating*100)/$parameter_3_score);
 	{% endif %}
 
 	{% if parta.parameter_4 %}
 	$parameter_4_rating = {{parta.parameter_4_rating_agent}};
 	$parameter_4_score = {{parta.parameter_4_score}};
-	$("#parameter_4").html(($parameter_4_rating*$parameter_4_score)/100);
+	$("#parameter_4").html(($parameter_4_rating*100)/$parameter_4_score);
 	{% endif %}
 
 	{% if parta.parameter_5 %}
 	$parameter_5_rating = {{parta.parameter_5_rating_agent}};
 	$parameter_5_score = {{parta.parameter_5_score}};
-	$("#parameter_5").html(($parameter_5_rating*$parameter_5_score)/100);
+	$("#parameter_5").html(($parameter_5_rating*100)/$parameter_5_score);
 	{% endif %}
 
 	{% if parta.parameter_6 %}
 	$parameter_6_rating = {{parta.parameter_6_rating_agent}};
 	$parameter_6_score = {{parta.parameter_6_score}};
-	$("#parameter_6").html(($parameter_6_rating*$parameter_6_score)/100);
+	$("#parameter_6").html(($parameter_6_rating*100)/$parameter_6_score);
 	{% endif %}
 </script>
 {% endblock %}
