@@ -1802,7 +1802,7 @@
 					<div class="secquestions mb-4" id="agent_agreement">
 						<div class="row">
 							<div class="col-md-12">
-								{% if partd.comments_feedback == None %}
+								{% if partd.comments_feedback == "" or partd.comments_feedback == None %}
 								<form method="post" action="/appraisal/partd">
 									{% csrf_token %}
 								{% endif %}
@@ -1833,9 +1833,15 @@
 												<tbody>
 													<tr>
 														<td>1</td>
-														<td><textarea class="form-control" {% if partd.comments_feedback != None %}disabled{% endif %} name="appraisee_roles" rows="4" placeholder="If multiple seperate with comma">{% if partd.appraisee_roles != None %}{{partd.appraisee_roles}}{% else %}{% endif %}</textarea></td>
-														<td><textarea class="form-control" {% if partd.comments_feedback != None %}disabled{% endif %} name="appraisee_skills_required" rows="4" placeholder="If multiple seperate with comma">{% if partd.appraisee_skills_required != None %}{{partd.appraisee_skills_required}}{% else %}{% endif %}</textarea></td>
-														<td><textarea class="form-control" {% if partd.comments_feedback != None %}disabled{% endif %} name="appraisee_time_frame" rows="4" placeholder="If multiple seperate with comma">{% if partd.appraisee_time_frame != None %}{{partd.appraisee_time_frame}}{% else %}{% endif %}</textarea></td>
+														{% if partd.comments_feedback == '' or partd.comments_feedback == None %}
+														<td><textarea class="form-control" required name="appraisee_roles" rows="4" placeholder="If multiple seperate with comma"></textarea></td>
+														<td><textarea class="form-control" required name="appraisee_skills_required" rows="4" placeholder="If multiple seperate with comma"></textarea></td>
+														<td><textarea class="form-control" required name="appraisee_time_frame" rows="4" placeholder="If multiple seperate with comma"></textarea></td>
+														{% else %}
+														<td><textarea class="form-control" readonly name="appraisee_roles" rows="4" placeholder="If multiple seperate with comma">{% if partd.appraisee_roles != None %}{{partd.appraisee_roles}}{% else %}{% endif %}</textarea></td>
+														<td><textarea class="form-control" readonly name="appraisee_skills_required" rows="4" placeholder="If multiple seperate with comma">{% if partd.appraisee_skills_required != None %}{{partd.appraisee_skills_required}}{% else %}{% endif %}</textarea></td>
+														<td><textarea class="form-control" readonly name="appraisee_time_frame" rows="4" placeholder="If multiple seperate with comma">{% if partd.appraisee_time_frame != None %}{{partd.appraisee_time_frame}}{% else %}{% endif %}</textarea></td>
+														{% endif %}
 													</tr>
 												</tbody>
 											</table>
@@ -1845,9 +1851,15 @@
 											<p>Please read the statement below and tick the appropriate box indicating your opinion</p>
 											<p>“The ratings and comments in this appraisal are a fair and reasonable assessment of my work performance and development needs”.</p>
 											<div>
-												<input type="checkbox" name="rating" {% if partd.comments_feedback != None %}disabled{% endif %} {% if partd.agree == "Agree" %}checked{% endif %} value="Agree" class="mycheck"><span class="ml-2 mr-4">Agree</span>
-												<input type="checkbox" name="rating" {% if partd.comments_feedback != None %}disabled{% endif %} {% if partd.agree == "Partly Agree" %}checked{% endif %} value="Partly Agree" class="mycheck"><span class="ml-2 mr-4">Partly Agree</span>
-												<input type="checkbox" name="rating" {% if partd.comments_feedback != None %}disabled{% endif %} {% if partd.agree == "Disagree" %}checked{% endif %} value="Disagree" class="mycheck additionalf"><span class="ml-2 mr-4" onclick="EnableDisableTextBox(this)">Disagree</span>
+												{% if partd.comments_feedback == '' or partd.comments_feedback == None %}
+												<input type="radio" style="transform: scale(1.5);" name="rating" required value="Agree" class="mycheck"><span class="ml-2 mr-4">Agree</span>
+												<input type="radio" style="transform: scale(1.5);" name="rating" required value="Partly Agree" class="mycheck"><span class="ml-2 mr-4">Partly Agree</span>
+												<input type="radio" style="transform: scale(1.5);" name="rating" required value="Disagree" class="mycheck additionalf"><span class="ml-2 mr-4" onclick="EnableDisableTextBox(this)">Disagree</span>
+												{% else %}
+												<input type="checkbox" style="transform: scale(1.5);" name="rating" disabled {% if partd.agree == "Agree" %}checked{% endif %} value="Agree" class="mycheck"><span class="ml-2 mr-4">Agree</span>
+												<input type="checkbox" style="transform: scale(1.5);" name="rating" disabled {% if partd.agree == "Partly Agree" %}checked{% endif %} value="Partly Agree" class="mycheck"><span class="ml-2 mr-4">Partly Agree</span>
+												<input type="checkbox" style="transform: scale(1.5);" name="rating" disabled {% if partd.agree == "Disagree" %}checked{% endif %} value="Disagree" class="mycheck additionalf"><span class="ml-2 mr-4">Disagree</span>
+												{% endif %}
 											</div>
 											<div>
 												<input type="text" name="dis_com" value="{% if partd.comments_feedback != None %}{{partd.if_disagree}}{% else %}{% endif %}" required class="form-control additionalfa" disabled placeholder="If Disagree, Please Provide Comments Why?">
@@ -1859,21 +1871,25 @@
 										</div> -->
 										<div class="col-md-12 mt-3">
 											<div class="form-group">
-												<label for="feedbackag">Comments and Feedbacks </label>
-												<textarea rows="4" class="form-control" name="feedback" {% if partd.comments_feedback != None %}disabled{% endif %} id="feedbackag">{% if partd.comments_feedback != None %}{{partd.comments_feedback}}{% else %}{% endif %}</textarea>
+												<label for="feedbackag_emp">Comments and Feedbacks </label>
+												{% if partd.comments_feedback == '' or partd.comments_feedback == None %}
+												<textarea rows="4" class="form-control" name="feedback" required id="feedbackag_emp"></textarea>
+												{% else %}
+												<textarea rows="4" class="form-control" name="feedback" readonly>{% if partd.comments_feedback != None %}{{partd.comments_feedback}}{% else %}{% endif %}</textarea>
+												{% endif %}
 											</div>
 										</div>
 										<div class="col-md-12 mt-5 " align="center">
 											<div class="form-group">
-												{% if partd.comments_feedback == None %}
+												{% if partd.comments_feedback == "" or partd.comments_feedback == None %}
 												<button type="submit" class="btn btn-success btn-lg">Submit</button>
 												{% else %}
-												<a href="/appraisal" class="btn btn-danger">Logout</a>
+												<a href="/appraisal/" class="btn btn-danger">Logout</a>
 												{% endif %}
 											</div>
 										</div>
 									</div>
-								{% if partd.comments_feedback == None %}
+								{% if partd.comments_feedback == "" or partd.comments_feedback == None %}
 								</form>
 								{% endif %}
 							</div>
