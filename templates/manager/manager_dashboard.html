@@ -38,7 +38,7 @@
                                 <td>{{i.agent.emp_id}}</td>
                                 <td>{{i.agent.emp_process}}</td>
                                 <td>
-                                    {% if i.mgr_comments_feedback == None and i.agent_complete_status == True %}
+                                    {% if i.mgr_comments_feedback == None or i.mgr_comments_feedback == '' and i.agent_complete_status == True %}
                                         <form action="/appraisal/manparta" method="POST" enctype="multipart/form-data">
                                             {% csrf_token %}
                                             <input type="hidden" value="{{i.emp_id}}" name="emp_id">
@@ -47,7 +47,8 @@
                                     {% elif i.agent_complete_status == False %}
                                         Waiting for agent to complete.
                                     {% endif %}
-                                    {% if i.mgr_comments_feedback != None %}
+                                    {% if i.mgr_comments_feedback == None or i.mgr_comments_feedback == "" %}
+                                    {% else %}
                                         Employee Satisfaction: {{i.agree}}<br>
                                         <a href="/appraisal/view/{{i.emp_id}}" class="btn btn-sm btn-primary">view</a>
                                     {% endif %}
