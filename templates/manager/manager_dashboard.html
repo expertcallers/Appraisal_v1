@@ -38,12 +38,14 @@
                                 <td>{{i.agent.emp_id}}</td>
                                 <td>{{i.agent.emp_process}}</td>
                                 <td>
-                                    {% if i.mgr_comments_feedback == None or i.mgr_comments_feedback == '' and i.agent_complete_status == True %}
+                                    {% if i.agent_complete_status == True %}
+                                        {% if i.mgr_comments_feedback == None or i.mgr_comments_feedback == '' %}
                                         <form action="/appraisal/manparta" method="POST" enctype="multipart/form-data">
                                             {% csrf_token %}
                                             <input type="hidden" value="{{i.emp_id}}" name="emp_id">
                                             <button type="submit" class="btn btn-sm btn-primary">Take Assessment</button>
                                         </form>
+                                        {% endif %}
                                     {% elif i.agent_complete_status == False %}
                                         Waiting for agent to complete.
                                     {% endif %}
