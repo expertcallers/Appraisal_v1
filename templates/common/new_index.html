@@ -33,9 +33,30 @@
 					</div>
 				</div>
 				<div class="d-flex justify-content-center form_container">
-					<div class="input-group mb-3">
-						<h3 align="center">Appraisal website no longer available. Please come back next year :)</h3>
-					</div>
+					<form action="/appraisal/login" method="POST" enctype="multipart/form-data">
+						{% csrf_token %}
+						<div class="input-group mb-3">
+							<div class="input-group-append">
+								<span class="input-group-text"><i class="fas fa-user"></i></span>
+							</div>
+							<input type="text" name="user" class="form-control input_user" value="" placeholder="username">
+						</div>
+						<div class="input-group mb-2">
+							<div class="input-group-append">
+								<span class="input-group-text"><i class="fas fa-key"></i></span>
+							</div>
+							<input type="password" name="pass" class="form-control input_pass" value="" placeholder="password">
+						</div>
+						<div class="form-group">
+							<div class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" id="Rem_me" name="rem">
+								<!--<label class="custom-control-label" for="Rem_me">Remember me</label>-->
+							</div>
+						</div>
+						<div class="d-flex justify-content-center mt-3 login_container">
+							<button type="submit" class="btn login_btn">Login</button>
+						</div>
+					</form>
 				</div>
 		
 				<div class="mt-4">
